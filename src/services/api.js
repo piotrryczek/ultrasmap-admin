@@ -30,13 +30,13 @@ class Api {
   post = (url, body) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { data: { data } } = await axios.post(`${this.apiUrl}${url}`, body, this.getConfig());
+        const { data } = await axios.post(`${this.apiUrl}${url}`, body, this.getConfig());
 
         resolve(data);
       } catch (error) {
         reject(error);
       }
-    })
+    });
   }
 
   put = (url, body) => {
@@ -47,8 +47,16 @@ class Api {
     return axios.delete(`${this.apiUrl}${url}`, this.getConfig());
   }
 
-  get = (url, query) => {
-    return axios.delete(`${this.apiUrl}${url}`, this.getConfig(query));
+  get = (url, query = {}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await axios.get(`${this.apiUrl}${url}`, this.getConfig(query));
+
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 }
 

@@ -11,8 +11,6 @@ import * as serviceWorker from './serviceWorker';
 
 import 'config/i18n';
 
-
-
 /* eslint-disable no-underscore-dangle */
 const store = createStore(
   rootReducer,

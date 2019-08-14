@@ -2,6 +2,8 @@
   "pl": {
     "translation": {
       "LOGIN_FAILED": "Logowanie nieudane",
+      "LOGIN_SUCCESS": "Zalogowałeś się",
+      "LOGOUT_SUCCESS": "Wylogowałeś się",
       "USER_WITH_EMAIL_EXISTS": "Użytkownik z podanym adresem email już istnieje w bazie",
       "NOT_AUTHORIZED": "Nie posiadasz uprawnień do dokonania tej akcji",
       "CLUB_WITH_NANE_EXISTS": "Klub o tej nazwie już istnieje"
@@ -10,6 +12,8 @@
   "en": {
     "translation": {
       "LOGIN_FAILED": "Login failed",
+      "LOGIN_SUCCESS": "You have logged in",
+      "LOGOUT_SUCCESS": "You have loggout out",
       "USER_WITH_EMAIL_EXISTS": "User with provided email already exists",
       "NOT_AUTHORIZED": "You have no credentials to perform action",
       "CLUB_WITH_NANE_EXISTS": "Club with provided name already exists"

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Api from 'services/api';
-import { setMessage } from 'components/app/app.actions';
+import { login } from 'components/app/app.actions';
 
 function Login() {
-
   const dispatch = useDispatch();
 
   const [fields, setFields] = useState({
@@ -21,29 +19,7 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-
-    try {
-      const jwtToken = await Api.post('/users/login', {
-        email,
-        password,
-      });
-
-      localStorage.setItem('jwtToken', jwtToken);
-
-      dispatch(setMessage('success', 'LOGIN_SUCCESS'));
-    } catch (error) {
-      const {
-        response: {
-          data: {
-            type,
-            message,
-          },
-        },
-        // status,
-      } = error;
-      
-      dispatch(setMessage('error', type));
-    }
+    await dispatch(login(email, password));
   };
 
   const handleChangeField = field => (event) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Router,
   Route,
+  Switch,
 } from 'react-router';
 import { useSelector } from 'react-redux';
 
@@ -20,8 +21,15 @@ function App() {
 
   if (!jwtToken) history.push('/login');
 
-  const app = useSelector(state => state.app);
-  const { messageCode, messageType } = app;
+  const {
+    messageCode,
+    messageType,
+    isAuthenticated,
+  } = useSelector(state => ({
+    messageCode: state.app.messageCode,
+    messageType: state.app.messageType,
+    isAuthenticated: state.app.isAuthenticated,
+  }));
 
   return (
     <div id="admin">
@@ -32,8 +40,10 @@ function App() {
           ? (
             <>
               <SidePanel />
-              <Route path="/clubs" component={Clubs} />
-              <Route path="/users" component={Users} />
+              <Switch>
+                <Route path="/clubs" component={Clubs} />
+                <Route path="/users" component={Users} />
+              </Switch>
             </>
           )
           : (

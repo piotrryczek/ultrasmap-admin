@@ -5,7 +5,7 @@
     "jsx": "preserve",
     "checkJs": true,
     "baseUrl": "./src",
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "**/node_modules/*"]
 }
