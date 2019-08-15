@@ -22,6 +22,7 @@ function Clubs() {
   return (
     <TableList
       fetchDataUrl="/clubs"
+      editUrl="/clubs"
       columns={columns}
       searchColumns={searchColumns}
     />

@@ -44,6 +44,7 @@ function TableList(props) {
     fetchDataUrl,
     columns,
     searchColumns = [],
+    editUrl,
   } = props;
 
   useEffect(() => {
@@ -80,6 +81,7 @@ function TableList(props) {
       ...prevState,
       page: 1,
       search: searchData,
+      selected: [],
     }));
   }, []);
 
@@ -115,6 +117,7 @@ function TableList(props) {
           selected={selected}
           onSelect={handleSelect}
           onDeselect={handeDeselect}
+          editUrl={editUrl}
         />
       </table>
       <PaginationMemoized

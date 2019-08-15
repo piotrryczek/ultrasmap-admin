@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
+
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 
 import TableCell from './tableCell/tableCell.component';
 
 function TableRow(props) {
-  console.log('TableRow rerender')
-
   const {
     columns,
     singleData,
-    selected = [],
     onSelect,
     onDeselect,
     isChecked,
@@ -23,7 +23,7 @@ function TableRow(props) {
     } else {
       onSelect(id);
     }
-  }, [selected]);
+  }, [isChecked]);
 
   return (
     <tr>
@@ -41,6 +41,12 @@ function TableRow(props) {
           column={column}
         />
       ))}
+
+      <td>
+        <Link to={`/clubs/${singleData._id}`}>
+          <Button variant="contained" color="primary">Edytuj</Button>
+        </Link>
+      </td>
     </tr>
   )
 }

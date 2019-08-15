@@ -3,8 +3,6 @@ import update from 'immutability-helper';
 import { useDebouncedCallback } from 'use-debounce';
 
 function Search(props) {
-  console.log('Search: Render');
-
   const [search, setSearch] = useState({});
 
   const { searchColumns, onSearch } = props;

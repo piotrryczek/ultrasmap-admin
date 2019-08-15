@@ -3,8 +3,6 @@ import React from 'react';
 import { PER_PAGE } from 'config/config';
 
 function Pagination(props) {
-  console.log('Pagination: Render');
-
   const {
     page: currentPage,
     allCount,

@@ -1,3 +1,8 @@
+/**
+ * TODO:
+ * - create authenticated route to check if user has credentials / rights to enter it
+ */
+
 import React from 'react';
 import {
   Router,
@@ -14,7 +19,15 @@ import SidePanel from 'components/sidePanel/sidePanel.component';
 import Login from 'components/login/login.component';
 
 import Clubs from 'components/clubs/clubs.component';
+import Club from 'components/club/club.component';
+
 import Users from 'components/users/users.component';
+import User from 'components/user/user.component';
+
+import Suggestions from 'components/suggestions/suggestions.component';
+import Suggestion from 'components/suggestion/suggestion.component';
+
+import Activities from 'components/activities/activities.component';
 
 function App() {
   const jwtToken = localStorage.getItem('jwtToken');
@@ -36,13 +49,21 @@ function App() {
       <Titlebar />
 
       <Router history={history}>
-        {jwtToken
+        {isAuthenticated
           ? (
             <>
               <SidePanel />
               <Switch>
-                <Route path="/clubs" component={Clubs} />
-                <Route path="/users" component={Users} />
+                <Route exact path="/clubs" component={Clubs} />
+                <Route path="/clubs/:id" component={Club} />
+
+                <Route exact path="/users" component={Users} />
+                <Route path="/users/:id" component={User} />
+
+                <Route exact path="/suggestions" component={Suggestions} />
+                <Route path="/suggestions/:id" component={Suggestion} />
+
+                <Route exact path="/activities" component={Activities} />
               </Switch>
             </>
           )
