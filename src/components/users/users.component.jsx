@@ -1,4 +1,5 @@
 import React from 'react';
+import Auth from 'services/auth';
 
 import TableList from 'common/tableList/tableList.component';
 
@@ -20,12 +21,17 @@ function Users() {
   }];
 
   const searchColumns = ['name', 'email'];
+  
+  const hasEditCredential = Auth.hasCredentialLocal('updateUser');
 
   return (
     <TableList
       fetchDataUrl="/users"
+      editUrl="/users"
+      addUrl="/users/new"
       columns={columns}
       searchColumns={searchColumns}
+      hasEditCredential={hasEditCredential}
     />
   );
 }

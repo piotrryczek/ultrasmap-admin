@@ -5,8 +5,17 @@ import {
   SET_IS_AUTHENTICATED,
 } from 'components/app/app.actions';
 
+const getCredentialsFromLocalStorage = () => {
+  const credentials = localStorage.getItem('credentials');
+
+  if (!credentials) return [];
+
+  return credentials.split(',');
+}
+
 const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem('jwtToken') || false,
+  credentials: getCredentialsFromLocalStorage(),
   messageType: '', // error, success
   messageCode: '',
 };
@@ -23,8 +32,14 @@ const app = (state = initialState, { type, payload }) => {
     }
 
     case SET_IS_AUTHENTICATED: {
+      const {
+        isAuthenticated,
+        credentials = [],
+      } = payload;
+
       return update(state, {
-        isAuthenticated: { $set: payload },
+        isAuthenticated: { $set: isAuthenticated },
+        credentials: { $set: credentials },
       });
     }
 

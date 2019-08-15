@@ -12,6 +12,9 @@ const retrieveValue = (data, column) => {
 
       return data[name];
     }
+
+    default:
+      return false;
   }
 };
 

@@ -15,14 +15,13 @@ function Search(props) {
     }));
   };
 
-  useEffect(() => {
-    updateParent();
-  }, [search])
-
-
   const [updateParent] = useDebouncedCallback(() => {
     onSearch(search);
   }, 500);
+
+  useEffect(() => {
+    updateParent();
+  }, [search, updateParent]);
 
   return (
     <div id="search-columns">

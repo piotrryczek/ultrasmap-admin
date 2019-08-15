@@ -13,6 +13,8 @@ function TableRow(props) {
     onSelect,
     onDeselect,
     isChecked,
+    editUrl,
+    hasEditCredential,
   } = props;
 
   const { _id: id } = singleData;
@@ -23,7 +25,7 @@ function TableRow(props) {
     } else {
       onSelect(id);
     }
-  }, [isChecked]);
+  }, [isChecked, id, onDeselect, onSelect]);
 
   return (
     <tr>
@@ -43,9 +45,11 @@ function TableRow(props) {
       ))}
 
       <td>
-        <Link to={`/clubs/${singleData._id}`}>
-          <Button variant="contained" color="primary">Edytuj</Button>
-        </Link>
+        {editUrl && hasEditCredential && (
+          <Link to={`${editUrl}/${singleData._id}`}>
+            <Button variant="contained" color="primary">Edytuj</Button>
+          </Link>
+        )}
       </td>
     </tr>
   )

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import TableRow from './tableRow/tableRow.component';
 
-const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDeselect, editUrl }) => (
+const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDeselect, editUrl, hasEditCredential }) => (
   <TableRow
     singleData={singleData}
     columns={columns}
@@ -10,6 +10,7 @@ const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDes
     onSelect={onSelect}
     onDeselect={onDeselect}
     editUrl={editUrl}
+    hasEditCredential={hasEditCredential}
   />
 ));
 TableRowMemozied.displayName = 'TableRow';
@@ -22,6 +23,7 @@ function TableBody(props) {
     onSelect,
     onDeselect,
     editUrl,
+    hasEditCredential,
   } = props;
 
   return (
@@ -38,6 +40,7 @@ function TableBody(props) {
             onSelect={onSelect}
             onDeselect={onDeselect}
             editUrl={editUrl}
+            hasEditCredential={hasEditCredential}
           />
         );
       })}

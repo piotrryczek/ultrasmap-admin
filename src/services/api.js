@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { reject } from 'q';
+import ApiError from 'util/apiError';
 
 class Api {
 
@@ -34,17 +34,39 @@ class Api {
 
         resolve(data);
       } catch (error) {
+        new ApiError(error);
+        // Auth.verifyApiError(error);
         reject(error);
       }
     });
   }
 
   put = (url, body) => {
-    return axios.put(`${this.apiUrl}${url}`, body, this.getConfig());
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await axios.put(`${this.apiUrl}${url}`, body, this.getConfig());
+
+        resolve(data);
+      } catch (error) {
+        new ApiError(error);
+        // Auth.verifyApiError(error);
+        reject(error);
+      }
+    });
   }
 
   delete = url => {
-    return axios.delete(`${this.apiUrl}${url}`, this.getConfig());
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await axios.delete(`${this.apiUrl}${url}`, this.getConfig());
+
+        resolve(data);
+      } catch (error) {
+        new ApiError(error);
+        // Auth.verifyApiError(error);
+        reject(error);
+      }
+    });
   }
 
   get = (url, query = {}) => {
@@ -54,6 +76,8 @@ class Api {
 
         resolve(data);
       } catch (error) {
+        new ApiError(error);
+        // Auth.verifyApiError(error);
         reject(error);
       }
     });

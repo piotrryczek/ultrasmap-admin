@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /**
  * TODO:
  * - create authenticated route to check if user has credentials / rights to enter it
@@ -9,11 +10,13 @@ import {
   Route,
   Switch,
 } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 
 import history from 'config/history';
 import Titlebar from 'components/titlebar/titlebar.component';
 import Message from 'components/message/message.component';
+
+import RouteAuth from 'components/routeAuth/routeAuth.component';
 
 import SidePanel from 'components/sidePanel/sidePanel.component';
 import Login from 'components/login/login.component';
@@ -29,20 +32,18 @@ import Suggestion from 'components/suggestion/suggestion.component';
 
 import Activities from 'components/activities/activities.component';
 
+import Backups from 'components/backups/backups.component';
+
 function App() {
   const jwtToken = localStorage.getItem('jwtToken');
 
   if (!jwtToken) history.push('/login');
 
   const {
-    messageCode,
-    messageType,
     isAuthenticated,
   } = useSelector(state => ({
-    messageCode: state.app.messageCode,
-    messageType: state.app.messageType,
     isAuthenticated: state.app.isAuthenticated,
-  }));
+  }), shallowEqual);
 
   return (
     <div id="admin">
@@ -54,16 +55,20 @@ function App() {
             <>
               <SidePanel />
               <Switch>
-                <Route exact path="/clubs" component={Clubs} />
-                <Route path="/clubs/:id" component={Club} />
+                <RouteAuth exact path="/clubs" component={Clubs} credential="getClub" />
+                <RouteAuth exact path="/clubs/new" component={(props) => <Club {...props} editType="new" />} credential="updateClub" />
+                <RouteAuth path="/clubs/:id" component={(props) => <Club {...props} editType="update" />} credential="updateClub" />
 
-                <Route exact path="/users" component={Users} />
-                <Route path="/users/:id" component={User} />
+                <RouteAuth exact path="/users" component={Users} credential="getUser" />
+                <RouteAuth exact path="/users/new" component={(props) => <User {...props} editType="new" />} credential="updateUser" />
+                <RouteAuth path="/users/:id" component={(props) => <User {...props} editType="update" />} credential="updateUser" />
 
-                <Route exact path="/suggestions" component={Suggestions} />
-                <Route path="/suggestions/:id" component={Suggestion} />
+                <RouteAuth exact path="/suggestions" component={Suggestions} credential="getSuggestion" />
+                <RouteAuth path="/suggestions/:id" component={Suggestion} credential="updateSuggestion" />
 
-                <Route exact path="/activities" component={Activities} />
+                <RouteAuth exact path="/activities" component={Activities} credential="getActivity" />
+
+                <RouteAuth exact path="/backups" component={Backups} credential="getBackup" />
               </Switch>
             </>
           )
@@ -72,12 +77,7 @@ function App() {
           )}
       </Router>
 
-      {messageCode && (
-        <Message
-          messageCode={messageCode}
-          messageType={messageType}
-        />
-      )}
+      <Message />
     </div>
   );
 }

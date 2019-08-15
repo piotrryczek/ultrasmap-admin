@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
+import { Link } from 'react-router-dom';
+
+import Button from '@material-ui/core/Button';
 
 import Api from 'services/api';
 
@@ -44,7 +47,9 @@ function TableList(props) {
     fetchDataUrl,
     columns,
     searchColumns = [],
+    addUrl,
     editUrl,
+    hasEditCredential,
   } = props;
 
   useEffect(() => {
@@ -52,21 +57,16 @@ function TableList(props) {
   }, [page, search]);
 
   const fetchData = async () => {
-    try {
-      const { data, allCount } = await Api.get(fetchDataUrl, {
-        page,
-        search,
-      });
+    const { data, allCount } = await Api.get(fetchDataUrl, {
+      page,
+      search,
+    });
 
-      setState(prevState => ({
-        ...prevState,
-        data,
-        allCount,
-      }));
-    } catch (error) {
-      // TODO
-      console.log(error);
-    }
+    setState(prevState => ({
+      ...prevState,
+      data,
+      allCount,
+    }));
   };
 
   const changePage = useCallback((newPage) => {
@@ -99,6 +99,7 @@ function TableList(props) {
     }));
   }, []);
 
+
   return (
     <>
       {searchColumns.length > 0 && (
@@ -106,6 +107,11 @@ function TableList(props) {
           searchColumns={searchColumns}
           onSearch={searchItems}
         />
+      )}
+      {addUrl && hasEditCredential && (
+        <Link to={addUrl}>
+          <Button variant="contained" color="primary">Dodaj</Button>
+        </Link>
       )}
       <table>
         <TableHeaderMemoized
@@ -118,6 +124,7 @@ function TableList(props) {
           onSelect={handleSelect}
           onDeselect={handeDeselect}
           editUrl={editUrl}
+          hasEditCredential={hasEditCredential}
         />
       </table>
       <PaginationMemoized

@@ -1,16 +1,12 @@
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { logout } from 'components/app/app.actions';
+import Auth from 'services/auth';
 
 function Titlebar() {
-  const dispatch = useDispatch();
-
-  const handleLogout = useCallback(() => {
-    dispatch(logout());
+  const handleLogout = useCallback(async () => {
+    await Auth.logout();
   }, []);
 
-  const jwtToken = localStorage.getItem('jwtToken');
+  const jwtToken = localStorage.getItem('jwtToken'); // TODO: isAuthenticated from state instead localstorage
 
   return (
     <>

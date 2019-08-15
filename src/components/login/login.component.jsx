@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { login } from 'components/app/app.actions';
+import Auth from 'services/auth';
 
 function Login() {
-  const dispatch = useDispatch();
-
   const [fields, setFields] = useState({
     email: '',
     password: '',
@@ -19,7 +15,7 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    await dispatch(login(email, password));
+    await Auth.login(email, password);
   };
 
   const handleChangeField = field => (event) => {
