@@ -27,58 +27,22 @@ class Api {
     return config;
   }
 
-  post = (url, body) => {
-    return new Promise(async (resolve, reject) => {
+  post = (url, body) => this.doQuery(async () => await axios.post(`${this.apiUrl}${url}`, body, this.getConfig()));
+
+  put = (url, body) => this.doQuery(async () => await axios.put(`${this.apiUrl}${url}`, body, this.getConfig()));
+
+  delete = url =>  this.doQuery(async () => await axios.delete(`${this.apiUrl}${url}`, this.getConfig()));
+
+  get = (url, query = {}) => this.doQuery(async () => await axios.get(`${this.apiUrl}${url}`, this.getConfig(query)));
+
+  doQuery = (queryFunc) => {
+    return new Promise(async (resolve) => {
       try {
-        const { data } = await axios.post(`${this.apiUrl}${url}`, body, this.getConfig());
+        const { data } = await queryFunc();
 
         resolve(data);
       } catch (error) {
         new ApiError(error);
-        // Auth.verifyApiError(error);
-        reject(error);
-      }
-    });
-  }
-
-  put = (url, body) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const { data } = await axios.put(`${this.apiUrl}${url}`, body, this.getConfig());
-
-        resolve(data);
-      } catch (error) {
-        new ApiError(error);
-        // Auth.verifyApiError(error);
-        reject(error);
-      }
-    });
-  }
-
-  delete = url => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const { data } = await axios.delete(`${this.apiUrl}${url}`, this.getConfig());
-
-        resolve(data);
-      } catch (error) {
-        new ApiError(error);
-        // Auth.verifyApiError(error);
-        reject(error);
-      }
-    });
-  }
-
-  get = (url, query = {}) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const { data } = await axios.get(`${this.apiUrl}${url}`, this.getConfig(query));
-
-        resolve(data);
-      } catch (error) {
-        new ApiError(error);
-        // Auth.verifyApiError(error);
-        reject(error);
       }
     });
   }
