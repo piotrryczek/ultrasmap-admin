@@ -8,7 +8,9 @@
       "NOT_AUTHORIZED": "Nie posiadasz uprawnień do dokonania tej akcji, zostałeś automatycznie wylogowany, zaloguj się ponownie.",
       "CLUB_WITH_NANE_EXISTS": "Klub o tej nazwie już istnieje",
       "USER_ADDED_SUCCESS": "Użytkownik poprawnie dodany",
-      "USER_UPDATED_SUCCESS": "Użytkownik poprawnie zaktualizowany"
+      "USER_UPDATED_SUCCESS": "Użytkownik poprawnie zaktualizowany",
+      "REMOVE_SUCCESS": "Elementy zostały poprawnie usunięte",
+      "INTERNAL": "Błąd wewnętrzny serwera"
     }
   },
   "en": {

@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 
 import Api from 'services/api';
 
-import Search from './search/search.component';
-import TableHeader from './tableHeader/tableHeader.component';
-import TableBody from './tableBody/tableBody.component';
-import Pagination from './pagination/pagination.component';
+import Pagination from 'common/pagination/pagination.component';
+import { setMessage } from 'components/app/app.actions';
 
-const PaginationMemoized = memo(({ page, allCount, changePage }) => (
-  <Pagination page={page} allCount={allCount} changePage={changePage} />
-));
-PaginationMemoized.displayName = 'PaginationMemozied';
+import Search from './search.component';
+import TableHeader from './tableHeader.component';
+import TableBody from './tableBody.component';
 
 const TableHeaderMemoized = memo(({ columns }) => (
   <TableHeader columns={columns} />
@@ -27,6 +25,8 @@ SearchMemoized.displayName = 'Search';
 
 
 function TableList(props) {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     data: [],
     allCount: 0,
@@ -44,11 +44,11 @@ function TableList(props) {
   } = state;
 
   const {
-    fetchDataUrl,
+    apiPath,
+    canEdit,
+    canAdd,
     columns,
     searchColumns = [],
-    addUrl,
-    editUrl,
     hasEditCredential,
   } = props;
 
@@ -57,7 +57,7 @@ function TableList(props) {
   }, [page, search]);
 
   const fetchData = async () => {
-    const { data, allCount } = await Api.get(fetchDataUrl, {
+    const { data, allCount } = await Api.get(apiPath, {
       page,
       search,
     });
@@ -99,6 +99,22 @@ function TableList(props) {
     }));
   }, []);
 
+  const handleDelete = async () => {
+    await Api.delete(apiPath, {
+      ids: selected,
+    });
+
+    dispatch(setMessage('success', 'REMOVE_SUCCESS'));
+
+    if (page === 1) fetchData();
+
+    setState(prevState => ({
+      ...prevState,
+      selected: [],
+      page: 1,
+    }));
+  };
+
 
   return (
     <>
@@ -108,10 +124,19 @@ function TableList(props) {
           onSearch={searchItems}
         />
       )}
-      {addUrl && hasEditCredential && (
-        <Link to={addUrl}>
+      {canAdd && hasEditCredential && (
+        <Link to={`${apiPath}/new`}>
           <Button variant="contained" color="primary">Dodaj</Button>
         </Link>
+      )}
+      {selected.length > 0 && hasEditCredential && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDelete}
+        >
+          Usuń
+        </Button>
       )}
       <table>
         <TableHeaderMemoized
@@ -123,11 +148,12 @@ function TableList(props) {
           selected={selected}
           onSelect={handleSelect}
           onDeselect={handeDeselect}
-          editUrl={editUrl}
+          apiPath={apiPath}
+          canEdit={canEdit}
           hasEditCredential={hasEditCredential}
         />
       </table>
-      <PaginationMemoized
+      <Pagination
         page={page}
         allCount={allCount}
         changePage={changePage}

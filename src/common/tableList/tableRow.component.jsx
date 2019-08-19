@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 
-import TableCell from './tableCell/tableCell.component';
+import TableCell from './tableCell.component';
 
 function TableRow(props) {
   const {
@@ -13,7 +13,8 @@ function TableRow(props) {
     onSelect,
     onDeselect,
     isChecked,
-    editUrl,
+    canEdit,
+    apiPath,
     hasEditCredential,
   } = props;
 
@@ -45,8 +46,8 @@ function TableRow(props) {
       ))}
 
       <td>
-        {editUrl && hasEditCredential && (
-          <Link to={`${editUrl}/${singleData._id}`}>
+        {canEdit && hasEditCredential && (
+          <Link to={`${apiPath}/${singleData._id}`}>
             <Button variant="contained" color="primary">Edytuj</Button>
           </Link>
         )}

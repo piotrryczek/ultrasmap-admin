@@ -24,9 +24,9 @@ function Clubs() {
 
   return (
     <TableList
-      fetchDataUrl="/clubs"
-      editUrl="/clubs"
-      addUrl="/clubs/new"
+      apiPath="/clubs"
+      canAdd
+      canEdit
       columns={columns}
       searchColumns={searchColumns}
       editCredential="updateClub"

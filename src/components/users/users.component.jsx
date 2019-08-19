@@ -26,9 +26,9 @@ function Users() {
 
   return (
     <TableList
-      fetchDataUrl="/users"
-      editUrl="/users"
-      addUrl="/users/new"
+      apiPath="/users"
+      canAdd
+      canEdit
       columns={columns}
       searchColumns={searchColumns}
       hasEditCredential={hasEditCredential}

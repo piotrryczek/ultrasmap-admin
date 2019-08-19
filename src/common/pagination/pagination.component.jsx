@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { PER_PAGE } from 'config/config';
 
@@ -29,4 +29,9 @@ function Pagination(props) {
   );
 }
 
-export default Pagination;
+const PaginationMemoized = memo(({ page, allCount, changePage }) => (
+  <Pagination page={page} allCount={allCount} changePage={changePage} />
+));
+PaginationMemoized.displayName = 'PaginationMemozied';
+
+export default PaginationMemoized;

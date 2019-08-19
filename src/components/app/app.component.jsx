@@ -28,7 +28,6 @@ import Users from 'components/users/users.component';
 import User from 'components/user/user.component';
 
 import Suggestions from 'components/suggestions/suggestions.component';
-import Suggestion from 'components/suggestion/suggestion.component';
 
 import Activities from 'components/activities/activities.component';
 
@@ -63,8 +62,7 @@ function App() {
                 <RouteAuth exact path="/users/new" component={(props) => <User {...props} editType="new" />} credential="updateUser" />
                 <RouteAuth path="/users/:id" component={(props) => <User {...props} editType="update" />} credential="updateUser" />
 
-                <RouteAuth exact path="/suggestions" component={Suggestions} credential="getSuggestion" />
-                <RouteAuth path="/suggestions/:id" component={Suggestion} credential="updateSuggestion" />
+                <RouteAuth path="/suggestions" component={Suggestions} credential="getSuggestion" />
 
                 <RouteAuth exact path="/activities" component={Activities} credential="getActivity" />
 

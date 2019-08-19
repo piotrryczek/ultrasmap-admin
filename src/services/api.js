@@ -5,7 +5,7 @@ class Api {
 
   apiUrl = process.env.REACT_APP_API_URL;
 
-  getConfig = (params = null) => {
+  getConfig = (data = null, dataType = 'query') => {
     const jwtToken = localStorage.getItem('jwtToken');
 
     const config = {};
@@ -18,10 +18,16 @@ class Api {
       });
     }
 
-    if (params) {
-      Object.assign(config, {
-        params,
-      });
+    if (data) {
+      if (dataType === 'query') {
+        Object.assign(config, {
+          params: data,
+        });
+      } else {
+        Object.assign(config, {
+          data,
+        });
+      }
     }
 
     return config;
@@ -31,9 +37,9 @@ class Api {
 
   put = (url, body) => this.doQuery(async () => await axios.put(`${this.apiUrl}${url}`, body, this.getConfig()));
 
-  delete = url =>  this.doQuery(async () => await axios.delete(`${this.apiUrl}${url}`, this.getConfig()));
+  delete = (url, body) =>  this.doQuery(async () => await axios.delete(`${this.apiUrl}${url}`, this.getConfig(body, 'body')));
 
-  get = (url, query = {}) => this.doQuery(async () => await axios.get(`${this.apiUrl}${url}`, this.getConfig(query)));
+  get = (url, query = {}) => this.doQuery(async () => await axios.get(`${this.apiUrl}${url}`, this.getConfig(query, 'query')));
 
   doQuery = (queryFunc) => {
     return new Promise(async (resolve) => {

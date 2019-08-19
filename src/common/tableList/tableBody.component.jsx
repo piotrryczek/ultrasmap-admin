@@ -1,15 +1,16 @@
 import React, { memo } from 'react';
 
-import TableRow from './tableRow/tableRow.component';
+import TableRow from './tableRow.component';
 
-const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDeselect, editUrl, hasEditCredential }) => (
+const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDeselect, canEdit, apiPath, hasEditCredential }) => (
   <TableRow
     singleData={singleData}
     columns={columns}
     isChecked={isChecked}
     onSelect={onSelect}
     onDeselect={onDeselect}
-    editUrl={editUrl}
+    canEdit={canEdit}
+    apiPath={apiPath}
     hasEditCredential={hasEditCredential}
   />
 ));
@@ -22,7 +23,8 @@ function TableBody(props) {
     selected,
     onSelect,
     onDeselect,
-    editUrl,
+    canEdit,
+    apiPath,
     hasEditCredential,
   } = props;
 
@@ -39,7 +41,8 @@ function TableBody(props) {
             isChecked={isChecked}
             onSelect={onSelect}
             onDeselect={onDeselect}
-            editUrl={editUrl}
+            canEdit={canEdit}
+            apiPath={apiPath}
             hasEditCredential={hasEditCredential}
           />
         );
