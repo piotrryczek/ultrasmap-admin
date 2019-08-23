@@ -3,13 +3,16 @@ import { useDispatch } from 'react-redux';
 
 import { Formik } from 'formik';
 
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+
 import history from 'config/history';
 import userSchema from 'schemas/user';
 import Api from 'services/api';
 
 import { setMessage } from 'components/app/app.actions';
 
-import userForm from './userForm';
+import UserForm from './userForm.component';
 
 const parseUserData = (data) => {
   const {
@@ -134,15 +137,18 @@ function User(props) {
   }, []);
 
   return (
-    <>
-      <Formik
-        initialValues={fields}
-        enableReinitialize
-        onSubmit={handleSubmit}
-        validate={handleValidate}
-        render={userForm(editType, roles)}
-      />
-    </>
+    <Paper>
+      <Box p={3}>
+        <Formik
+          initialValues={fields}
+          enableReinitialize
+          onSubmit={handleSubmit}
+          validate={handleValidate}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          render={props => <UserForm {...props} editType={editType} roles={roles} />}
+        />
+      </Box>
+    </Paper>
   );
 }
 

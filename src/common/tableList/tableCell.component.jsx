@@ -1,7 +1,10 @@
 import React from 'react'
+import TableCellMUI from '@material-ui/core/TableCell';
 import _get from 'lodash/get';
 
-const retrieveValue = (data, column) => {
+import { IMAGES_URL } from 'config/config';
+
+const renderValue = (data, column) => {
   const { type, name, field } = column;
 
   switch (type) {
@@ -11,6 +14,14 @@ const retrieveValue = (data, column) => {
       }
 
       return data[name];
+    }
+
+    case 'image': {
+      const imageSrc = data[name];
+
+      return (
+        <img src={`${IMAGES_URL}${imageSrc}`} alt="" />
+      );
     }
 
     default:
@@ -24,10 +35,8 @@ function TableCell(props) {
     data,
   } = props;
 
-  const value = retrieveValue(data, column);
-
   return (
-    <td>{value}</td>
+    <TableCellMUI>{renderValue(data, column)}</TableCellMUI>
   );
 }
 

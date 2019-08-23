@@ -1,8 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+
+import TableRowMUI from '@material-ui/core/TableRow';
+import TableCellMUI from '@material-ui/core/TableCell';
 
 import TableCell from './tableCell.component';
 
@@ -29,13 +32,13 @@ function TableRow(props) {
   }, [isChecked, id, onDeselect, onSelect]);
 
   return (
-    <tr>
-      <td>
+    <TableRowMUI>
+      <TableCellMUI>
         <Checkbox
           checked={isChecked}
           onChange={handleChange}
         />
-      </td>
+      </TableCellMUI>
 
       {columns.map(column => (
         <TableCell
@@ -45,15 +48,29 @@ function TableRow(props) {
         />
       ))}
 
-      <td>
+      <TableCellMUI>
         {canEdit && hasEditCredential && (
           <Link to={`${apiPath}/${singleData._id}`}>
             <Button variant="contained" color="primary">Edytuj</Button>
           </Link>
         )}
-      </td>
-    </tr>
+      </TableCellMUI>
+    </TableRowMUI>
   )
 }
 
-export default TableRow;
+const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDeselect, canEdit, apiPath, hasEditCredential }) => (
+  <TableRow
+    singleData={singleData}
+    columns={columns}
+    isChecked={isChecked}
+    onSelect={onSelect}
+    onDeselect={onDeselect}
+    canEdit={canEdit}
+    apiPath={apiPath}
+    hasEditCredential={hasEditCredential}
+  />
+));
+TableRowMemozied.displayName = 'TableRow';
+
+export default TableRowMemozied;

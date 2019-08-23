@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedCallback } from 'use-debounce';
 
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
 import { MESSAGE_HIDE_DELAY } from 'config/config';
+import Box from '@material-ui/core/Box';
 import { clearMessage } from 'components/app/app.actions';
 
 function Message() {
@@ -27,10 +31,15 @@ function Message() {
   const { t } = useTranslation();
 
   return messageCode && messageType && (
-    <p>
-      {messageType === 'success' ? 'Success: ' : 'Error: '}
-      {t(messageCode)}
-    </p>
+    <div id="message" className={messageType}>
+      <Grid container spacing={0}>
+        <Grid item xs={12} className={messageType}>
+          <Box p={2}>
+            <Typography variant="body1" align="center">{t(messageCode)}</Typography>
+          </Box>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 

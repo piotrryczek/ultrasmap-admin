@@ -5,19 +5,13 @@ export default yup.object().shape({
     .string()
     .required(),
   logo: yup
-    .string()
-    .required(),
+    .string(),
   tier: yup
     .number()
     .required(),
-  location: yup.object().shape({
-    type: yup
-      .string()
-      .required(),
-    coordinates: yup
-      .array().of(yup.string())
-      .required(),
-  }),
+  coordinates: yup
+    .array().of(yup.string())
+    .required(),
   friendships: yup
     .array().of(yup.string()),
   agreements: yup
@@ -27,5 +21,6 @@ export default yup.object().shape({
   satellites: yup
     .array().of(yup.string()),
   satelliteOf: yup
-    .string(),
+    .string()
+    .nullable(),
 });

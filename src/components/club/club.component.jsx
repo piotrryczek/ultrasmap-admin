@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-
+import _uniq from 'lodash/uniq';
 import { Formik } from 'formik';
 
+import Paper from '@material-ui/core/Paper';
+
+import { DEFAULT_COORDINATES } from 'config/config';
+import { prepareClubFormData } from 'util/helpers';
 import history from 'config/history';
 import clubSchema from 'schemas/club';
 import Api from 'services/api';
@@ -48,7 +52,6 @@ const parseClubData = ({
   satelliteOf: parseClubToOption(satelliteOf),
 });
 
-// TODO: Validation
 function Club(props) {
   const {
     editType,
@@ -68,7 +71,7 @@ function Club(props) {
     name: '',
     logo: '',
     tier: 1,
-    coordinates: null,
+    coordinates: DEFAULT_COORDINATES,
     friendships: [],
     agreements: [],
     positives: [],
@@ -95,7 +98,7 @@ function Club(props) {
       name,
       logo, // url
       tier,
-      coordinates, // TODO: To change
+      coordinates,
       friendships,
       agreements,
       positives,
@@ -103,18 +106,18 @@ function Club(props) {
       satelliteOf,
     } = values;
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('logo', logo);
-    formData.append('tier', tier);
-    formData.append('location', JSON.stringify(coordinates));
-    formData.append('friendships', JSON.stringify(parseOptionsToIds(friendships)));
-    formData.append('agreements', JSON.stringify(parseOptionsToIds(agreements)));
-    formData.append('positives', JSON.stringify(parseOptionsToIds(positives)));
-    formData.append('satellites', JSON.stringify(parseOptionsToIds(satellites)));
-
-    if (satelliteOf) formData.append('satelliteOf', satelliteOf.value);
-    if (newLogo) formData.append('newLogo', newLogo);
+    const formData = prepareClubFormData({
+      name,
+      logo,
+      newLogo,
+      tier,
+      coordinates,
+      friendships: parseOptionsToIds(friendships),
+      agreements: parseOptionsToIds(agreements),
+      positives: parseOptionsToIds(positives),
+      satellites: parseOptionsToIds(satellites),
+      satelliteOf: satelliteOf ? satelliteOf.value : null,
+    });
 
     if (editType === 'new') {
       const { data: clubId } = await Api.post(`/clubs`, formData);
@@ -128,13 +131,57 @@ function Club(props) {
     }
   }, []);
 
+  const handleValidate = useCallback(async (values) => {
+    const errors = {};
+
+    const {
+      friendships,
+      agreements,
+      positives,
+      satellites,
+      satelliteOf,
+    } = values;
+
+    const allRelations = [...friendships, ...agreements, ...positives, ...satellites, satelliteOf];
+    const uniqueAllRelations = _uniq(allRelations);
+
+    if (allRelations.length > 0 && allRelations.length !== uniqueAllRelations.length) {
+      Object.assign(errors, {
+        relationsNotUnique: 'Relations have to be unique', // TODO: Translatiom
+      });
+    }   
+
+    try {
+      await clubSchema.validate(values, {
+        abortEarly: false,
+      });
+    } catch (error) {
+      
+      const { inner: schemaErrors } = error;
+
+      const parsedErrors = schemaErrors.reduce((acc, { path, message }) => {
+        Object.assign(acc, {
+          [path]: message,
+        });
+
+        return acc;
+      }, {});
+
+      Object.assign(errors, parsedErrors);
+
+      throw errors;
+    }
+
+    throw errors;
+  }, []);
+
   return (
-    <>
+    <Paper>
       <Formik
         initialValues={fields}
         enableReinitialize
         onSubmit={handleSubmit}
-        // validationSchema={clubSchema}
+        validate={handleValidate}
         render={(props) => (
           <ClubForm
             // eslint-disable-next-line react/jsx-props-no-spreading
@@ -145,7 +192,7 @@ function Club(props) {
           />
         )}
       />
-    </>
+    </Paper>
   );
 }
 

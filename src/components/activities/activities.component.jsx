@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Activites(props) {
+function Activites() {
   return (
-    <p>Activites</p>
+    <p>Activites...</p>
   );
 }
 

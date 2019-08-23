@@ -10,7 +10,11 @@
       "USER_ADDED_SUCCESS": "Użytkownik poprawnie dodany",
       "USER_UPDATED_SUCCESS": "Użytkownik poprawnie zaktualizowany",
       "REMOVE_SUCCESS": "Elementy zostały poprawnie usunięte",
-      "INTERNAL": "Błąd wewnętrzny serwera"
+      "INTERNAL": "Błąd wewnętrzny serwera",
+      "FORM_INCORRECT": "Błędy w formularzu",
+      "BACKUP_RESTORED": "Backup został przywrócony",
+      "BACKUP_CREATED": "Backup został utworzony",
+      "SUGGESTION_APPLIED": "Zmiany zaproponowane w sugestii zostały zaakceptowane, a sama sugestia została usunięta"
     }
   },
   "en": {

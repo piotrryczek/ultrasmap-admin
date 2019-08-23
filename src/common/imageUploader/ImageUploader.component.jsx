@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 
@@ -35,25 +36,30 @@ function ImageUploader(props) {
   }
 
   return (
-    <>
+    <Grid container spacing={2}>
       {previewImage && (
-        <img
-          src={previewImage}
-          alt=""
-          height="100"
-        />
+        <Grid item xs={12}>
+          <img
+            src={previewImage}
+            alt=""
+            height="100"
+          />
+        </Grid>
       )}
       
-      <FormLabel htmlFor={fieldId}>
-        <Button variant="contained" color="primary" component="span">Upload</Button>
-        <input
-          type="file"
-          accept="image/*"
-          id={fieldId}
-          onChange={handleChange}
-        />
-      </FormLabel>
-    </>
+      <Grid item xs={12}>
+        <FormLabel htmlFor={fieldId}>
+          <Button variant="contained" color="primary" component="span">Choose to upload</Button>
+          <input
+            type="file"
+            accept="image/*"
+            id={fieldId}
+            onChange={handleChange}
+            className="hide"
+          />
+        </FormLabel>
+      </Grid>
+    </Grid>
   );
 }
 

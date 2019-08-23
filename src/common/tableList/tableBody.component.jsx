@@ -1,20 +1,8 @@
-import React, { memo } from 'react';
+import React from 'react';
+
+import TableBodyMUI from '@material-ui/core/TableBody';
 
 import TableRow from './tableRow.component';
-
-const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDeselect, canEdit, apiPath, hasEditCredential }) => (
-  <TableRow
-    singleData={singleData}
-    columns={columns}
-    isChecked={isChecked}
-    onSelect={onSelect}
-    onDeselect={onDeselect}
-    canEdit={canEdit}
-    apiPath={apiPath}
-    hasEditCredential={hasEditCredential}
-  />
-));
-TableRowMemozied.displayName = 'TableRow';
 
 function TableBody(props) {
   const {
@@ -29,12 +17,12 @@ function TableBody(props) {
   } = props;
 
   return (
-    <tbody>
+    <TableBodyMUI>
       {data.map(singleData => {
         const isChecked = selected.includes(singleData._id);
 
         return (
-          <TableRowMemozied
+          <TableRow
             key={singleData._id}
             singleData={singleData}
             columns={columns}
@@ -47,7 +35,7 @@ function TableBody(props) {
           />
         );
       })}
-    </tbody>
+    </TableBodyMUI>
   );
 }
 

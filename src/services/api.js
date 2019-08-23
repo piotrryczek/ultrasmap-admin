@@ -37,6 +37,8 @@ class Api {
 
   put = (url, body) => this.doQuery(async () => await axios.put(`${this.apiUrl}${url}`, body, this.getConfig()));
 
+  patch = (url, body) => this.doQuery(async () => await axios.patch(`${this.apiUrl}${url}`, body, this.getConfig()));
+
   delete = (url, body) =>  this.doQuery(async () => await axios.delete(`${this.apiUrl}${url}`, this.getConfig(body, 'body')));
 
   get = (url, query = {}) => this.doQuery(async () => await axios.get(`${this.apiUrl}${url}`, this.getConfig(query, 'query')));

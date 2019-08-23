@@ -1,0 +1,55 @@
+.to-remove {
+  opacity: 0.4;
+}
+
+.to-add {
+  color: blue;
+}
+
+.to-create {
+  color: green;
+}
+
+.to-change {
+  color: blue;
+}
+
+div, img {
+  &.to-add,
+  &.to-change {
+    border: 2px solid blue;
+  }
+}
+
+.relation-club {
+  font-size: 1em;
+  border-radius: 3px;
+  display: inline-flex;
+  padding: 6px 16px;
+  margin-right: 6px;
+
+  &:last-child {
+    margin-right: 0px;
+  }
+
+  &.create {
+    background: $correctColor;
+    color: white;
+  }
+
+  &.add {
+    background: $standardColor;
+    color: white;
+  }
+
+  &.remove {
+    background: $errorColor;
+    color: white;
+    opacity: 0.3;
+  }
+
+  &.no-change {
+    background: #e0e0e0;
+    color: $textColor;
+  }
+}

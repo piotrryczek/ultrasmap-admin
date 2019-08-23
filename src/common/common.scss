@@ -1,0 +1,21 @@
+.clear-after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.border-box {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;   
+}
+
+body {
+  background-color: $backgroundColor;
+  color: $textColor;
+}
+
+a {
+  text-decoration: none;
+  color: $textColor;
+}

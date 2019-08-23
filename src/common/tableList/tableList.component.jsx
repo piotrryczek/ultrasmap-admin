@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import TableMUI from '@material-ui/core/Table';
 
 import Api from 'services/api';
 
@@ -12,17 +13,6 @@ import { setMessage } from 'components/app/app.actions';
 import Search from './search.component';
 import TableHeader from './tableHeader.component';
 import TableBody from './tableBody.component';
-
-const TableHeaderMemoized = memo(({ columns }) => (
-  <TableHeader columns={columns} />
-));
-TableHeaderMemoized.displayName = 'TableHeader';
-
-const SearchMemoized = memo(({ searchColumns, onSearch }) => (
-  <Search searchColumns={searchColumns} onSearch={onSearch} />
-));
-SearchMemoized.displayName = 'Search';
-
 
 function TableList(props) {
   const dispatch = useDispatch();
@@ -46,7 +36,6 @@ function TableList(props) {
   const {
     apiPath,
     canEdit,
-    canAdd,
     columns,
     searchColumns = [],
     hasEditCredential,
@@ -73,6 +62,7 @@ function TableList(props) {
     setState(prevState => ({
       ...prevState,
       page: newPage,
+      selected: [],
     }));
   }, [page]);
 
@@ -99,7 +89,7 @@ function TableList(props) {
     }));
   }, []);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     await Api.delete(apiPath, {
       ids: selected,
     });
@@ -113,51 +103,58 @@ function TableList(props) {
       selected: [],
       page: 1,
     }));
-  };
+  }, [selected]);
 
+  const isAllChecked = data.length > 0 && data.every(singleData => selected.includes(singleData._id));
+
+  const handleToggleSelected = useCallback(() => {
+    const updatedSelected = isAllChecked ? [] : data.map(singleData => singleData._id);
+
+    setState(prevState => ({
+      ...prevState,
+      selected: updatedSelected,
+    }));
+  }, [data, isAllChecked]);
 
   return (
     <>
-      {searchColumns.length > 0 && (
-        <SearchMemoized
-          searchColumns={searchColumns}
-          onSearch={searchItems}
+      <Grid container spacing={2}>
+        {searchColumns.length > 0 && (
+          <Search
+            searchColumns={searchColumns}
+            onSearch={searchItems}
+          />
+        )}
+        <Grid item xs={12}>
+          <Paper>
+            <TableMUI>
+              <TableHeader
+                columns={columns}
+                isAllChecked={isAllChecked}
+                toggleSelected={handleToggleSelected}
+                handleDelete={handleDelete}
+                canRemove={(selected.length > 0 && hasEditCredential)}
+              />
+              <TableBody
+                data={data}
+                columns={columns}
+                selected={selected}
+                onSelect={handleSelect}
+                onDeselect={handeDeselect}
+                apiPath={apiPath}
+                canEdit={canEdit}
+                hasEditCredential={hasEditCredential}
+              />
+            </TableMUI>
+          </Paper>
+        </Grid>
+
+        <Pagination
+          page={page}
+          allCount={allCount}
+          changePage={changePage}
         />
-      )}
-      {canAdd && hasEditCredential && (
-        <Link to={`${apiPath}/new`}>
-          <Button variant="contained" color="primary">Dodaj</Button>
-        </Link>
-      )}
-      {selected.length > 0 && hasEditCredential && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleDelete}
-        >
-          Usuń
-        </Button>
-      )}
-      <table>
-        <TableHeaderMemoized
-          columns={columns}
-        />
-        <TableBody
-          data={data}
-          columns={columns}
-          selected={selected}
-          onSelect={handleSelect}
-          onDeselect={handeDeselect}
-          apiPath={apiPath}
-          canEdit={canEdit}
-          hasEditCredential={hasEditCredential}
-        />
-      </table>
-      <Pagination
-        page={page}
-        allCount={allCount}
-        changePage={changePage}
-      />
+      </Grid>
     </>
   );
 }

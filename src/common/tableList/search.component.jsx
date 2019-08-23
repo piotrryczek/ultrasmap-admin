@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import update from 'immutability-helper';
 import { useDebouncedCallback } from 'use-debounce';
+import _upperFirst from 'lodash/upperFirst';
+
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 function Search(props) {
   const [search, setSearch] = useState({});
@@ -24,19 +32,33 @@ function Search(props) {
   }, [search, updateParent]);
 
   return (
-    <div id="search-columns">
+    <Grid item container spacing={2}>
       {searchColumns.map(columnName => (
-        <div key={columnName}>
-          <p>{columnName}</p>
-          <input
-            type="text"
-            value={search[columnName]}
-            onChange={updateField(columnName)}
-          />
-        </div>
+        <Grid item xs={12 / searchColumns.length} key={columnName}>
+          <Paper>
+            <Box display="flex">
+              <IconButton>
+                <SearchIcon />
+              </IconButton>
+              <InputBase
+                // className={classes.input}
+                placeholder={`${_upperFirst(columnName)}...`}
+                value={search[columnName]}
+                onChange={updateField(columnName)}
+                fullWidth
+              />
+            </Box>
+            
+          </Paper>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   )
 }
 
-export default Search;
+const SearchMemoized = memo(({ searchColumns, onSearch }) => (
+  <Search searchColumns={searchColumns} onSearch={onSearch} />
+));
+SearchMemoized.displayName = 'Search';
+
+export default SearchMemoized;

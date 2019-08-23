@@ -1,16 +1,22 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import SelectAutocomplete from 'react-select';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { GoogleMap, Marker, withScriptjs, withGoogleMap } from 'react-google-maps';
 
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 
-import { DEFAULT_COORDINATES, GOOGLE_MAP_API_KEY } from 'config/config';
+import { setMessage } from 'components/app/app.actions';
+import { useLabelStyles } from 'theme/useStyles';
+import { DEFAULT_COORDINATES, IMAGES_URL } from 'config/config';
 import { parseCoordinates } from 'util/helpers';
 import Api from 'services/api';
 
@@ -63,11 +69,19 @@ function ClubForm({
   handleChange,
   handleBlur,
   setFieldValue,
-  setFieldTouched,
+  isSubmitting,
+  isValid,
 }) {
   const isError = (field) => errors[field] && touched[field];
 
   const [possibleClubRelations, updatePossibleClubRelations] = useState([]);
+  const dispatch = useDispatch(); 
+
+  useEffect(() => {
+    if (isSubmitting && !isValid) {
+      dispatch(setMessage('error', 'FORM_INCORRECT'))
+    }
+  }, [isSubmitting, isValid]);
 
   const getCurrentRelations = () => {
     const allRelations = [
@@ -120,6 +134,8 @@ function ClubForm({
 
   const finalCoordination= parseCoordinates(coordinates || DEFAULT_COORDINATES);
 
+  const labelClasses = useLabelStyles({}); 
+
   return (
     <form onSubmit={handleSubmit}>
 
@@ -127,98 +143,158 @@ function ClubForm({
         <GoogleMapLocation
           markerCoordination={finalCoordination}
           setFieldValue={setFieldValue}
-          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `400px` }} />}
           mapElement={<div style={{ height: `100%` }} />}
         />
       )}
 
-      <Button variant="contained" color="primary" type="submit">Save</Button>
+      <Box p={3}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              error={isError('name')}
+              helperText={isError('name') ? errors.name : ''}
+              label="Name"
+              value={name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="name"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <InputLabel htmlFor="role" className={labelClasses.fontSize}>Tier</InputLabel>
+            <Select
+              error={isError('tier')}
+              value={tier}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="tier"
+              fullWidth
+            >
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+            </Select>
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}><Typography variant="subtitle1">Logo:</Typography></Box>
 
-      <ul className="fields">
-        <li className="field">
-          <TextField
-            error={isError('name')}
-            helperText={isError('name') ? errors.name : ''}
-            label="Name"
-            value={name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="name"
-          />
-        </li>
-      </ul>
+            {logo && (
+              <img src={`${IMAGES_URL}${logo}`} alt="" />
+            )}
 
-      <Select
-        error={isError('tier')}
-        value={tier}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        name="tier"
-      >
-        <MenuItem value={1}>1</MenuItem>
-        <MenuItem value={2}>2</MenuItem>
-        <MenuItem value={3}>3</MenuItem>
-        <MenuItem value={4}>4</MenuItem>
-        <MenuItem value={5}>5</MenuItem>
-      </Select>
+            <ImageUploader
+              fieldId="logo"
+              onChange={handleLogoChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}><Typography variant="subtitle1">Zgody:</Typography></Box>
 
-      <Typography variant="h6">Logo</Typography>
+            <SelectAutocomplete
+              isMulti
+              name="friendships"
+              closeMenuOnSelect={false}
+              options={possibleClubRelations}
+              value={friendships}
+              onChange={handleSelectChange('friendships')}
+              onBlur={handleBlur}
+              onInputChange={searchDebounched}
+              placeholder="Start typing and choose clubs with which has friendships..."
+            />
+            {errors.relationsNotUnique && (
+              <p>Relacje musza byc unikalne</p>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}><Typography variant="subtitle1">Układy:</Typography></Box>
 
-      {logo && (
-        <img src={`${process.env.REACT_APP_API_URL}/images/${logo}`} alt="" />
-      )}
+            <SelectAutocomplete
+              isMulti
+              name="agreements"
+              closeMenuOnSelect={false}
+              options={possibleClubRelations}
+              value={agreements}
+              onChange={handleSelectChange('agreements')}
+              onBlur={handleBlur}
+              onInputChange={searchDebounched}
+              placeholder="Start typing and choose clubs with which has agreements..."
+            />
+            {errors.relationsNotUnique && (
+              <p>Relacje musza byc unikalne</p>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}><Typography variant="subtitle1">Pozytywne relacje / prywatne kontakty:</Typography></Box>
 
-      <ImageUploader
-        fieldId="logo"
-        onChange={handleLogoChange}
-      />
+            <SelectAutocomplete
+              isMulti
+              name="positives"
+              closeMenuOnSelect={false}
+              options={possibleClubRelations}
+              value={positives}
+              onChange={handleSelectChange('positives')}
+              onBlur={handleBlur}
+              onInputChange={searchDebounched}
+              placeholder="Start typing and choose clubs with which has positive relations..."
+            />
+            {errors.relationsNotUnique && (
+              <p>Relacje musza byc unikalne</p>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}><Typography variant="subtitle1">Satelity / Fan Cluby:</Typography></Box>
 
-      <Typography variant="h6">Zgody</Typography>
+            <SelectAutocomplete
+              isMulti
+              name="satellites"
+              closeMenuOnSelect={false}
+              options={possibleClubRelations}
+              value={satellites}
+              onChange={handleSelectChange('satellites')}
+              onBlur={handleBlur}
+              onInputChange={searchDebounched}
+              placeholder="Start typing and choose satellites..."
+            />
+            {errors.relationsNotUnique && (
+              <p>Relacje musza byc unikalne</p>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}><Typography variant="subtitle1">Satelita klubu:</Typography></Box>
 
-      <SelectAutocomplete
-        isMulti
-        options={possibleClubRelations}
-        value={friendships}
-        onChange={handleSelectChange('friendships')}
-        onInputChange={searchDebounched}
-      />
+            <SelectAutocomplete
+              isClearable
+              name="satelliteOf"
+              options={possibleClubRelations}
+              value={satelliteOf}
+              onChange={handleSelectChange('satelliteOf')}
+              onBlur={handleBlur}
+              onInputChange={searchDebounched}
+              placeholder="Start typing and choose which satellite of club is..."
+            />
 
-      <Typography variant="h6">Układy</Typography>
-      <SelectAutocomplete
-        isMulti
-        options={possibleClubRelations}
-        value={agreements}
-        onChange={handleSelectChange('agreements')}
-        onInputChange={searchDebounched}
-      />
-
-      <Typography variant="h6">Pozytywne relacje / prywatne kontakty:</Typography>
-      <SelectAutocomplete
-        isMulti
-        options={possibleClubRelations}
-        value={positives}
-        onChange={handleSelectChange('positives')}
-        onInputChange={searchDebounched}
-      />
-
-      <Typography variant="h6">Satelity / Fan Cluby</Typography>
-      <SelectAutocomplete
-        isMulti
-        options={possibleClubRelations}
-        value={satellites}
-        onChange={handleSelectChange('satellites')}
-        onInputChange={searchDebounched}
-      />
-
-      <Typography variant="h6">Jest satelitą / Fan Clubem</Typography>
-      <SelectAutocomplete
-        options={possibleClubRelations}
-        value={satelliteOf}
-        onChange={handleSelectChange('satelliteOf')}
-        onInputChange={searchDebounched}
-      />
+            {errors.relationsNotUnique && (
+              <p>Relacje musza byc unikalne</p>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              size="large"
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     </form>
   );
 }

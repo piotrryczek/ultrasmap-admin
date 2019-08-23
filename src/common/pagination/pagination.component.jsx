@@ -1,5 +1,9 @@
 import React, { memo } from 'react';
 
+import Grid from '@material-ui/core/Grid';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
+
 import { PER_PAGE } from 'config/config';
 
 function Pagination(props) {
@@ -13,19 +17,24 @@ function Pagination(props) {
   const pagesArray = Array.from(Array(nrPages).keys());
 
   return (
-    <ul className="pagination">
-      {pagesArray.map(page => (
-        <li key={page + 1}>
-          <button
+    <Grid item container justify="center">
+      <ButtonGroup
+        variant="contained"
+        size="small"
+      >
+        {pagesArray.map(page => (
+          <Button
+            key={page + 1}
+            variant="contained"
+            color={currentPage === page + 1 ? 'primary' : 'default'}
             type="button"
             onClick={() => changePage(page + 1)}
           >
             {page + 1}
-            {currentPage === page + 1 && '(*)'}
-          </button>
-        </li>
-      ))}
-    </ul>
+          </Button>
+        ))}
+      </ButtonGroup>
+    </Grid>
   );
 }
 

@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
+import Grid from '@material-ui/core/Grid';
+import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-// eslint-disable-next-line react/display-name
-const userForm = (editType, roles) => ({
+import { setMessage } from 'components/app/app.actions';
+import { useLabelStyles } from 'theme/useStyles';
+
+function UserForm({
+  editType,
+  roles,
   values: {
     email,
     name,
@@ -24,25 +30,34 @@ const userForm = (editType, roles) => ({
   handleBlur,
   setFieldValue,
   setFieldTouched,
-}) => {
+  isSubmitting,
+  isValid
+}) {
+  const dispatch = useDispatch(); 
+
   const isError = (field) => errors[field] && touched[field];
 
-  const handleChangeIsNewPassword = (event, isChecked) => {
+  useEffect(() => {
+    if (isSubmitting && !isValid) {
+      dispatch(setMessage('error', 'FORM_INCORRECT'))
+    }
+  }, [isSubmitting, isValid]);
+
+  const handleChangeIsNewPassword = useCallback((event, isChecked) => {
     if (!isChecked) {
       setFieldValue('password', '');
     }
 
     setFieldTouched('password', false);
     setFieldValue('isNewPassword', isChecked);
-  }
+  }, [])
+
+  const labelClasses = useLabelStyles({});
 
   return (
     <form onSubmit={handleSubmit}>
-      <Typography variant="h6">
-        User data
-      </Typography>
-      <ul className="fields">
-        <li className="field">
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
           <TextField
             error={isError('email')}
             helperText={isError('email') ? errors.email : ''}
@@ -51,9 +66,10 @@ const userForm = (editType, roles) => ({
             onChange={handleChange}
             onBlur={handleBlur}
             name="email"
+            fullWidth
           />
-        </li>
-        <li className="field">
+        </Grid>
+        <Grid item xs={12}>
           <TextField
             error={isError('name')}
             helperText={isError('name') ? errors.name : ''}
@@ -62,15 +78,22 @@ const userForm = (editType, roles) => ({
             onChange={handleChange}
             onBlur={handleBlur}
             name="name"
+            fullWidth
           />
-        </li>
-        <li className="field">
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel htmlFor="role" className={labelClasses.fontSize}>Role</InputLabel>
           <Select
             error={isError('role')}
             value={role}
             onChange={handleChange}
             onBlur={handleBlur}
+            placeholder="Role"
             name="role"
+            inputProps={{
+              id: 'role',
+            }}
+            fullWidth
           >
             {roles.map(({ _id: id, name }) => (
               <MenuItem
@@ -81,28 +104,23 @@ const userForm = (editType, roles) => ({
               </MenuItem>
             ))}
           </Select>
-        </li>
-      </ul>
-      <Typography variant="h6">
-        Password
-      </Typography>
-      
-      {editType === 'update' && (
-        <FormControlLabel
-          control={(
-            <Checkbox
-              checked={isNewPassword}
-              onChange={handleChangeIsNewPassword}
-              name="isNewPassword"
+        </Grid>
+        {editType === 'update' && (
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  checked={isNewPassword}
+                  onChange={handleChangeIsNewPassword}
+                  name="isNewPassword"
+                />
+              )}
+              label="Set new password"
             />
-          )}
-          label="Set new password"
-        />
-      )}
-
-      {(isNewPassword || editType === 'new')  && (
-        <ul className="fields">
-          <li className="field">
+          </Grid>
+        )}
+        {(isNewPassword || editType === 'new')  && (
+          <Grid item xs={12}>
             <TextField
               error={isError('password')}
               helperText={isError('password') ? errors.password : ''}
@@ -111,13 +129,27 @@ const userForm = (editType, roles) => ({
               onChange={handleChange}
               onBlur={handleBlur}
               name="password"
+              type="password"
+              fullWidth
             />
-          </li>
-        </ul>
-      )}
-      <Button variant="contained" color="primary" type="submit">Send</Button>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            size="large"
+          >
+            Save
+          </Button>
+        </Grid>
+      </Grid>
     </form>
   );
-};
+}
 
-export default userForm;
+
+
+
+export default UserForm;

@@ -43,10 +43,10 @@ export const compareSuggestionBeforeAfter = (original, data) => {
     toRemoveSatelliteOf: false,
   };
 
-  if (original.name !== data.name) _set(comparision, 'name', true);
-  if (original.tier !== data.tier) _set(comparision, 'tier', true);
-  if (original.logo !== data.logo) _set(comparision, 'logo', true);
-  if (!_isEqual(original.location.coordinates, data.location.coordinates)) _set(comparision, 'location', true);
+  if (original.name !== data.name) _set(comparision, 'isNewName', true);
+  if (original.tier !== data.tier) _set(comparision, 'isNewTier', true);
+  if (original.logo !== data.logo) _set(comparision, 'isNewLogo', true);
+  if (!_isEqual(original.location.coordinates, data.location.coordinates)) _set(comparision, 'isNewLocation', true);
 
   const compareRelations = (originalRelations, afterRelations, toAddKey, toRemovekey) => {
     const {
@@ -55,7 +55,11 @@ export const compareSuggestionBeforeAfter = (original, data) => {
     } = getRelationsToEdit(parseClubsToIds(originalRelations), parseClubsToIds(afterRelations));
 
     _set(comparision, toAddKey, toAddIds);
-    _set(comparision, toRemovekey, toRemoveIds);
+    _set(comparision, toRemovekey, originalRelations.reduce((acc, club) => {
+      if (toRemoveIds.includes(club._id)) acc.push(club);
+
+      return acc;
+    }, []));
   }
 
   compareRelations(original.friendships, data.friendships, 'toAddFriendships', 'toRemoveFriendships');
@@ -63,11 +67,53 @@ export const compareSuggestionBeforeAfter = (original, data) => {
   compareRelations(original.positives, data.positives, 'toAddPositives', 'toRemovePositives');
   compareRelations(original.satellites, data.satellites, 'toAddSatellites', 'toRemoveSatellites');
 
-  if (original.satelliteOf && !data.satelliteOf && !data.satelliteOfToCreate) {
-    _set(comparision, 'toRemoveSatelliteOf', true);
-  } else if(!original.satelliteOf && (data.satelliteOf || data.satelliteOfToCreate)) {
-    _set(comparision, 'toAddSatelliteOf', true);
+  if (
+    original.satelliteOf && (
+      data.satelliteOfToCreate || (
+        data.satelliteOf && original.satelliteOf._id !== data.satelliteOf._id
+      )
+    )
+  ) {
+    _set(comparision, 'toRemoveSatelliteOf', original.satelliteOf);
+  }
+
+  if (
+    data.satelliteOf && (
+      !original.satelliteOf || (
+        data.satelliteOf._id !== original.satelliteOf._id
+      )
+    )
+  ) {
+    _set(comparision, 'toAddSatelliteOf', data.satelliteOf);
   }
   
   return comparision;
+};
+
+export const prepareClubFormData = ({
+  name,
+  logo,
+  newLogo = null,
+  tier,
+  coordinates,
+  friendships,
+  agreements,
+  positives,
+  satellites,
+  satelliteOf,
+}) => {
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('logo', logo);
+  formData.append('tier', tier);
+  formData.append('location', JSON.stringify(coordinates));
+  formData.append('friendships', JSON.stringify(friendships));
+  formData.append('agreements', JSON.stringify(agreements));
+  formData.append('positives', JSON.stringify(positives));
+  formData.append('satellites', JSON.stringify(satellites));
+
+  if (satelliteOf) formData.append('satelliteOf', satelliteOf);
+  if (newLogo) formData.append('newLogo', newLogo);
+
+  return formData;
 };

@@ -1,3 +1,12 @@
+/*
+TODO:
+- Loading
+- Activities
+- Sending emails with backups
+- Uploading backup files
+- removing backups
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -7,6 +16,7 @@ import store from 'config/store';
 
 import * as serviceWorker from './serviceWorker';
 
+import './index.scss';
 import 'config/i18n';
 
 ReactDOM.render(
