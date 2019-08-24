@@ -72,7 +72,7 @@ function ClubComparission(props) {
             </Grid>
             <Grid item xs={10}>
               {logo && (
-                <img src={`${IMAGES_URL}${logo}`} alt="" className={classNames({ 'to-change': isNewLogo })} />
+                <img src={`${IMAGES_URL}/h180/${logo}`} alt="" className={classNames({ 'to-change': isNewLogo })} />
               )}
             </Grid>
           </FieldWrapper>

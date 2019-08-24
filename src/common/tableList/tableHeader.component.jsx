@@ -89,9 +89,9 @@ function TableHeader(props) {
             </>
           )}
         </TableCellMUI>
-        {columns.map(column => (
-          <TableCellMUI key={column.name}>
-            {column.label}
+        {columns.map(({ name, alignment = 'left', label }) => (
+          <TableCellMUI key={name} align={alignment}>
+            {label}
           </TableCellMUI>
         ))}
         <TableCellMUI>Actions</TableCellMUI>

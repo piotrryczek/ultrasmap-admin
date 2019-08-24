@@ -11,7 +11,8 @@ function Clubs() {
   }, {
     label: 'Logo',
     name: 'logo',
-    type: 'image'
+    type: 'image',
+    alignment: 'center',
   }, {
     label: 'Tier',
     name: 'tier',

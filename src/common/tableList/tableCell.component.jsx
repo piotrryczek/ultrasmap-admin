@@ -5,7 +5,11 @@ import _get from 'lodash/get';
 import { IMAGES_URL } from 'config/config';
 
 const renderValue = (data, column) => {
-  const { type, name, field } = column;
+  const {
+    type,
+    name,
+    field,
+  } = column;
 
   switch (type) {
     case 'text': {
@@ -20,7 +24,7 @@ const renderValue = (data, column) => {
       const imageSrc = data[name];
 
       return (
-        <img src={`${IMAGES_URL}${imageSrc}`} alt="" />
+        <img src={`${IMAGES_URL}/h180/${imageSrc}`} alt="" className="table-image" />
       );
     }
 
@@ -32,11 +36,14 @@ const renderValue = (data, column) => {
 function TableCell(props) {
   const {
     column,
+    column: {
+      alignment = 'left',
+    },
     data,
   } = props;
 
   return (
-    <TableCellMUI>{renderValue(data, column)}</TableCellMUI>
+    <TableCellMUI align={alignment}>{renderValue(data, column)}</TableCellMUI>
   );
 }
 

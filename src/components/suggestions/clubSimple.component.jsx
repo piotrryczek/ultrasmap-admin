@@ -55,7 +55,7 @@ function ClubSimple(props) {
             </Grid>
             <Grid item xs={10}>
               {logo && (
-                <img src={`${IMAGES_URL}${logo}`} alt="" className={classNames({ 'to-add': type === 'new'})} />
+                <img src={`${IMAGES_URL}/h180/${logo}`} alt="" className={classNames({ 'to-add': type === 'new'})} />
               )}
             </Grid>
           </FieldWrapper>

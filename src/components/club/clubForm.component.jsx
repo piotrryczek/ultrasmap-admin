@@ -135,7 +135,7 @@ function ClubForm({
   const finalCoordination= parseCoordinates(coordinates || DEFAULT_COORDINATES);
 
   const labelClasses = useLabelStyles({}); 
-
+  
   return (
     <form onSubmit={handleSubmit}>
 
@@ -185,7 +185,7 @@ function ClubForm({
             <Box pb={1}><Typography variant="subtitle1">Logo:</Typography></Box>
 
             {logo && (
-              <img src={`${IMAGES_URL}${logo}`} alt="" />
+              <img src={`${IMAGES_URL}/h180/${logo}`} alt="" />
             )}
 
             <ImageUploader
