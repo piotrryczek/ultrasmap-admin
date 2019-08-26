@@ -105,6 +105,8 @@ function ClubForm({
     return newValue;
   }
 
+  // TODO: Possibly will return error when clear satelliteOf
+
   const handleLogoChange = useCallback((file) => {
     setFieldValue('newLogo', file);
   }, []);

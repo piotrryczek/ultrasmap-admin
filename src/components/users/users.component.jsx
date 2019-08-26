@@ -6,10 +6,6 @@ import TableList from 'common/tableList/tableList.component';
 function Users() {
 
   const columns = [{
-    label: 'Name',
-    name: 'name',
-    type: 'text'
-  }, {
     label: 'Email',
     name: 'email',
     type: 'text'
@@ -20,7 +16,7 @@ function Users() {
     field: 'role.name',
   }];
 
-  const searchColumns = ['name', 'email'];
+  const searchColumns = ['email'];
   
   const hasEditCredential = Auth.hasCredentialLocal('updateUser');
 
