@@ -5,9 +5,6 @@ export default yup.object().shape({
     .string()
     .email()
     .required('Req'),
-  name: yup
-    .string()
-    .required('Req'),
   role: yup
     .string()
     .required('Req')

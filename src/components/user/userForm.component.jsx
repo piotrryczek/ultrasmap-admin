@@ -18,7 +18,6 @@ function UserForm({
   roles,
   values: {
     email,
-    name,
     role,
     password,
     isNewPassword,
@@ -66,18 +65,6 @@ function UserForm({
             onChange={handleChange}
             onBlur={handleBlur}
             name="email"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            error={isError('name')}
-            helperText={isError('name') ? errors.name : ''}
-            label="Name"
-            value={name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="name"
             fullWidth
           />
         </Grid>

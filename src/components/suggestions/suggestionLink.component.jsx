@@ -31,6 +31,7 @@ function SuggestionLink(props) {
       createdAt,
       original,
       data,
+      user,
     }
   } = props;
 
@@ -53,7 +54,7 @@ function SuggestionLink(props) {
   }, []);
 
   // eslint-disable-next-line react/jsx-one-expression-per-line
-  const suggestionName = (<>For: <strong>{name}</strong> ({formatDate(createdAt)})</>);
+  const suggestionName = (<>For: <strong>{name}</strong> by: <strong>{user.email}</strong> ({formatDate(createdAt)})</>);
 
   return (
     <Box display="flex">

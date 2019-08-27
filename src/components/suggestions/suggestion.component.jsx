@@ -30,6 +30,7 @@ function Suggestion(props) {
   const {
     _id: suggestionId,
     type,
+    comments,
     data,
     data: {
       name,
@@ -115,6 +116,8 @@ function Suggestion(props) {
 
   const comparision = type === 'edit' ? compareSuggestionBeforeAfter(original, data) : null;
 
+  const initialComment = comments.length ? comments[0] : null;
+
   // TODO: Translations
   return (
     <Box p={3}>
@@ -161,9 +164,9 @@ function Suggestion(props) {
       </Box>
 
       <Box mt={3}>
-        {type === 'new' && <ClubSimple data={data} type="new" />}
+        {type === 'new' && <ClubSimple data={data} type="new" comment={initialComment} />}
         {type === 'edit' && tabValue === 'before' && <ClubSimple data={original} type="before" />}
-        {type === 'edit' && tabValue === 'after' && <ClubComparission data={data} comparision={comparision} />}
+        {type === 'edit' && tabValue === 'after' && <ClubComparission data={data} comparision={comparision} comment={initialComment} />}
       </Box>
       
     </Box>

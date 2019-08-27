@@ -19,6 +19,7 @@ import RelationClub from './util/relationClub.component';
 function ClubSimple(props) {
   const {
     type,
+    comment,
     data: {
       name,
       logo,
@@ -119,6 +120,12 @@ function ClubSimple(props) {
               {satelliteOf && <RelationClub type={relationChangeType}>{satelliteOf.name}</RelationClub>}
             </Grid>
           </FieldWrapper>
+          {comment && (
+            <>
+              <Divider />
+              <Field label="Uwagi:" value={comment} />
+            </>
+          )}
         </Paper>
       </Grid>
       <Grid item xs={12}>

@@ -2,9 +2,9 @@
 TODO:
 - Loading
 - Activities
-- Sending emails with backups
 - Uploading backup files
 - removing backups
+- displaying suggestions for user
 */
 
 import React from 'react';
