@@ -13,7 +13,13 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
-    
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '14px',
+        fontWeight: 'normal',
+        padding: '0.5rem 1rem',
+      },
+    },
   },
 });
 

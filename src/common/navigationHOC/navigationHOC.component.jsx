@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 
 function NavigationHOC(props) {

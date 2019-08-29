@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import _find from 'lodash/find';
 
@@ -24,6 +25,7 @@ import Suggestion from './suggestion.component';
 import SuggestionLink from './suggestionLink.component';
 
 function Suggestions() {
+  const { t } = useTranslation();
   const dispatch = useDispatch(); 
   const buttonClasses = useButtonStyles({});
 
@@ -160,7 +162,7 @@ function Suggestions() {
               open={isRemoveDialogOpened}
               onClose={handleCloseRemoveDialog}
             >
-              <DialogTitle>Are you sure you want to delete?</DialogTitle>
+              <DialogTitle>{t('suggestions.removeConfirm')}</DialogTitle>
               
               <DialogActions>
                 <Button
@@ -168,7 +170,7 @@ function Suggestions() {
                   variant="contained"
                   color="primary"
                 >
-                  Close
+                  {t('global.close')}
                 </Button>
                 <Button
                   onClick={handleDelete}
@@ -176,12 +178,12 @@ function Suggestions() {
                   color="primary"
                   className={buttonClasses.remove}
                 >
-                  Remove
+                  {t('global.remove')}
                 </Button>
               </DialogActions>
             </Dialog>
 
-            <Button variant="contained" color="primary" type="submit" onClick={handleOpenRemoveDialog} className={buttonClasses.remove}>Remove</Button>
+            <Button variant="contained" color="primary" type="submit" onClick={handleOpenRemoveDialog} className={buttonClasses.remove}>{t('global.remove')}</Button>
           </>
         )}
         <List>

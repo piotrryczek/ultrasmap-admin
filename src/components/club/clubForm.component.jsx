@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import SelectAutocomplete from 'react-select';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -76,6 +77,7 @@ function ClubForm({
 
   const [possibleClubRelations, updatePossibleClubRelations] = useState([]);
   const dispatch = useDispatch(); 
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isSubmitting && !isValid) {
@@ -106,7 +108,6 @@ function ClubForm({
   }
 
   // TODO: Possibly will return error when clear satelliteOf
-
   const handleLogoChange = useCallback((file) => {
     setFieldValue('newLogo', file);
   }, []);
@@ -157,8 +158,8 @@ function ClubForm({
           <Grid item xs={12}>
             <TextField
               error={isError('name')}
-              helperText={isError('name') ? errors.name : ''}
-              label="Name"
+              helperText={isError('name') ? t(errors.name) : ''}
+              label={t('club.name')}
               value={name}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -167,7 +168,7 @@ function ClubForm({
             />
           </Grid>
           <Grid item xs={12}>
-            <InputLabel htmlFor="role" className={labelClasses.fontSize}>Tier</InputLabel>
+            <InputLabel htmlFor="role" className={labelClasses.fontSize}>{t('club.tier')}</InputLabel>
             <Select
               error={isError('tier')}
               value={tier}
@@ -184,7 +185,12 @@ function ClubForm({
             </Select>
           </Grid>
           <Grid item xs={12}>
-            <Box pb={1}><Typography variant="subtitle1">Logo:</Typography></Box>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
+                {t('club.logo')}
+                :
+              </Typography>
+            </Box>
 
             {logo && (
               <img src={`${IMAGES_URL}/h180/${logo}`} alt="" />
@@ -196,7 +202,12 @@ function ClubForm({
             />
           </Grid>
           <Grid item xs={12}>
-            <Box pb={1}><Typography variant="subtitle1">Zgody:</Typography></Box>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
+                {t('club.friendships')}
+                :
+              </Typography>
+            </Box>
 
             <SelectAutocomplete
               isMulti
@@ -207,14 +218,19 @@ function ClubForm({
               onChange={handleSelectChange('friendships')}
               onBlur={handleBlur}
               onInputChange={searchDebounched}
-              placeholder="Start typing and choose clubs with which has friendships..."
+              placeholder={t('club.friendshipsPlaceholder')}
             />
             {errors.relationsNotUnique && (
-              <p>Relacje musza byc unikalne</p>
+              <p>{t(errors.relationsNotUnique)}</p>
             )}
           </Grid>
           <Grid item xs={12}>
-            <Box pb={1}><Typography variant="subtitle1">Układy:</Typography></Box>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
+                {t('club.agreements')}
+                :
+              </Typography>
+            </Box>
 
             <SelectAutocomplete
               isMulti
@@ -225,14 +241,19 @@ function ClubForm({
               onChange={handleSelectChange('agreements')}
               onBlur={handleBlur}
               onInputChange={searchDebounched}
-              placeholder="Start typing and choose clubs with which has agreements..."
+              placeholder={t('club.agreementsPlaceholder')}
             />
             {errors.relationsNotUnique && (
-              <p>Relacje musza byc unikalne</p>
+              <p>{t(errors.relationsNotUnique)}</p>
             )}
           </Grid>
           <Grid item xs={12}>
-            <Box pb={1}><Typography variant="subtitle1">Pozytywne relacje / prywatne kontakty:</Typography></Box>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
+                {t('club.positives')}
+                :
+              </Typography>
+            </Box>
 
             <SelectAutocomplete
               isMulti
@@ -243,14 +264,19 @@ function ClubForm({
               onChange={handleSelectChange('positives')}
               onBlur={handleBlur}
               onInputChange={searchDebounched}
-              placeholder="Start typing and choose clubs with which has positive relations..."
+              placeholder={t('club.positivesPlaceholder')}
             />
             {errors.relationsNotUnique && (
-              <p>Relacje musza byc unikalne</p>
+              <p>{t(errors.relationsNotUnique)}</p>
             )}
           </Grid>
           <Grid item xs={12}>
-            <Box pb={1}><Typography variant="subtitle1">Satelity / Fan Cluby:</Typography></Box>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
+                {t('club.satellites')}
+                :
+              </Typography>
+            </Box>
 
             <SelectAutocomplete
               isMulti
@@ -261,14 +287,19 @@ function ClubForm({
               onChange={handleSelectChange('satellites')}
               onBlur={handleBlur}
               onInputChange={searchDebounched}
-              placeholder="Start typing and choose satellites..."
+              placeholder={t('club.satellitesPlaceholder')}
             />
             {errors.relationsNotUnique && (
-              <p>Relacje musza byc unikalne</p>
+              <p>{t(errors.relationsNotUnique)}</p>
             )}
           </Grid>
           <Grid item xs={12}>
-            <Box pb={1}><Typography variant="subtitle1">Satelita klubu:</Typography></Box>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
+                {t('club.satelliteOf')}
+                :
+              </Typography>
+            </Box>
 
             <SelectAutocomplete
               isClearable
@@ -278,11 +309,10 @@ function ClubForm({
               onChange={handleSelectChange('satelliteOf')}
               onBlur={handleBlur}
               onInputChange={searchDebounched}
-              placeholder="Start typing and choose which satellite of club is..."
+              placeholder={t('club.satelliteOfPlaceholder')}
             />
-
             {errors.relationsNotUnique && (
-              <p>Relacje musza byc unikalne</p>
+              <p>{t(errors.relationsNotUnique)}</p>
             )}
           </Grid>
           <Grid item xs={12}>
@@ -292,7 +322,7 @@ function ClubForm({
               type="submit"
               size="large"
             >
-              Save
+              {t('global.save')}
             </Button>
           </Grid>
         </Grid>

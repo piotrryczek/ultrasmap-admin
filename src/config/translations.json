@@ -1,30 +1,222 @@
 {
   "pl": {
     "translation": {
-      "LOGIN_FAILED": "Logowanie nieudane",
-      "LOGIN_SUCCESS": "Zalogowałeś się",
-      "LOGOUT_SUCCESS": "Wylogowałeś się",
-      "USER_WITH_EMAIL_EXISTS": "Użytkownik z podanym adresem email już istnieje w bazie",
-      "NOT_AUTHORIZED": "Nie posiadasz uprawnień do dokonania tej akcji, zostałeś automatycznie wylogowany, zaloguj się ponownie.",
-      "CLUB_WITH_NANE_EXISTS": "Klub o tej nazwie już istnieje",
-      "USER_ADDED_SUCCESS": "Użytkownik poprawnie dodany",
-      "USER_UPDATED_SUCCESS": "Użytkownik poprawnie zaktualizowany",
-      "REMOVE_SUCCESS": "Elementy zostały poprawnie usunięte",
-      "INTERNAL": "Błąd wewnętrzny serwera",
-      "FORM_INCORRECT": "Błędy w formularzu",
-      "BACKUP_RESTORED": "Backup został przywrócony",
-      "BACKUP_CREATED": "Backup został utworzony",
-      "SUGGESTION_APPLIED": "Zmiany zaproponowane w sugestii zostały zaakceptowane, a sama sugestia została usunięta"
+      "messageCodes": {
+        "LOGIN_FAILED": "Logowanie nieudane",
+        "LOGIN_SUCCESS": "Zalogowałeś się",
+        "LOGOUT_SUCCESS": "Wylogowałeś się",
+        "USER_WITH_EMAIL_EXISTS": "Użytkownik z podanym adresem email już istnieje w bazie",
+        "NOT_AUTHORIZED": "Nie posiadasz uprawnień do dokonania tej akcji, zostałeś automatycznie wylogowany, zaloguj się ponownie.",
+        "CLUB_WITH_NANE_EXISTS": "Klub o tej nazwie już istnieje",
+        "USER_ADDED_SUCCESS": "Użytkownik został dodany",
+        "USER_UPDATED_SUCCESS": "Użytkownik został zaktualizowany",
+        "REMOVE_SUCCESS": "Elementy zostały poprawnie usunięte",
+        "INTERNAL": "Błąd wewnętrzny serwera",
+        "FORM_INCORRECT": "Błędy w formularzu",
+        "BACKUP_RESTORED": "Backup został przywrócony",
+        "BACKUP_CREATED": "Backup został utworzony",
+        "SUGGESTION_APPLIED": "Zmiany zaproponowane w sugestii zostały zaakceptowane, a sama sugestia zmieniła status na zaakceptowaną",
+        "CLUB_ADDED_SUCCESS": "Klub został dodany",
+        "CLUB_UPDATED_SUCCESS": "Klub został zaktualizowany"
+      },
+      "formErrors": {
+        "email": "Niepoprawny adres email",
+        "required": "Pole jest wymagane",
+        "fileSize": "Plik jest zbyt duży",
+        "fileType": "Nieodpowiedni format pliku",
+        "relationsNotUnique": "Relacje muszą być unikalne",
+        "passwordRequired": "Hasło musi zostać uzupełnione"
+      },
+      "global": {
+        "users": "Użytkownicy",
+        "addUser": "Dodaj użytkownika",
+        "clubs": "Kluby",
+        "addClub": "Dodaj klub",
+        "suggestions": "Sugestie",
+        "activities": "Aktywność",
+        "backups": "Backupy",
+        "edit": "Edytuj",
+        "save": "Zapisz",
+        "remove": "Usuń",
+        "close": "Zamknij",
+        "for": "Dla",
+        "by": "przez",
+        "before": "Przed",
+        "after": "Po",
+        "new": "Nowy",
+        "logout": "Wyloguj się",
+        "chooseToUpload": "Wybierz plik",
+        "confirmRemove": "Jesteś pewny, że chcesz usunąć?",
+        "actions": "Akcje"
+      },
+      "columns": {
+        "email": "Email",
+        "name": "Nazwa"
+      },
+      "login": {
+        "login": "Zaloguj się",
+        "emailLabel": "Email",
+        "passwordLabel": "Hasło"
+      },
+      "backups": {
+        "createBackup": "Utwórz backup",
+        "fileName": "Nazwa pliku",
+        "restore": "Przywróć",
+        "createdAt": "Utworzony",
+        "restoreConfirm": "Jesteś pewny, że chcesz przywrócić ten backup?"
+      },
+      "suggestions": {
+        "removeConfirm": "Jesteś pewny, że chcesz usunąć sugestię?",
+        "apply": "Zatwierdź",
+        "reject": "Odrzuć",
+        "rejectAndMute": "Odrzuć i wycisz",
+        "tooltips": {
+          "toRemove": "Do usunięcia",
+          "noChange": "Bez zmiany",
+          "change": "Wartość zmieniona",
+          "toAdd": "Do dodania",
+          "toCreate": "Do utworzenia"
+        }
+      },
+      "club": {
+        "name": "Nazwa",
+        "tier": "Znaczenie / Siła",
+        "logo": "Logo / herb",
+        "friendships": "Zgody",
+        "friendshipsPlaceholder": "Zacznj pisać i wybierz zgody...",
+        "agreements": "Układy",
+        "agreementsPlaceholder": "Zacznij pisać i wybierz układy...",
+        "positives": "Pozytywne relacje",
+        "positivesPlaceholder": "Zacznij pisać i wybierz kluby, z którymi klub posiada pozytywne relacje...",
+        "satellites": "Satelity",
+        "satellitesPlaceholder": "Zacznij pisać i wybierz satelity...",
+        "satelliteOf": "Satelita",
+        "satelliteOfPlaceholder": "Zacznij pisać i wybierz jakiego klubu klub jest satelitą...",
+        "comments": "Uwagi"
+      },
+      "user": {
+        "email": "Email",
+        "role": "Rola",
+        "password": "Hasło",
+        "verified": "Zweryfikowany",
+        "isNewPassword": "Ustawić nowe hasło?"
+      },
+      "roles": {
+        "admin": "Administrator",
+        "moderator": "Moderator",
+        "user": "Użytkownik",
+        "userDisabled": "Użytkownik wyciszony"
+      }
     }
   },
   "en": {
     "translation": {
-      "LOGIN_FAILED": "Login failed",
-      "LOGIN_SUCCESS": "You have logged in",
-      "LOGOUT_SUCCESS": "You have loggout out",
-      "USER_WITH_EMAIL_EXISTS": "User with provided email already exists",
-      "NOT_AUTHORIZED": "You have no credentials to perform action",
-      "CLUB_WITH_NANE_EXISTS": "Club with provided name already exists"
+      "messageCodes": {
+        "LOGIN_FAILED": "Login failed",
+        "LOGIN_SUCCESS": "You have logged in",
+        "LOGOUT_SUCCESS": "You have logged out",
+        "USER_WITH_EMAIL_EXISTS": "User with provided email already exists in database",
+        "NOT_AUTHORIZED": "You do not have permission to complete this action, you have been automatically logged out, sign in again.",
+        "CLUB_WITH_NANE_EXISTS": "Club with provided name already exists in database",
+        "USER_ADDED_SUCCESS": "User has been added",
+        "USER_UPDATED_SUCCESS": "User has been updated",
+        "REMOVE_SUCCESS": "Objects have been removed",
+        "INTERNAL": "Internal server error",
+        "FORM_INCORRECT": "Form errors",
+        "BACKUP_RESTORED": "Backup has been restored",
+        "BACKUP_CREATED": "Backup has been created",
+        "SUGGESTION_APPLIED": "Changes have been applied, suggestion status changed from pending to applied",
+        "CLUB_ADDED_SUCCESS": "Club has been added",
+        "CLUB_UPDATED_SUCCESS": "Club has been updated"
+      },
+      "formErrors": {
+        "email": "Incorrect email address",
+        "required": "Field is required",
+        "fileSize": "File is being to big",
+        "fileType": "Incorrect file format",
+        "relationsNotUnique": "Relations have to unique",
+        "passwordRequired": "Password is required"
+      },
+      "global": {
+        "users": "Users",
+        "addUser": "Add user",
+        "clubs": "Clubs",
+        "addClub": "Add club",
+        "suggestions": "Suggestions",
+        "activities": "Activities",
+        "backups": "Backups",
+        "edit": "Edit",
+        "save": "Save",
+        "remove": "Remove",
+        "close": "Close",
+        "for": "For",
+        "by": "by",
+        "before": "Before",
+        "after": "After",
+        "new": "New",
+        "logout": "Sign out",
+        "chooseToUpload": "Choose a file",
+        "confirmRemove": "Are you sure you want to remove?",
+        "actions": "Actions"
+      },
+      "columns": {
+        "email": "Email",
+        "name": "Name"
+      },
+      "login": {
+        "login": "Sign in",
+        "emailLabel": "Email",
+        "passwordLabel": "Password"
+      },
+      "backups": {
+        "createBackup": "Create backup",
+        "fileName": "Filename",
+        "restore": "Restore",
+        "createdAt": "Created at",
+        "restoreConfirm": "Are you sure you want to restore this backups?"
+      },
+      "suggestions": {
+        "removeConfirm": "Are you sure you want to remove suggestion(s)?",
+        "apply": "Apply",
+        "reject": "Reject",
+        "rejectAndMute": "Reject and mute",
+        "tooltips": {
+          "toRemove": "To remove",
+          "noChange": "No change",
+          "change": "Value changed",
+          "toAdd": "To add",
+          "toCreate": "To create"
+        }
+      },
+      "club": {
+        "name": "Name",
+        "tier": "Tier",
+        "logo": "Logo",
+        "friendships": "Friendships",
+        "friendshipsPlaceholder": "Start typing and select clubs...",
+        "agreements": "Agreements",
+        "agreementsPlaceholder": "Start typing and select clubs...",
+        "positives": "Positive relations",
+        "positivesPlaceholder": "Start typing and select clubs...",
+        "satellites": "Satellites",
+        "satellitesPlaceholder": "Start typing and select clubs...",
+        "satelliteOf": "Satellite",
+        "satelliteOfPlaceholder": "Start typing and select club...",
+        "comments": "Comments"
+      },
+      "user": {
+        "email": "Email",
+        "role": "Role",
+        "password": "Password",
+        "verified": "Verified",
+        "isNewPassword": "Set new password?"
+      },
+      "roles": {
+        "admin": "Administrator",
+        "moderator": "Moderator",
+        "user": "User",
+        "userDisabled": "User muted"
+      }
     }
   }
 }

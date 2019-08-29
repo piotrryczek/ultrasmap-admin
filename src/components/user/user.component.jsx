@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 
 import Paper from '@material-ui/core/Paper';
@@ -42,6 +42,7 @@ function User(props) {
     },
   } = props;
 
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [fields, setFields] = useState({
@@ -108,7 +109,7 @@ function User(props) {
       && password === ''
     ) {
       Object.assign(errors, {
-        password: 'Password has to be filled', // TODO: translate
+        password: t('formErrors.passwordRequired'),
       });
     }
     

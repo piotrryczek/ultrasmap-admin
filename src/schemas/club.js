@@ -3,12 +3,12 @@ import * as yup from 'yup';
 export default yup.object().shape({
   name: yup
     .string()
-    .required(),
+    .required('formErrors.required'),
   logo: yup
     .string(),
   tier: yup
     .number()
-    .required(),
+    .required('formErrors.required'),
   coordinates: yup
     .array().of(yup.string())
     .required(),

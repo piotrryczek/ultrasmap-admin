@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,11 +8,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import { setMessage } from 'components/app/app.actions';
-import { useLabelStyles } from 'theme/useStyles';
+// import { useLabelStyles } from 'theme/useStyles';
 
 function UserForm({
   editType,
@@ -33,6 +36,7 @@ function UserForm({
   isSubmitting,
   isValid
 }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch(); 
 
   const isError = (field) => errors[field] && touched[field];
@@ -52,7 +56,7 @@ function UserForm({
     setFieldValue('isNewPassword', isChecked);
   }, [])
 
-  const labelClasses = useLabelStyles({});
+  // const labelClasses = useLabelStyles({});
 
   return (
     <form onSubmit={handleSubmit}>
@@ -60,8 +64,8 @@ function UserForm({
         <Grid item xs={12}>
           <TextField
             error={isError('email')}
-            helperText={isError('email') ? errors.email : ''}
-            label="Email"
+            helperText={isError('email') ? t(errors.email) : ''}
+            label={t('user.email')}
             value={email}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -70,31 +74,33 @@ function UserForm({
           />
         </Grid>
         <Grid item xs={12}>
-          <InputLabel htmlFor="role" className={labelClasses.fontSize}>Role</InputLabel>
-          <Select
-            error={isError('role')}
-            value={role}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="Role"
-            name="role"
-            inputProps={{
-              id: 'role',
-            }}
-            fullWidth
-          >
-            {roles.map(({ _id: id, name }) => (
-              <MenuItem
-                key={id}
-                value={id}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
+          <FormControl error={isError('role')} fullWidth>
+            <InputLabel htmlFor="role">{t('user.role')}</InputLabel>
+            <Select
+              error={isError('role')}
+              value={role}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder={t('user.role')}
+              name="role"
+              inputProps={{
+                id: 'role',
+              }}
+              fullWidth
+            >
+              {roles.map(({ _id: id, name }) => (
+                <MenuItem
+                  key={id}
+                  value={id}
+                >
+                  {t(`roles.${name}`)}
+                </MenuItem>
+              ))}
+            </Select>
+            {isError('role') && <FormHelperText>{t(errors.role)}</FormHelperText>}
+          </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <InputLabel htmlFor="role" className={labelClasses.fontSize}>Verified</InputLabel>
           <FormControlLabel
             control={(
               <Checkbox
@@ -103,7 +109,7 @@ function UserForm({
                 name="verified"
               />
             )}
-            label="Verified?"
+            label={`${t('user.verified')}?`}
           />
         </Grid>
         {editType === 'update' && (
@@ -116,7 +122,7 @@ function UserForm({
                   name="isNewPassword"
                 />
               )}
-              label="Set new password"
+              label={t('user.isNewPassword')}
             />
           </Grid>
         )}
@@ -124,8 +130,8 @@ function UserForm({
           <Grid item xs={12}>
             <TextField
               error={isError('password')}
-              helperText={isError('password') ? errors.password : ''}
-              label="Password"
+              helperText={isError('password') ? t(errors.password) : ''}
+              label={t('user.password')}
               value={password}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -142,7 +148,7 @@ function UserForm({
             type="submit"
             size="large"
           >
-            Save
+            {t('global.save')}
           </Button>
         </Grid>
       </Grid>

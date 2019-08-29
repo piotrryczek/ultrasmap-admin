@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
 import Typography from '@material-ui/core/Typography';
@@ -6,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { IMAGES_URL } from 'config/config';
 import { parseCoordinates } from 'util/helpers';
@@ -17,7 +19,10 @@ import FieldWrapper from './util/fieldWrapper.component';
 import RelationClub from './util/relationClub.component';
 
 function ClubComparission(props) {
+  const { t } = useTranslation();
+
   const {
+    comment,
     comparision: {
       isNewName,
       isNewTier,
@@ -60,27 +65,41 @@ function ClubComparission(props) {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper elevation={1}>
-          <Field label="Title:" value={name} className={classNames({ 'to-change': isNewName })} />
+          <Field
+            label={`${t('club.name')}:`}
+            value={name}
+            className={classNames({ 'to-change': isNewName })}
+            tooltipText={t(`suggestions.tooltips.${isNewName ? 'change' : 'noChange'}`)}
+          />
           <Divider />
-          <Field label="Tier:" value={tier} className={classNames({ 'to-change': isNewTier })} />
+          <Field
+            label={`${t('club.tier')}:`}
+            value={tier}
+            className={classNames({ 'to-change': isNewTier })}
+            tooltipText={t(`suggestions.tooltips.${isNewTier ? 'change' : 'noChange'}`)}
+          />
           <Divider />
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Logo:
+                {t('club.logo')}
+                :
               </Typography>
             </Grid>
-            <Grid item xs={10}>
-              {logo && (
-                <img src={`${IMAGES_URL}/h180/${logo}`} alt="" className={classNames({ 'to-change': isNewLogo })} />
-              )}
-            </Grid>
+            <Tooltip title={t(`suggestions.tooltips.${isNewLogo ? 'change' : 'noChange'}`)} placement="left">
+              <Grid item xs={10}>
+                {logo && (
+                  <img src={`${IMAGES_URL}/h180/${logo}`} alt="" className={classNames({ 'to-change': isNewLogo })} />
+                )}
+              </Grid>
+            </Tooltip>
           </FieldWrapper>
           <Divider />
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Zgody:
+                {t('club.friendships')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -96,7 +115,8 @@ function ClubComparission(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Układy:
+                {t('club.agreements')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -112,7 +132,8 @@ function ClubComparission(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Pozytywne relacje:
+                {t('club.positives')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -128,7 +149,8 @@ function ClubComparission(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Satelity:
+                {t('club.satellites')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -144,7 +166,8 @@ function ClubComparission(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Satelita innej drużyny:
+                {t('club.satelliteOf')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -153,18 +176,26 @@ function ClubComparission(props) {
               {satelliteOf && <RelationClub type={toAddSatelliteOf ? 'add' : 'no-change'}>{satelliteOf.name}</RelationClub>}
             </Grid>
           </FieldWrapper>
+          {comment && (
+            <>
+              <Divider />
+              <Field label={`${t('club.comments')}:`} value={comment} />
+            </>
+          )}
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <Box
-          className={classNames({
-            'to-change': isNewLocation,
-          })}
-        >
-          <GoogleMapsStaticLocation
-            markerCoordination={parseCoordinates(coordinates)}
-          />
-        </Box>
+        <Tooltip title={t(`suggestions.tooltips.${isNewLocation ? 'change' : 'noChange'}`)} placement="top">
+          <Box
+            className={classNames({
+              'to-change': isNewLocation,
+            })}
+          >
+            <GoogleMapsStaticLocation
+              markerCoordination={parseCoordinates(coordinates)}
+            />
+          </Box>
+        </Tooltip>
       </Grid>
     </Grid>
   );

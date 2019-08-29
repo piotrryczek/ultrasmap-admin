@@ -1,5 +1,6 @@
 import React, { memo, useState, useCallback } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -21,6 +22,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TableHeader(props) {
+  const { t } = useTranslation();
+  const [isRemoveDialogOpened, setIsRemoveDialogOpened] = useState(false);
+
   const {
     handleDelete,
     isAllChecked,
@@ -28,8 +32,6 @@ function TableHeader(props) {
     columns,
     canRemove,
   } = props;
-
-  const [isRemoveDialogOpened, setIsRemoveDialogOpened] = useState(false);
 
   const handleOpenRemoveDialog = useCallback(() => {
     setIsRemoveDialogOpened(true);
@@ -57,7 +59,7 @@ function TableHeader(props) {
                 open={isRemoveDialogOpened}
                 onClose={handleCloseRemoveDialog}
               >
-                <DialogTitle>Are you sure you want to delete?</DialogTitle>
+                <DialogTitle>{t('global.confirmRemove')}</DialogTitle>
                 
                 <DialogActions>
                   <Button
@@ -65,7 +67,7 @@ function TableHeader(props) {
                     variant="contained"
                     color="primary"
                   >
-                    Close
+                    {t('global.close')}
                   </Button>
                   <Button
                     onClick={handleDelete}
@@ -73,7 +75,7 @@ function TableHeader(props) {
                     color="primary"
                     className={buttonClasses.remove}
                   >
-                    Remove
+                    {t('global.remove')}
                   </Button>
                 </DialogActions>
               </Dialog>
@@ -84,7 +86,7 @@ function TableHeader(props) {
                 onClick={handleOpenRemoveDialog}
                 className={classNames(buttonClasses.remove, classes.leftMargin)}
               >
-                Usuń
+                {t('global.remove')}
               </Button>
             </>
           )}
@@ -94,7 +96,7 @@ function TableHeader(props) {
             {label}
           </TableCellMUI>
         ))}
-        <TableCellMUI>Actions</TableCellMUI>
+        <TableCellMUI>{t('global.actions')}</TableCellMUI>
       </TableRowMUI>
     </TableHeadMUI>
   );

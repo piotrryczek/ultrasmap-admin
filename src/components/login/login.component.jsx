@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -9,8 +11,9 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 
 import loginSchema from 'schemas/login';
-
 import Auth from 'services/auth';
+
+import Languages from 'components/languages/languages.component';
 
 const usePaperStyles = makeStyles(theme => ({
   root: {
@@ -25,6 +28,8 @@ const useContainerClasses = makeStyles(() => ({
 }));
 
 function Login() {
+  const { t } = useTranslation();
+
   const handleLogin = useCallback(async (values) => {
     const { email, password } = values;
 
@@ -42,7 +47,7 @@ function Login() {
   return (
     <section id="login">
       <Grid
-        container 
+        container
         alignContent="center"
         alignItems="center"
         justify="center"
@@ -71,8 +76,8 @@ function Login() {
                     <Grid item xs={12}>
                       <TextField
                         error={(errors.email && touched.email)}
-                        helperText={(errors.email && touched.email) ? errors.email : ''}
-                        label="Email"
+                        helperText={(errors.email && touched.email) ? t(errors.email) : ''}
+                        label={t('login.emailLabel')}
                         value={values.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -84,8 +89,8 @@ function Login() {
                     <Grid item xs={12}>
                       <TextField
                         error={(errors.password && touched.password)}
-                        helperText={(errors.password && touched.password) ? errors.password : ''}
-                        label="Password"
+                        helperText={(errors.password && touched.password) ? t(errors.password) : ''}
+                        label={t('login.passwordLabel')}
                         type="password"
                         value={values.password}
                         onChange={handleChange}
@@ -97,7 +102,7 @@ function Login() {
 
                     <Grid item xs={12}>
                       <Box display="flex" justifyContent="center">
-                        <Button variant="contained" color="primary" type="submit">Login</Button>
+                        <Button variant="contained" color="primary" type="submit">{t('login.login')}</Button>
                       </Box>
                     </Grid>
                   </Grid>
@@ -105,6 +110,31 @@ function Login() {
               )}
             />
           </Paper>
+          <Grid item xs={12}>
+            <Box pt={2}>
+              <Languages 
+                renderView={({ languages, currentLanguageCode, handleChangeLanguage }) => (
+                  <ul className="under-login-languages">
+                    {languages.map(({ code, flag }) => ( 
+                      <li
+                        key={code}
+                      >
+                        <button
+                          onClick={handleChangeLanguage(code)}
+                          className={classNames('language-flag', {
+                            selected: currentLanguageCode === code,
+                          })}
+                          type="button"
+                        >
+                          <img src={`/assets/${flag}`} alt="" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              />
+            </Box>
+          </Grid>
         </Grid>
       </Grid>
     </section>

@@ -35,7 +35,7 @@ function Message() {
       <Grid container spacing={0}>
         <Grid item xs={12} className={messageType}>
           <Box p={2}>
-            <Typography variant="body1" align="center">{t(messageCode)}</Typography>
+            <Typography variant="body1" align="center">{t(`messageCodes.${messageCode}`)}</Typography>
           </Box>
         </Grid>
       </Grid>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
@@ -22,6 +23,7 @@ import Auth from 'services/auth';
 import Api from 'services/api';
 
 function Backups() {
+  const { t } = useTranslation();
   const dispatch = useDispatch(); 
 
   const [backups, setBackups] = useState([]);
@@ -88,16 +90,16 @@ function Backups() {
         <Grid container spacing={2}>
           {hasCreateBackupCredential && (
             <Grid item xs={12}>
-              <Button variant="contained" color="primary" type="button" onClick={createBackup} size="large">Create backup</Button>
+              <Button variant="contained" color="primary" type="button" onClick={createBackup} size="large">{t('backups.createBackup')}</Button>
             </Grid>
           )}
           <Grid item xs={12}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>File name</TableCell>
-                  <TableCell>Created at</TableCell>
-                  {hasRestoreBackupCredential && <TableCell>Restore</TableCell>}
+                  <TableCell>{t('backups.fileName')}</TableCell>
+                  <TableCell>{t('backups.createdAt')}</TableCell>
+                  {hasRestoreBackupCredential && <TableCell>{t('backups.restore')}</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -107,7 +109,7 @@ function Backups() {
                     <TableCell>{formatDate(createdAt)}</TableCell>
                     {hasRestoreBackupCredential && (
                       <TableCell>
-                        <Button variant="contained" color="primary" type="button" onClick={handleOpenDialog(fileName)}>Restore</Button>
+                        <Button variant="contained" color="primary" type="button" onClick={handleOpenDialog(fileName)}>{t('backups.restore')}</Button>
                       </TableCell>
                     )}
                   </TableRow>
@@ -119,7 +121,7 @@ function Backups() {
               open={isDialogOpened}
               onClose={handleCloseDialog}
             >
-              <DialogTitle>Are you sure you want to restore this backup?</DialogTitle>
+              <DialogTitle>{t('backups.restoreConfirm')}</DialogTitle>
               
               <DialogActions>
                 <Button
@@ -127,14 +129,14 @@ function Backups() {
                   variant="contained"
                   color="primary"
                 >
-                  Close
+                  {t('global.close')}
                 </Button>
                 <Button
                   onClick={restoreBackup}
                   variant="contained"
                   color="secondary"
                 >
-                  Restore
+                  {t('backups.restore')}
                 </Button>
               </DialogActions>
             </Dialog>

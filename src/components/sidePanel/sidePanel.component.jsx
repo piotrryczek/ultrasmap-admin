@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -15,8 +16,10 @@ import Feedback from '@material-ui/icons/Feedback';
 import Notifications from '@material-ui/icons/Notifications';
 import Backup from '@material-ui/icons/Backup';
 
-import NavigationHOC from 'common/navigationHOC/navigationHOC.component';
 import Auth from 'services/auth';
+import Languages from 'components/languages/languages.component';
+import NavigationHOC from 'common/navigationHOC/navigationHOC.component';
+
 
 const useStyles = makeStyles({
   list: {
@@ -35,6 +38,7 @@ const useStyles = makeStyles({
 });
 
 function SidePanel() {
+  const { t } = useTranslation();
   const classes = useStyles({});
 
   return (
@@ -51,7 +55,7 @@ function SidePanel() {
                   <ListItemIcon className={classes.listItemIcon}>
                     <AccountCircle />
                   </ListItemIcon>
-                  <ListItemText primary="Users" />
+                  <ListItemText primary={t('global.users')} />
                 </ListItem>
               )}
             </NavigationHOC>
@@ -63,7 +67,7 @@ function SidePanel() {
                   <ListItemIcon className={classes.listItemIcon}>
                     <AddCircle />
                   </ListItemIcon>
-                  <ListItemText primary="Add user" />
+                  <ListItemText primary={t('global.addUser')} />
                 </ListItem>
               )}
             </NavigationHOC>
@@ -78,7 +82,7 @@ function SidePanel() {
                   <ListItemIcon className={classes.listItemIcon}>
                     <GroupWork />
                   </ListItemIcon>
-                  <ListItemText primary="Clubs" />
+                  <ListItemText primary={t('global.clubs')} />
                 </ListItem>
               )}
             </NavigationHOC>
@@ -90,7 +94,7 @@ function SidePanel() {
                   <ListItemIcon className={classes.listItemIcon}>
                     <AddCircle />
                   </ListItemIcon>
-                  <ListItemText primary="Add club" />
+                  <ListItemText primary={t('global.addClub')} />
                 </ListItem>
               )}
             </NavigationHOC>
@@ -107,7 +111,7 @@ function SidePanel() {
                     <ListItemIcon className={classes.listItemIcon}>
                       <Feedback />
                     </ListItemIcon>
-                    <ListItemText primary="Suggestions" />
+                    <ListItemText primary={t('global.suggestions')} />
                   </ListItem>
                 )}
               </NavigationHOC>
@@ -125,7 +129,7 @@ function SidePanel() {
                     <ListItemIcon className={classes.listItemIcon}>
                       <Notifications />
                     </ListItemIcon>
-                    <ListItemText primary="Activities" />
+                    <ListItemText primary={t('global.activities')} />
                   </ListItem>
                 )}
               </NavigationHOC>
@@ -143,7 +147,7 @@ function SidePanel() {
                     <ListItemIcon className={classes.listItemIcon}>
                       <Backup />
                     </ListItemIcon>
-                    <ListItemText primary="Backups" />
+                    <ListItemText primary={t('global.backups')} />
                   </ListItem>
                 )}
               </NavigationHOC>
@@ -151,6 +155,26 @@ function SidePanel() {
             <Divider />
           </>
         )}
+
+        <Languages 
+          renderView={({ languages, currentLanguageCode, handleChangeLanguage }) => (
+            <List>
+              {languages.map(({ code, flag, label }) => ( 
+                <ListItem
+                  key={code}
+                  button
+                  onClick={handleChangeLanguage(code)}
+                  selected={currentLanguageCode === code}
+                >
+                  <ListItemIcon className={classes.listItemIcon}>
+                    <img src={`/assets/${flag}`} alt="" className="language-flag-image" />
+                  </ListItemIcon>
+                  <ListItemText primary={label} />
+                </ListItem>
+              ))}
+            </List>
+          )}
+        />
       </div>
     </Paper>
   );

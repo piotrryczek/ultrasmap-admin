@@ -1,5 +1,6 @@
 import React, { useCallback, memo, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -19,6 +20,7 @@ const getCreatedIds = (clubNames, addedClubs) => clubNames.map((clubName) => add
 
 function Suggestion(props) {
   const dispatch = useDispatch(); 
+  const { t } = useTranslation();
 
   const {
     hasUpdateSuggestionCredential,
@@ -132,7 +134,7 @@ function Suggestion(props) {
             size="large"
             onClick={handleApply}
           >
-            Apply
+            {t('suggestions.apply')}
           </Button>
         )}
 
@@ -144,11 +146,11 @@ function Suggestion(props) {
             textColor="primary"
           >
             <Tab
-              label={type === 'new' ? 'New' : 'Before'}
+              label={type === 'new' ? t('global.new') : t('global.before')}
               disabled={(type === 'new')}
               value={type === 'new' ? 'new' : 'before'}
             />
-            <Tab label="After" value="after" />
+            <Tab label={t('global.after')} value="after" />
           </Tabs>
         </Paper>
 
@@ -160,7 +162,7 @@ function Suggestion(props) {
             className={buttonClasses.remove}
             onClick={handleDelete}
           >
-            Reject
+            {t('suggestions.reject')}
           </Button>
         )}
       </Box>

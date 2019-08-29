@@ -1,4 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
+import { useTranslation } from 'react-i18next';
 import update from 'immutability-helper';
 import { useDebouncedCallback } from 'use-debounce';
 import _upperFirst from 'lodash/upperFirst';
@@ -12,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 function Search(props) {
   const [search, setSearch] = useState({});
+  const { t } = useTranslation();
 
   const { searchColumns, onSearch } = props;
 
@@ -42,7 +44,7 @@ function Search(props) {
               </IconButton>
               <InputBase
                 // className={classes.input}
-                placeholder={`${_upperFirst(columnName)}...`}
+                placeholder={`${_upperFirst(t(`columns.${columnName}`))}...`}
                 value={search[columnName]}
                 onChange={updateField(columnName)}
                 fullWidth

@@ -53,3 +53,23 @@ div, img {
     color: $textColor;
   }
 }
+
+.suggestion-title {
+  .suggestion-title-for,
+  .suggestion-title-by,
+  .suggestion-title-date {
+    display: inline-block;
+  }
+
+  .suggestion-title-for {
+    margin-right: 0.25rem;
+  }
+
+  .suggestion-title-by {
+    margin: 0px 0.25rem 0px 0.5rem;
+  }
+
+  .suggestion-title-date {
+    margin-left: 0.5rem;
+  }
+}

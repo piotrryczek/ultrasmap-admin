@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 
 function ImageUploader(props) {
+  const { t } = useTranslation();
   const [previewImage, setPreviewImage]= useState(null);
 
   const {
@@ -49,7 +51,7 @@ function ImageUploader(props) {
       
       <Grid item xs={12}>
         <FormLabel htmlFor={fieldId}>
-          <Button variant="contained" color="primary" component="span">Choose to upload</Button>
+          <Button variant="contained" color="primary" component="span">{t('global.chooseToUpload')}</Button>
           <input
             type="file"
             accept="image/*"

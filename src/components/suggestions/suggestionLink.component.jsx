@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -19,6 +20,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SuggestionLink(props) {
+  const { t } = useTranslation();
+  const classes = useStyles({});
+
   const {
     isChecked,
     onSelect,
@@ -34,8 +38,6 @@ function SuggestionLink(props) {
       user,
     }
   } = props;
-
-  const classes = useStyles({});
 
   const handleChange = useCallback((event) => {
     event.stopPropagation();
@@ -54,7 +56,29 @@ function SuggestionLink(props) {
   }, []);
 
   // eslint-disable-next-line react/jsx-one-expression-per-line
-  const suggestionName = (<>For: <strong>{name}</strong> by: <strong>{user.email}</strong> ({formatDate(createdAt)})</>);
+  const suggestionName = (
+    <div className="suggestion-title">
+      <span className="suggestion-title-for">
+        {t('global.for')}
+        :
+      </span>
+      <strong>{name}</strong>
+      {user && (
+        <>
+          <span className="suggestion-title-by">
+            {t('global.by')}
+            :
+          </span>
+          <strong>{user.email}</strong>
+        </>
+      )}
+      <span className="suggestion-title-date">
+        (
+        {formatDate(createdAt)}
+        )
+      </span>
+    </div>
+  );
 
   return (
     <Box display="flex">

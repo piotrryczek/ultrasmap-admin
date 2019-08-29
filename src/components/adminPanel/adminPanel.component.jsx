@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Switch } from 'react-router';
+import { Switch, Redirect, Route } from 'react-router';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -29,6 +29,7 @@ function AdminPanel() {
         <Grid item xs={10}>
           <Box p={4}>
             <Switch>
+              <Route exact path="/" render={() => <Redirect to="/clubs" />} />
               <RouteAuth exact path="/clubs" component={Clubs} credential="getClub" />
               <RouteAuth exact path="/clubs/new" component={(props) => <Club {...props} editType="new" />} credential="updateClub" />
               <RouteAuth path="/clubs/:id" component={(props) => <Club {...props} editType="update" />} credential="updateClub" />

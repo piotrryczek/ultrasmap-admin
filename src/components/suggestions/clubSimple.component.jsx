@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
 import Typography from '@material-ui/core/Typography';
@@ -17,6 +17,8 @@ import FieldWrapper from './util/fieldWrapper.component';
 import RelationClub from './util/relationClub.component';
 
 function ClubSimple(props) {
+  const { t } = useTranslation();
+
   const {
     type,
     comment,
@@ -44,14 +46,15 @@ function ClubSimple(props) {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper elevation={1}>
-          <Field label="Title:" value={name} className={classNames({ 'to-add': type === 'new'})} />
+          <Field label={`${t('club.name')}:`} value={name} className={classNames({ 'to-add': type === 'new'})} />
           <Divider />
-          <Field label="Tier:" value={tier} className={classNames({ 'to-add': type === 'new'})} />
+          <Field label={`${t('club.tier')}:`} value={tier} className={classNames({ 'to-add': type === 'new'})} />
           <Divider />
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Logo:
+                {t('club.logo')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -64,7 +67,8 @@ function ClubSimple(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Zgody:
+                {t('club.friendships')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -76,7 +80,8 @@ function ClubSimple(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Układy:
+                {t('club.agreements')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -88,7 +93,8 @@ function ClubSimple(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Pozytywne relacje:
+                {t('club.positives')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -100,7 +106,8 @@ function ClubSimple(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Satelity:
+                {t('club.satellites')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -112,7 +119,8 @@ function ClubSimple(props) {
           <FieldWrapper>
             <Grid item xs={2}>
               <Typography color="textSecondary">
-                Satelita innej drużyny:
+                {t('club.satelliteOf')}
+                :
               </Typography>
             </Grid>
             <Grid item xs={10}>
@@ -123,7 +131,7 @@ function ClubSimple(props) {
           {comment && (
             <>
               <Divider />
-              <Field label="Uwagi:" value={comment} />
+              <Field label={`${t('club.comments')}:`} value={comment} />
             </>
           )}
         </Paper>

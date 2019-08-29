@@ -20,11 +20,7 @@ function App() {
 
   if (!jwtToken) history.push('/login');
 
-  const {
-    isAuthenticated,
-  } = useSelector(state => ({
-    isAuthenticated: state.app.isAuthenticated,
-  }), shallowEqual);
+  const isAuthenticated = useSelector(state => state.app.isAuthenticated, shallowEqual);
 
   return (
     <MuiThemeProvider theme={theme}>

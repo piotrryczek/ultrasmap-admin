@@ -3,9 +3,9 @@ import * as yup from 'yup';
 export default yup.object().shape({
   email: yup
     .string()
-    .email()
-    .required(),
+    .email('formErrors.email')
+    .required('formErrors.required'),
   password: yup
     .string()
-    .required(),
+    .required('formErrors.required'),
 });

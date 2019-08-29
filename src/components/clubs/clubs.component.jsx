@@ -1,20 +1,23 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Auth from 'services/auth';
 
 import TableList from 'common/tableList/tableList.component';
 
 function Clubs() {
+  const { t } = useTranslation();
+
   const columns = [{
-    label: 'Name',
+    label: t('club.name'),
     name: 'name',
     type: 'text'
   }, {
-    label: 'Logo',
+    label: t('club.logo'),
     name: 'logo',
     type: 'image',
     alignment: 'center',
   }, {
-    label: 'Tier',
+    label: t('club.tier'),
     name: 'tier',
     type: 'text',
   }];

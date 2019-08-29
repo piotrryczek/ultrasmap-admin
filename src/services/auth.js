@@ -29,6 +29,8 @@ class Auth {
   
       this.dispatch(setMessage('success', 'LOGIN_SUCCESS'));
       this.dispatch(setIsAuthenticated(true, credentials));
+
+      history.push('/clubs');
     } catch (error) {
       const {
         response: {
@@ -68,11 +70,6 @@ class Auth {
     const { credentials } = this.getState().app;
 
     return credentials.includes(credential);
-  }
-
-  // TODO: hasCredentialApi
-  hasCredentialApi = (credential) => {
-
   }
 
   verifyApiError = (error) => {

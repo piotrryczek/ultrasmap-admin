@@ -1,5 +1,5 @@
 import React from 'react';
-import RelationClub from '../util/relationClub.component';
+import RelationClub from './relationClub.component';
 
 function AfterRelations(props) {
   const {
@@ -8,7 +8,6 @@ function AfterRelations(props) {
     toAdd,
     toCreate,
   } = props;
-
 
   return (
     <>

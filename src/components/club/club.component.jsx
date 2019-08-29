@@ -10,9 +10,7 @@ import { prepareClubFormData } from 'util/helpers';
 import history from 'config/history';
 import clubSchema from 'schemas/club';
 import Api from 'services/api';
-
 import { setMessage } from 'components/app/app.actions';
-
 import ClubForm from './clubForm.component';
 
 const parseClubsToOptions = clubs  => clubs.map(({ name: clubName, _id }) => ({ label: clubName, value: _id }));
@@ -147,7 +145,7 @@ function Club(props) {
 
     if (allRelations.length > 0 && allRelations.length !== uniqueAllRelations.length) {
       Object.assign(errors, {
-        relationsNotUnique: 'Relations have to be unique', // TODO: Translatiom
+        relationsNotUnique: 'formErrors.relationsNotUnique',
       });
     }   
 
