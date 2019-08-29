@@ -102,7 +102,9 @@ function Suggestion(props) {
     }
 
     // Remove suggestion
-    await Api.delete(`/suggestions/${suggestionId}`);
+    await Api.patch(`/suggestions/${suggestionId}/status`, {
+      status: 'applied',
+    });
 
     dispatch(setMessage('success', 'SUGGESTION_APPLIED'));
 

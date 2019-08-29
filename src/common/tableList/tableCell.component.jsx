@@ -1,6 +1,9 @@
 import React from 'react'
-import TableCellMUI from '@material-ui/core/TableCell';
 import _get from 'lodash/get';
+
+import TableCellMUI from '@material-ui/core/TableCell';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { IMAGES_URL } from 'config/config';
 
@@ -26,6 +29,14 @@ const renderValue = (data, column) => {
       return (
         <img src={`${IMAGES_URL}/h180/${imageSrc}`} alt="" className="table-image" />
       );
+    }
+
+    case 'boolean': {
+      if (data[name]) {
+        return (<CheckIcon />);
+      }
+
+      return (<CloseIcon />);
     }
 
     default:

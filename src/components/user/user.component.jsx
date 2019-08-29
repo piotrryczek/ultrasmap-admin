@@ -17,6 +17,7 @@ import UserForm from './userForm.component';
 const parseUserData = (data) => {
   const {
     email,
+    verified,
     role: {
       _id: roleId,
     },
@@ -26,6 +27,7 @@ const parseUserData = (data) => {
     email,
     role: roleId,
     password: '',
+    verified,
     isNewPassword: false,
   };
 };
@@ -46,6 +48,7 @@ function User(props) {
     email: '',
     role: '',
     password: '',
+    verified: false,
     isNewPassword: false,
   });
   const [roles, setRoles] = useState([]);

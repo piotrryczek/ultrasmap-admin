@@ -20,6 +20,7 @@ function UserForm({
     email,
     role,
     password,
+    verified,
     isNewPassword,
   },
   errors,
@@ -91,6 +92,19 @@ function UserForm({
               </MenuItem>
             ))}
           </Select>
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel htmlFor="role" className={labelClasses.fontSize}>Verified</InputLabel>
+          <FormControlLabel
+            control={(
+              <Checkbox
+                checked={verified}
+                onChange={handleChange}
+                name="verified"
+              />
+            )}
+            label="Verified?"
+          />
         </Grid>
         {editType === 'update' && (
           <Grid item xs={12}>

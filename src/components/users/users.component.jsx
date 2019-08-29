@@ -14,6 +14,10 @@ function Users() {
     name: 'role',
     type: 'text',
     field: 'role.name',
+  }, {
+    label: 'Verified',
+    name: 'verified',
+    type: 'boolean'
   }];
 
   const searchColumns = ['email'];
