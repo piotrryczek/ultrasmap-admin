@@ -2,6 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import _find from 'lodash/find';
+import _get from 'lodash/get';
 
 import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
@@ -9,13 +10,15 @@ import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { useButtonStyles } from 'theme/useStyles';
-import { setMessage } from 'components/app/app.actions';
+import { setMessage, setIsLoading } from 'components/app/app.actions';
 import Api from 'services/api';
 import Auth from 'services/auth';
 
@@ -24,10 +27,11 @@ import Pagination from 'common/pagination/pagination.component';
 import Suggestion from './suggestion.component';
 import SuggestionLink from './suggestionLink.component';
 
-function Suggestions() {
+function Suggestions(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch(); 
   const buttonClasses = useButtonStyles({});
+  const page = +(_get(props, 'match.params.page', 1));
 
   const hasUpdateSuggestionCredential = Auth.hasCredentialLocal('updateSuggestion');
 
@@ -36,7 +40,6 @@ function Suggestions() {
     currentSuggestionId: '',
     selected: [],
     allCount: 0,
-    page: 1,
   });
 
   const {
@@ -44,23 +47,15 @@ function Suggestions() {
     currentSuggestionId,
     selected,
     allCount,
-    page,
   } = state;
 
   useEffect(() => {
     fetchData();
   }, [page]);
 
-  const changePage = useCallback((newPage) => {
-    setState(prevState => ({
-      ...prevState,
-      page: newPage,
-      selected: [],
-    }));
-  }, [page]);
-
-
   const fetchData = useCallback(async () => {
+    dispatch(setIsLoading(true));
+
     const {
       data: suggestions,
       allCount
@@ -74,6 +69,8 @@ function Suggestions() {
       allCount,
       suggestions,
     }));
+
+    dispatch(setIsLoading(false));
   }, [page]);
 
   const handleCurrentSuggestionChange = useCallback((newCurrentSuggestionId) => {
@@ -87,7 +84,6 @@ function Suggestions() {
     setState(prevState => ({
       ...prevState,
       selected: [],
-      page: 1,
     }));
 
     if (page === 1) {
@@ -109,9 +105,11 @@ function Suggestions() {
     }));
   }, []);
 
-  const handleDelete = useCallback(async (passedSelected = null) => {
+  const handleDelete = useCallback(async () => {
+    dispatch(setIsLoading(true));
+
     await Api.delete('/suggestions', {
-      ids: Array.isArray(passedSelected) ? passedSelected : selected,
+      ids: selected, 
     });
 
     dispatch(setMessage('success', 'REMOVE_SUCCESS'));
@@ -121,9 +119,28 @@ function Suggestions() {
     setState(prevState => ({
       ...prevState,
       selected: [],
-      page: 1,
     }));
+
+    dispatch(setIsLoading(false));
   }, [selected]);
+
+  const handleSingleDelete = useCallback(async (suggestionId, withMute = false) => {
+    dispatch(setIsLoading(true));
+
+    await Api.delete(`/suggestions/${suggestionId}`, {
+      withMute,
+    });
+
+    if (page === 1) fetchData();
+
+    setState(prevState => ({
+      ...prevState,
+      selected: [],
+    }));
+
+    dispatch(setMessage('success', 'REMOVE_SUCCESS'));
+    dispatch(setIsLoading(false));
+  }, []);
 
   const [isRemoveDialogOpened, setIsRemoveDialogOpened] = useState(false);
 
@@ -162,7 +179,7 @@ function Suggestions() {
               open={isRemoveDialogOpened}
               onClose={handleCloseRemoveDialog}
             >
-              <DialogTitle>{t('suggestions.removeConfirm')}</DialogTitle>
+              <DialogTitle>{t('suggestions.removeConfirm', { nrItems: selected.length })}</DialogTitle>
               
               <DialogActions>
                 <Button
@@ -187,24 +204,29 @@ function Suggestions() {
           </>
         )}
         <List>
-          {suggestions.map(suggestion => (
-            <SuggestionLink
-              key={suggestion._id}
-              suggestion={suggestion}
-              isCurrent={suggestion._id === currentSuggestionId}
-              onCurrentChange={handleCurrentSuggestionChange}
-              onSelect={handleSelect}
-              onDeselect={handeDeselect}
-              isChecked={selected.includes(suggestion._id)}
-            />
-          ))}
+          {suggestions.length > 0 ? 
+            suggestions.map(suggestion => (
+              <SuggestionLink
+                key={suggestion._id}
+                suggestion={suggestion}
+                isCurrent={suggestion._id === currentSuggestionId}
+                onCurrentChange={handleCurrentSuggestionChange}
+                onSelect={handleSelect}
+                onDeselect={handeDeselect}
+                isChecked={selected.includes(suggestion._id)}
+              />
+            )) : (
+              <ListItem>
+                <ListItemText primary={t('suggestions.noSuggestions')} />
+              </ListItem>
+            )}
         </List>
       </Box>
       <Box mb={2}>
         <Pagination
           page={page}
           allCount={allCount}
-          changePage={changePage}
+          basePath="/suggestions"
         />
       </Box>
 
@@ -214,7 +236,7 @@ function Suggestions() {
         <Suggestion
           suggestion={currentSuggestion}
           reload={reload}
-          remove={handleDelete}
+          remove={handleSingleDelete}
           hasUpdateSuggestionCredential={hasUpdateSuggestionCredential}
         />
       )}

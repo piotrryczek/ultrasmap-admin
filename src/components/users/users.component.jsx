@@ -1,34 +1,33 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useMemo } from 'react';
 import Auth from 'services/auth';
 
 import TableList from 'common/tableList/tableList.component';
 
 function Users() {
-  const { t } = useTranslation();
-
-  const columns = [{
-    label: t('user.email'),
+  const columns = useMemo(() => ([{
     name: 'email',
     type: 'text'
   }, {
-    label: t('user.role'),
     name: 'role',
     type: 'text',
     field: 'role.name',
+    translate: 'roles',
   }, {
-    label: t('user.verified'),
     name: 'verified',
     type: 'boolean'
-  }];
+  }]), []);
 
-  const searchColumns = ['email'];
+  const searchColumns = useMemo(() => ([{
+    name: 'email',
+    type: 'text',
+  }]), []);
   
   const hasEditCredential = Auth.hasCredentialLocal('updateUser');
 
   return (
     <TableList
       apiPath="/users"
+      adminPath="/users"
       canAdd
       canEdit
       columns={columns}

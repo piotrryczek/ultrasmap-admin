@@ -2,11 +2,13 @@
   "pl": {
     "translation": {
       "messageCodes": {
+        "NETWORK_ERROR": "Problem z połączeniem.",
+        "UNKNOWN_ERROR": "Nieznany błąd.",
         "LOGIN_FAILED": "Logowanie nieudane",
         "LOGIN_SUCCESS": "Zalogowałeś się",
         "LOGOUT_SUCCESS": "Wylogowałeś się",
         "USER_WITH_EMAIL_EXISTS": "Użytkownik z podanym adresem email już istnieje w bazie",
-        "NOT_AUTHORIZED": "Nie posiadasz uprawnień do dokonania tej akcji, zostałeś automatycznie wylogowany, zaloguj się ponownie.",
+        "NOT_AUTHORIZED": "Nie posiadasz uprawnień do dokonania tej akcji. Jeśli byłeś wcześniej zalogowany zostałeś automatycznie wylogowany, zaloguj się ponownie.",
         "CLUB_WITH_NANE_EXISTS": "Klub o tej nazwie już istnieje",
         "USER_ADDED_SUCCESS": "Użytkownik został dodany",
         "USER_UPDATED_SUCCESS": "Użytkownik został zaktualizowany",
@@ -46,12 +48,21 @@
         "new": "Nowy",
         "logout": "Wyloguj się",
         "chooseToUpload": "Wybierz plik",
-        "confirmRemove": "Jesteś pewny, że chcesz usunąć?",
-        "actions": "Akcje"
+        "confirmRemove": "Jesteś pewny, że chcesz usunąć ({{nrItems}} element(ów))?",
+        "actions": "Akcje",
+        "searchPlaces": "Wyszukaj miejsca..."
       },
       "columns": {
+        "_id": "Identyfikator",
+        "role": "Rola",
+        "verified": "Zweryfikowany",
         "email": "Email",
-        "name": "Nazwa"
+        "name": "Nazwa",
+        "objectType": "Typ obiektu",
+        "actionType": "Typ akcji",
+        "user": "Użytkownik",
+        "tier": "Znaczenie / Siła",
+        "logo": "Logo / herb"
       },
       "login": {
         "login": "Zaloguj się",
@@ -66,10 +77,12 @@
         "restoreConfirm": "Jesteś pewny, że chcesz przywrócić ten backup?"
       },
       "suggestions": {
-        "removeConfirm": "Jesteś pewny, że chcesz usunąć sugestię?",
+        "removeConfirm": "Jesteś pewny, że chcesz usunąć ({{nrItems}}) sugestie(ę)?",
+        "removeConfirmSingle": "Jesteś pewny, że chcesz odrzucić tę sugestię? Jeśli uważasz za stosowne możesz też wyciszyć użytkownika. Wtedy zostaną też usunięte jego pozostałe sugestie.",
         "apply": "Zatwierdź",
         "reject": "Odrzuć",
         "rejectAndMute": "Odrzuć i wycisz",
+        "noSuggestions": "Obecnie brak sugestii.",
         "tooltips": {
           "toRemove": "Do usunięcia",
           "noChange": "Bez zmiany",
@@ -106,17 +119,39 @@
         "moderator": "Moderator",
         "user": "Użytkownik",
         "userDisabled": "Użytkownik wyciszony"
+      },
+      "objectTypes": {
+        "club": "Klub",
+        "user": "Użytkownik",
+        "suggestion": "Sugestia"
+      },
+      "actionTypes": {
+        "add": "Dodanie",
+        "remove": "Usunięcie",
+        "update": "Aktualizacja",
+        "apply": "Zaaprobowanie"
+      },
+      "activity": {
+        "id": "Identyfikator",
+        "objectType": "Typ obiektu",
+        "actionType": "Typ akcji",
+        "user": "Użytkownik"
+      },
+      "tableTooltips": {
+        "clubLogo": "Zwróć uwagę na narzucone pomocnicze szare tło. Jeśli tło jest białe bądź inne niż szare znaczy to najprawdopodobniej, że obrazek nie posiada przezroczystego tła i mogą występowac problemy z jego estetycznym wyświetlaniem."
       }
     }
   },
   "en": {
     "translation": {
       "messageCodes": {
+        "NETWORK_ERROR": "Connection problem.",
+        "UNKNOWN_ERROR": "Unknow error.",
         "LOGIN_FAILED": "Login failed",
         "LOGIN_SUCCESS": "You have logged in",
         "LOGOUT_SUCCESS": "You have logged out",
         "USER_WITH_EMAIL_EXISTS": "User with provided email already exists in database",
-        "NOT_AUTHORIZED": "You do not have permission to complete this action, you have been automatically logged out, sign in again.",
+        "NOT_AUTHORIZED": "You do not have permission to complete this action, if you have been logged in before you have been automatically logged out, sign in again.",
         "CLUB_WITH_NANE_EXISTS": "Club with provided name already exists in database",
         "USER_ADDED_SUCCESS": "User has been added",
         "USER_UPDATED_SUCCESS": "User has been updated",
@@ -156,12 +191,21 @@
         "new": "New",
         "logout": "Sign out",
         "chooseToUpload": "Choose a file",
-        "confirmRemove": "Are you sure you want to remove?",
-        "actions": "Actions"
+        "confirmRemove": "Are you sure you want to remove ({{nrItems}} item(s))?",
+        "actions": "Actions",
+        "searchPlaces": "Search places..."
       },
       "columns": {
+        "_id": "ID",
+        "role": "Role",
+        "verified": "Verified",
         "email": "Email",
-        "name": "Name"
+        "name": "Name",
+        "objectType": "Object type",
+        "actionType": "Action type",
+        "user": "User",
+        "tier": "Importance / strength",
+        "logo": "Logo"
       },
       "login": {
         "login": "Sign in",
@@ -176,10 +220,12 @@
         "restoreConfirm": "Are you sure you want to restore this backups?"
       },
       "suggestions": {
-        "removeConfirm": "Are you sure you want to remove suggestion(s)?",
+        "removeConfirm": "Are you sure you want to remove ({{nrItems}}) suggestion(s)?",
+        "removeConfirmSingle": "Are you sure you want to remove this suggestion? If you think it is appropriate you can mute it's author. It will also remove all other user suggestions",
         "apply": "Apply",
         "reject": "Reject",
         "rejectAndMute": "Reject and mute",
+        "noSuggestions": "Currently there are no suggestions.",
         "tooltips": {
           "toRemove": "To remove",
           "noChange": "No change",
@@ -216,6 +262,26 @@
         "moderator": "Moderator",
         "user": "User",
         "userDisabled": "User muted"
+      },
+      "objectTypes": {
+        "club": "Club",
+        "user": "User",
+        "suggestion": "Suggestion"
+      },
+      "actionTypes": {
+        "add": "Add",
+        "remove": "Remove",
+        "update": "Update",
+        "apply": "Apply"
+      },
+      "activity": {
+        "id": "ID",
+        "objectType": "Object type",
+        "actionType": "Action type",
+        "user": "User"
+      },
+      "tableTooltips": {
+        "clubLogo": "Note the imposed gray background. If the background is white or other than gray, it probably means that the image does not have a transparent background and there may be problems with proper display."
       }
     }
   }

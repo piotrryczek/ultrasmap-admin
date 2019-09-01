@@ -10,7 +10,7 @@ import history from 'config/history';
 import userSchema from 'schemas/user';
 import Api from 'services/api';
 
-import { setMessage } from 'components/app/app.actions';
+import { setMessage, setIsLoading } from 'components/app/app.actions';
 
 import UserForm from './userForm.component';
 
@@ -86,6 +86,8 @@ function User(props) {
       });
     }
 
+    dispatch(setIsLoading(true));
+
     if (editType === 'new') {
       const { data: userId } = await Api.post(`/users`, restValues);
 
@@ -97,6 +99,8 @@ function User(props) {
 
       dispatch(setMessage('success', 'USER_UPDATED_SUCCESS'));
     }
+
+    dispatch(setIsLoading(false));
   }, []);
 
   const handleValidate = useCallback(async (values) => {

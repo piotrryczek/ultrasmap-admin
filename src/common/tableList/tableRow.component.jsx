@@ -48,29 +48,18 @@ function TableRow(props) {
         />
       ))}
 
-      <TableCellMUI>
-        {canEdit && hasEditCredential && (
-          <Link to={`${apiPath}/${singleData._id}`}>
-            <Button variant="contained" color="primary">Edytuj</Button>
-          </Link>
-        )}
-      </TableCellMUI>
+      {hasEditCredential && (
+        <TableCellMUI>
+          {canEdit && hasEditCredential && (
+            <Link to={`${apiPath}/${singleData._id}`}>
+              <Button variant="contained" color="primary">Edytuj</Button>
+            </Link>
+          )}
+        </TableCellMUI>
+      )}
+      
     </TableRowMUI>
   )
 }
 
-const TableRowMemozied = memo(({ singleData, columns, isChecked, onSelect, onDeselect, canEdit, apiPath, hasEditCredential }) => (
-  <TableRow
-    singleData={singleData}
-    columns={columns}
-    isChecked={isChecked}
-    onSelect={onSelect}
-    onDeselect={onDeselect}
-    canEdit={canEdit}
-    apiPath={apiPath}
-    hasEditCredential={hasEditCredential}
-  />
-));
-TableRowMemozied.displayName = 'TableRow';
-
-export default TableRowMemozied;
+export default memo(TableRow);

@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import useDeepCompareEffect from 'use-deep-compare-effect';
+import _get from 'lodash/get';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TableMUI from '@material-ui/core/Table';
 
 import Api from 'services/api';
+import history from 'config/history';
 
 import Pagination from 'common/pagination/pagination.component';
-import { setMessage } from 'components/app/app.actions';
+import { setMessage, setIsLoading } from 'components/app/app.actions';
 
 import Search from './search.component';
 import TableHeader from './tableHeader.component';
@@ -20,14 +23,12 @@ function TableList(props) {
   const [state, setState] = useState({
     data: [],
     allCount: 0,
-    page: 1,
     selected: [],
     search: {},
   });
 
   const {
     data,
-    page,
     allCount,
     selected,
     search,
@@ -35,20 +36,25 @@ function TableList(props) {
 
   const {
     apiPath,
+    adminPath,
     canEdit,
     columns,
     searchColumns = [],
     hasEditCredential,
   } = props;
 
-  useEffect(() => {
+  const page = +(_get(props, 'match.params.page', 1));
+
+  useDeepCompareEffect(() => {
     fetchData();
   }, [page, search]);
 
   const fetchData = async () => {
+    dispatch(setIsLoading(true));
+
     const { data, allCount } = await Api.get(apiPath, {
       page,
-      search,
+      search
     });
 
     setState(prevState => ({
@@ -56,23 +62,18 @@ function TableList(props) {
       data,
       allCount,
     }));
-  };
 
-  const changePage = useCallback((newPage) => {
-    setState(prevState => ({
-      ...prevState,
-      page: newPage,
-      selected: [],
-    }));
-  }, [page]);
+    dispatch(setIsLoading(false));
+  };
 
   const searchItems = useCallback((searchData) => {
     setState(prevState => ({
       ...prevState,
-      page: 1,
       search: searchData,
       selected: [],
     }));
+
+    history.push(`${adminPath}/page/1`);
   }, []);
 
   const handleSelect = useCallback((id) => {
@@ -90,10 +91,13 @@ function TableList(props) {
   }, []);
 
   const handleDelete = useCallback(async () => {
+    dispatch(setIsLoading(true));
+
     await Api.delete(apiPath, {
       ids: selected,
     });
 
+    dispatch(setIsLoading(false));
     dispatch(setMessage('success', 'REMOVE_SUCCESS'));
 
     if (page === 1) fetchData();
@@ -134,6 +138,8 @@ function TableList(props) {
                 toggleSelected={handleToggleSelected}
                 handleDelete={handleDelete}
                 canRemove={(selected.length > 0 && hasEditCredential)}
+                selected={selected}
+                hasEditCredential={hasEditCredential}
               />
               <TableBody
                 data={data}
@@ -152,7 +158,8 @@ function TableList(props) {
         <Pagination
           page={page}
           allCount={allCount}
-          changePage={changePage}
+          // changePage={changePage}
+          basePath={adminPath}
         />
       </Grid>
     </>

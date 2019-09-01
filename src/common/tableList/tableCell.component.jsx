@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import _get from 'lodash/get';
 
 import TableCellMUI from '@material-ui/core/TableCell';
@@ -7,20 +8,20 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { IMAGES_URL } from 'config/config';
 
-const renderValue = (data, column) => {
+const renderValue = (data, column, t) => {
   const {
     type,
     name,
     field,
+    translate,
   } = column;
 
   switch (type) {
     case 'text': {
-      if (field) {
-        return _get(data, field);
-      }
-
-      return data[name];
+      const fieldValue = field ? _get(data, field) : data[name];
+      const finalValue = translate ? t(`${translate}.${fieldValue}`) : fieldValue;
+      
+      return finalValue;
     }
 
     case 'image': {
@@ -45,6 +46,8 @@ const renderValue = (data, column) => {
 };
 
 function TableCell(props) {
+  const { t } = useTranslation();
+
   const {
     column,
     column: {
@@ -54,7 +57,7 @@ function TableCell(props) {
   } = props;
 
   return (
-    <TableCellMUI align={alignment}>{renderValue(data, column)}</TableCellMUI>
+    <TableCellMUI align={alignment}>{renderValue(data, column, t)}</TableCellMUI>
   );
 }
 

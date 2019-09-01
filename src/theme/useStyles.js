@@ -11,6 +11,9 @@ export const useButtonStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: darken(theme.palette.error.main, 0.2)
     }
+  },
+  rightMargin: {
+    marginRight: theme.spacing(2),
   }
 }));
 

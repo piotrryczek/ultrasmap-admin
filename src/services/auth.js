@@ -1,3 +1,5 @@
+import _get from 'lodash/get';
+
 import store from 'config/store';
 import Api from 'services/api';
 import history from 'config/history';
@@ -13,7 +15,6 @@ class Auth {
     this.dispatch = dispatch;
   }
 
-  // TODO: Only admin and moderator can be loggedIn (credential enterAdminPanel)
   login = async (email, password) => {
     try {
       const {
@@ -22,7 +23,10 @@ class Auth {
       } = await Api.post('/users/login', {
         email,
         password,
+        adminPanel: true,
       });
+
+      if (!credentials.includes('enterAdminPanel')) throw new Error('NOT_AUTHORIZED');
   
       localStorage.setItem('jwtToken', jwtToken);
       localStorage.setItem('credentials', credentials);
@@ -32,13 +36,7 @@ class Auth {
 
       history.push('/clubs');
     } catch (error) {
-      const {
-        response: {
-          data: {
-            type,
-          },
-        },
-      } = error;
+      const type = _get(error, 'response.data.type', error.message);
       
       this.dispatch(setMessage('error', type));
     }
@@ -55,9 +53,9 @@ class Auth {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('credentials');
 
-    history.push('/login');
-
     this.dispatch(setIsAuthenticated(false));
+
+    history.push('/login');
 
     if (message) {
       const { type, code } = message;
@@ -66,10 +64,14 @@ class Auth {
     }
   }
 
-  hasCredentialLocal = (credential) => {
+  hasCredentialLocal = (credentialOrCredentials) => {
     const { credentials } = this.getState().app;
 
-    return credentials.includes(credential);
+    if (Array.isArray(credentialOrCredentials)) {
+      return credentialOrCredentials.every(credentialToCheck => credentials.includes(credentialToCheck));
+    }
+
+    return credentials.includes(credentialOrCredentials);
   }
 
   verifyApiError = (error) => {

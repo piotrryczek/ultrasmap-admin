@@ -25,7 +25,6 @@ function ClubComparission(props) {
     comment,
     comparision: {
       isNewName,
-      isNewTier,
       isNewLogo,
       isNewLocation,
       toAddFriendships,
@@ -44,7 +43,6 @@ function ClubComparission(props) {
     data: {
       name,
       logo,
-      tier,
       location: {
         coordinates,
       },
@@ -70,13 +68,6 @@ function ClubComparission(props) {
             value={name}
             className={classNames({ 'to-change': isNewName })}
             tooltipText={t(`suggestions.tooltips.${isNewName ? 'change' : 'noChange'}`)}
-          />
-          <Divider />
-          <Field
-            label={`${t('club.tier')}:`}
-            value={tier}
-            className={classNames({ 'to-change': isNewTier })}
-            tooltipText={t(`suggestions.tooltips.${isNewTier ? 'change' : 'noChange'}`)}
           />
           <Divider />
           <FieldWrapper>

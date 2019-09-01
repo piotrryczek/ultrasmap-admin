@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import SelectAutocomplete from 'react-select';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { GoogleMap, Marker, withScriptjs, withGoogleMap } from 'react-google-maps';
+import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -21,9 +21,10 @@ import { DEFAULT_COORDINATES, IMAGES_URL } from 'config/config';
 import { parseCoordinates } from 'util/helpers';
 import Api from 'services/api';
 
+import AddressSearch from 'common/addressSearch/addressSearch.component';
 import ImageUploader from 'common/imageUploader/ImageUploader.component';
 
-const GoogleMapLocation = withScriptjs(withGoogleMap((props) => {
+const GoogleMapLocation = withGoogleMap((props) => {
   const {
     markerCoordination,
     setFieldValue,
@@ -39,6 +40,7 @@ const GoogleMapLocation = withScriptjs(withGoogleMap((props) => {
     <GoogleMap
       defaultZoom={8}
       defaultCenter={markerCoordination}
+      center={markerCoordination}
     >
       <Marker
         position={markerCoordination}
@@ -47,7 +49,7 @@ const GoogleMapLocation = withScriptjs(withGoogleMap((props) => {
       />
     </GoogleMap>
   );
-}));
+});
 
 function ClubForm({
   clubId,
@@ -107,7 +109,6 @@ function ClubForm({
     return newValue;
   }
 
-  // TODO: Possibly will return error when clear satelliteOf
   const handleLogoChange = useCallback((file) => {
     setFieldValue('newLogo', file);
   }, []);
@@ -135,6 +136,10 @@ function ClubForm({
     updatePossibleClubRelations(clubsOptions);
   }, 500);
 
+  const handleCoordinatesChange = useCallback((coordinates) => {
+    setFieldValue('coordinates', coordinates);
+  }, []);
+
   const finalCoordination= parseCoordinates(coordinates || DEFAULT_COORDINATES);
 
   const labelClasses = useLabelStyles({}); 
@@ -143,14 +148,19 @@ function ClubForm({
     <form onSubmit={handleSubmit}>
 
       {(editType === 'new' || initiallyLoaded) && (
-        <GoogleMapLocation
-          markerCoordination={finalCoordination}
-          setFieldValue={setFieldValue}
-          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-        />
+        <div className="location-wrapper">
+          <GoogleMapLocation
+            markerCoordination={finalCoordination}
+            setFieldValue={setFieldValue}
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `400px` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
+
+          <AddressSearch onChange={handleCoordinatesChange} />
+        </div>
+        
       )}
 
       <Box p={3}>

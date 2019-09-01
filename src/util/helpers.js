@@ -28,7 +28,6 @@ export const parseClubsToIds = clubs => clubs.map(club => club._id);
 export const compareSuggestionBeforeAfter = (original, data) => {
   const comparision = {
     isNewName: false,
-    isNewTier: false,
     isNewLogo: false,
     isNewLocation: false,
     toAddFriendships: [],
@@ -44,7 +43,6 @@ export const compareSuggestionBeforeAfter = (original, data) => {
   };
 
   if (original.name !== data.name) _set(comparision, 'isNewName', true);
-  if (original.tier !== data.tier) _set(comparision, 'isNewTier', true);
   if (original.logo !== data.logo) _set(comparision, 'isNewLogo', true);
   if (!_isEqual(original.location.coordinates, data.location.coordinates)) _set(comparision, 'isNewLocation', true);
 
@@ -101,11 +99,11 @@ export const prepareClubFormData = ({
   positives,
   satellites,
   satelliteOf,
-}) => {
+}, excludes = []) => {
   const formData = new FormData();
   formData.append('name', name);
   formData.append('logo', logo);
-  formData.append('tier', tier);
+  if (!excludes.includes('tier')) formData.append('tier', tier);
   formData.append('location', JSON.stringify(coordinates));
   formData.append('friendships', JSON.stringify(friendships));
   formData.append('agreements', JSON.stringify(agreements));
@@ -117,3 +115,8 @@ export const prepareClubFormData = ({
 
   return formData;
 };
+
+export const translateChoices = (t, choices, translate) => choices.map(choice => ({
+  value: choice,
+  label: t(`${translate}.${choice}`),
+}))

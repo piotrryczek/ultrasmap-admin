@@ -10,7 +10,7 @@ import { prepareClubFormData } from 'util/helpers';
 import history from 'config/history';
 import clubSchema from 'schemas/club';
 import Api from 'services/api';
-import { setMessage } from 'components/app/app.actions';
+import { setMessage, setIsLoading } from 'components/app/app.actions';
 import ClubForm from './clubForm.component';
 
 const parseClubsToOptions = clubs  => clubs.map(({ name: clubName, _id }) => ({ label: clubName, value: _id }));
@@ -78,10 +78,12 @@ function Club(props) {
   });
 
   const fetchData = async () => {
+    dispatch(setIsLoading(true));
     const { data: clubData } = await Api.get(`/clubs/${clubId}`);
 
     setFields(parseClubData(clubData));
     setInitiallyLoaded(true);
+    dispatch(setIsLoading(false));
   }
 
   useEffect(() => {
@@ -117,6 +119,8 @@ function Club(props) {
       satelliteOf: satelliteOf ? satelliteOf.value : null,
     });
 
+    dispatch(setIsLoading(true));
+
     if (editType === 'new') {
       const { data: clubId } = await Api.post(`/clubs`, formData);
 
@@ -127,6 +131,8 @@ function Club(props) {
 
       dispatch(setMessage('success', 'CLUB_UPDATED_SUCCESS'));
     }
+
+    dispatch(setIsLoading(false));
   }, []);
 
   const handleValidate = useCallback(async (values) => {

@@ -1,34 +1,34 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useMemo } from 'react';
 import Auth from 'services/auth';
 
 import TableList from 'common/tableList/tableList.component';
 
-function Clubs() {
-  const { t } = useTranslation();
-
-  const columns = [{
-    label: t('club.name'),
+function Clubs(props) {
+  const columns = useMemo(() => ([{
     name: 'name',
     type: 'text'
   }, {
-    label: t('club.logo'),
     name: 'logo',
     type: 'image',
     alignment: 'center',
+    headerTooltip: 'clubLogo',
   }, {
-    label: t('club.tier'),
     name: 'tier',
     type: 'text',
-  }];
+  }]), []);
 
-  const searchColumns = ['name'];
+  const searchColumns = useMemo(() => ([{
+    name: 'name',
+    type: 'text',
+  }]), []);
 
   const hasEditCredential = Auth.hasCredentialLocal('updateClub');
 
   return (
     <TableList
+      {...props}
       apiPath="/clubs"
+      adminPath="/clubs"
       canAdd
       canEdit
       columns={columns}

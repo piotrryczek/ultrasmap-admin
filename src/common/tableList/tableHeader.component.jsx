@@ -8,10 +8,13 @@ import TableHeadMUI from '@material-ui/core/TableHead';
 import TableRowMUI from '@material-ui/core/TableRow';
 import TableCellMUI from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+import HelpIcon from '@material-ui/icons/Help';
 
 import { useButtonStyles } from 'theme/useStyles';
 
@@ -31,6 +34,8 @@ function TableHeader(props) {
     toggleSelected,
     columns,
     canRemove,
+    selected,
+    hasEditCredential,
   } = props;
 
   const handleOpenRemoveDialog = useCallback(() => {
@@ -59,7 +64,7 @@ function TableHeader(props) {
                 open={isRemoveDialogOpened}
                 onClose={handleCloseRemoveDialog}
               >
-                <DialogTitle>{t('global.confirmRemove')}</DialogTitle>
+                <DialogTitle>{t('global.confirmRemove', { nrItems: selected.length })}</DialogTitle>
                 
                 <DialogActions>
                   <Button
@@ -91,21 +96,24 @@ function TableHeader(props) {
             </>
           )}
         </TableCellMUI>
-        {columns.map(({ name, alignment = 'left', label }) => (
+        {columns.map(({ name, alignment = 'left', headerTooltip }) => (
           <TableCellMUI key={name} align={alignment}>
-            {label}
+            <div className={classNames('cell-content', alignment)}>
+              {t(`columns.${name}`)}
+              {headerTooltip && (
+                <Tooltip placement="top" title={t(`tableTooltips.${headerTooltip}`)}>
+                  <HelpIcon />
+                </Tooltip>
+              )}
+            </div>
           </TableCellMUI>
         ))}
-        <TableCellMUI>{t('global.actions')}</TableCellMUI>
+        {hasEditCredential && (
+          <TableCellMUI>{t('global.actions')}</TableCellMUI>
+        )}
       </TableRowMUI>
     </TableHeadMUI>
   );
 }
 
-const TableHeaderMemoized = memo(props => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <TableHeader {...props} />
-));
-TableHeaderMemoized.displayName = 'TableHeader';
-
-export default TableHeaderMemoized;
+export default memo(TableHeader);

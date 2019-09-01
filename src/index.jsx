@@ -5,6 +5,7 @@ TODO:
 - Uploading backup files
 - removing backups
 - displaying suggestions for user
+- while login set up language retrieved from API (both front and admin)
 */
 
 import React from 'react';

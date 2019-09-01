@@ -1,7 +1,7 @@
 import React from 'react';
-import { GoogleMap, Marker, withScriptjs, withGoogleMap } from 'react-google-maps';
+import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps';
 
-const GoogleMapStaticLocation = withScriptjs(withGoogleMap((props) => {
+const GoogleMapStaticLocation = withGoogleMap((props) => {
   const {
     markerCoordination,
   } = props;
@@ -16,7 +16,7 @@ const GoogleMapStaticLocation = withScriptjs(withGoogleMap((props) => {
       />
     </GoogleMap>
   );
-}));
+});
 
 function GoogleMapStaticLocationHOC(props) {
   return (

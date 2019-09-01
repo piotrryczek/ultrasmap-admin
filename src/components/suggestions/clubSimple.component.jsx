@@ -25,7 +25,6 @@ function ClubSimple(props) {
     data: {
       name,
       logo,
-      tier,
       location: { coordinates },
       friendshipsToCreate = [],
       friendships,
@@ -47,8 +46,6 @@ function ClubSimple(props) {
       <Grid item xs={12}>
         <Paper elevation={1}>
           <Field label={`${t('club.name')}:`} value={name} className={classNames({ 'to-add': type === 'new'})} />
-          <Divider />
-          <Field label={`${t('club.tier')}:`} value={tier} className={classNames({ 'to-add': type === 'new'})} />
           <Divider />
           <FieldWrapper>
             <Grid item xs={2}>
@@ -137,7 +134,7 @@ function ClubSimple(props) {
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <Box mt={3} className="to-change">
+        <Box mt={3} className={classNames({ 'to-change': type === 'new'})}>
           <GoogleMapsStaticLocation
             markerCoordination={parseCoordinates(coordinates)}
           />

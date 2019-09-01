@@ -51,7 +51,7 @@ function SidePanel() {
           {Auth.hasCredentialLocal('getUser') && (
             <NavigationHOC to="/users">
               {(pathname, handleClick) => (
-                <ListItem button onClick={handleClick} selected={pathname === '/users'}>
+                <ListItem button onClick={handleClick} selected={(pathname === '/users' || pathname.includes('/users/page'))}>
                   <ListItemIcon className={classes.listItemIcon}>
                     <AccountCircle />
                   </ListItemIcon>
@@ -78,7 +78,7 @@ function SidePanel() {
           {Auth.hasCredentialLocal('getClub') && (
             <NavigationHOC to="/clubs">
               {(pathname, handleClick) => (
-                <ListItem button onClick={handleClick} selected={pathname === '/clubs'}>
+                <ListItem button onClick={handleClick} selected={(pathname === '/clubs' || pathname.includes('/clubs/page'))}>
                   <ListItemIcon className={classes.listItemIcon}>
                     <GroupWork />
                   </ListItemIcon>
@@ -107,7 +107,7 @@ function SidePanel() {
             <List>
               <NavigationHOC to="/suggestions">
                 {(pathname, handleClick) => (
-                  <ListItem button onClick={handleClick} selected={pathname === '/suggestions'}>
+                  <ListItem button onClick={handleClick} selected={pathname === '/suggestions' || pathname.includes('/suggestions/page')}>
                     <ListItemIcon className={classes.listItemIcon}>
                       <Feedback />
                     </ListItemIcon>
@@ -125,7 +125,7 @@ function SidePanel() {
             <List>
               <NavigationHOC to="/activities">
                 {(pathname, handleClick) => (
-                  <ListItem button onClick={handleClick} selected={pathname === '/activities'}>
+                  <ListItem button onClick={handleClick} selected={pathname === '/activities' || pathname.includes('/activities/page')}>
                     <ListItemIcon className={classes.listItemIcon}>
                       <Notifications />
                     </ListItemIcon>

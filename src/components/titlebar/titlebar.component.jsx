@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -22,11 +23,11 @@ function Titlebar() {
   const { t } = useTranslation();
   const classes = useStyles({});
 
+  const isAuthenticated = useSelector(state => state.app.isAuthenticated);
+
   const handleLogout = useCallback(async () => {
     await Auth.logout();
   }, []);
-
-  const jwtToken = localStorage.getItem('jwtToken'); // TODO: isAuthenticated from state instead localstorage
 
   return (
     <AppBar position="static">
@@ -35,7 +36,7 @@ function Titlebar() {
           Fanatics Map Admin
         </Typography>
 
-        {jwtToken && <Button variant="contained" color="default" type="button" onClick={handleLogout} className={classes.logoutButton}>{t('global.logout')}</Button>}
+        {isAuthenticated && <Button variant="contained" color="default" type="button" onClick={handleLogout} className={classes.logoutButton}>{t('global.logout')}</Button>}
       </Toolbar>
     </AppBar>
   );

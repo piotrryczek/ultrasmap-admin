@@ -4,11 +4,12 @@ import {
   Router,
   Route,
 } from 'react-router';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import theme from 'theme/muiTheme';
 import history from 'config/history';
+import Auth from 'services/auth';
 
 import AdminPanel from 'components/adminPanel/adminPanel.component';
 import Message from 'components/message/message.component';
@@ -20,7 +21,7 @@ function App() {
 
   if (!jwtToken) history.push('/login');
 
-  const isAuthenticated = useSelector(state => state.app.isAuthenticated, shallowEqual);
+  const isAuthenticated = useSelector(state => state.app.isAuthenticated);
 
   return (
     <MuiThemeProvider theme={theme}>

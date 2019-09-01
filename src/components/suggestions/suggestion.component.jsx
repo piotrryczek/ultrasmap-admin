@@ -1,6 +1,7 @@
 import React, { useCallback, memo, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -8,8 +9,12 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import Api from 'services/api';
-import { setMessage } from 'components/app/app.actions';
+import { setMessage, setIsLoading } from 'components/app/app.actions';
 import { compareSuggestionBeforeAfter, prepareClubFormData } from 'util/helpers';
 import { useButtonStyles } from 'theme/useStyles';
 
@@ -59,6 +64,15 @@ function Suggestion(props) {
 
   const buttonClasses = useButtonStyles({});
   const [tabValue, setTabValue] = useState('after');
+  const [isRemoveDialogOpened, setIsRemoveDialogOpened] = useState(false);
+
+  const handleOpenRemoveDialog = useCallback(() => {
+    setIsRemoveDialogOpened(true);
+  }, []);
+
+  const handleCloseRemoveDialog = useCallback(() => {
+    setIsRemoveDialogOpened(false);
+  }, []);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -95,7 +109,9 @@ function Suggestion(props) {
       satelliteOf: finalSatelliteOf,
     };
 
-    const formData = prepareClubFormData(clubData);
+    const formData = prepareClubFormData(clubData, ['tier']);
+
+    dispatch(setIsLoading(true));
 
     if (type === 'new') { // New
       await Api.post('/clubs', formData);
@@ -110,19 +126,24 @@ function Suggestion(props) {
 
     dispatch(setMessage('success', 'SUGGESTION_APPLIED'));
 
+    dispatch(setIsLoading(false));
+
     // Reload data
     reload();
   }, [suggestion]);
 
   const handleDelete = useCallback(() => {
-    remove([suggestionId]);
+    remove(suggestionId, false);
+  }, [suggestionId]);
+
+  const handleDeleteAndMute = useCallback(() => {
+    remove(suggestionId, true);
   }, [suggestionId]);
 
   const comparision = type === 'edit' ? compareSuggestionBeforeAfter(original, data) : null;
 
   const initialComment = comments.length ? comments[0] : null;
 
-  // TODO: Translations
   return (
     <Box p={3}>
       <Box display="flex" justifyContent="space-between">
@@ -155,15 +176,52 @@ function Suggestion(props) {
         </Paper>
 
         {hasUpdateSuggestionCredential && (
-          <Button
-            variant="contained"
-            type="button"
-            size="large"
-            className={buttonClasses.remove}
-            onClick={handleDelete}
-          >
-            {t('suggestions.reject')}
-          </Button>
+          <>
+            <Dialog
+              open={isRemoveDialogOpened}
+              onClose={handleCloseRemoveDialog}
+            >
+              <DialogTitle>{t('suggestions.removeConfirmSingle')}</DialogTitle>
+              
+              <DialogActions>
+                <Button
+                  onClick={handleCloseRemoveDialog}
+                  variant="contained"
+                  color="primary"
+                >
+                  {t('global.close')}
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  variant="contained"
+                  color="primary"
+                  className={buttonClasses.remove}
+                >
+                  {t('suggestions.reject')}
+                </Button>
+                <Button
+                  onClick={handleDeleteAndMute}
+                  variant="contained"
+                  color="primary"
+                  className={buttonClasses.remove}
+                >
+                  {t('suggestions.rejectAndMute')}
+                </Button>
+              </DialogActions>
+            </Dialog>
+            
+            <Box display="flex">
+              <Button
+                variant="contained"
+                type="button"
+                size="large"
+                className={buttonClasses.remove}
+                onClick={handleOpenRemoveDialog}
+              >
+                {t('suggestions.reject')}
+              </Button>
+            </Box>
+          </>
         )}
       </Box>
 
@@ -177,7 +235,4 @@ function Suggestion(props) {
   );
 }
 
-const SuggestionMemoized = memo(props => <Suggestion {...props} />);
-SuggestionMemoized.displayName = 'SuggestionMemozied';
-
-export default SuggestionMemoized;
+export default memo(Suggestion);

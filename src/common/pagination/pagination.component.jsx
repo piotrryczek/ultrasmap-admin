@@ -2,15 +2,15 @@ import React, { memo } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
 
+import ButtonLink from 'common/buttonLink/buttonLink.component';
 import { PER_PAGE } from 'config/config';
 
 function Pagination(props) {
   const {
     page: currentPage,
     allCount,
-    changePage,
+    basePath,
   } = props;
 
   const nrPages = Math.ceil(allCount / PER_PAGE);
@@ -23,24 +23,20 @@ function Pagination(props) {
         size="small"
       >
         {pagesArray.map(page => (
-          <Button
+          <ButtonLink
             key={page + 1}
             variant="contained"
             color={currentPage === page + 1 ? 'primary' : 'default'}
             type="button"
-            onClick={() => changePage(page + 1)}
+            to={`${basePath}/page/${page + 1}`}
+            // onClick={() => changePage(page + 1)}
           >
             {page + 1}
-          </Button>
+          </ButtonLink>
         ))}
       </ButtonGroup>
     </Grid>
   );
 }
 
-const PaginationMemoized = memo(({ page, allCount, changePage }) => (
-  <Pagination page={page} allCount={allCount} changePage={changePage} />
-));
-PaginationMemoized.displayName = 'PaginationMemozied';
-
-export default PaginationMemoized;
+export default memo(Pagination);
