@@ -74,7 +74,11 @@
         "fileName": "Nazwa pliku",
         "restore": "Przywróć",
         "createdAt": "Utworzony",
-        "restoreConfirm": "Jesteś pewny, że chcesz przywrócić ten backup?"
+        "restoreConfirm": "Jesteś pewny, że chcesz przywrócić ten backup? Jeśli tak, wybierz kolekcje do przywrócenia.",
+        "users": "Użytkownicy",
+        "clubs": "Kluby",
+        "suggestions": "Sugestie",
+        "roles": "Role"
       },
       "suggestions": {
         "removeConfirm": "Jesteś pewny, że chcesz usunąć ({{nrItems}}) sugestie(ę)?",
@@ -217,7 +221,11 @@
         "fileName": "Filename",
         "restore": "Restore",
         "createdAt": "Created at",
-        "restoreConfirm": "Are you sure you want to restore this backups?"
+        "restoreConfirm": "Are you sure you want to restore this backups?",
+        "users": "Users",
+        "clubs": "Clubs",
+        "suggestions": "Suggestions",
+        "roles": "Roles"
       },
       "suggestions": {
         "removeConfirm": "Are you sure you want to remove ({{nrItems}}) suggestion(s)?",
