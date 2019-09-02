@@ -6,10 +6,11 @@ piotrryczek@gmail.com
 
 ## FanaticsMap: Admin
 Administration part of the FanaticsMap application.
+Live:
 
-Demo: http://ultrasmap-demo-admin.piotrryczek.pl *(access on demand)*
-Developer: http://ultrasmap-admin.piotrryczek.pl
-Production: *soon*
+- Demo: http://ultrasmap-demo-admin.piotrryczek.pl *(access on demand)*
+- Developer: http://ultrasmap-admin.piotrryczek.pl
+- Production: *soon*
 
 ### Build
 ```
