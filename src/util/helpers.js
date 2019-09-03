@@ -90,6 +90,8 @@ export const compareSuggestionBeforeAfter = (original, data) => {
 
 export const prepareClubFormData = ({
   name,
+  transliterationName,
+  searchName,
   logo,
   newLogo = null,
   tier,
@@ -102,6 +104,8 @@ export const prepareClubFormData = ({
 }, excludes = []) => {
   const formData = new FormData();
   formData.append('name', name);
+  formData.append('transliterationName', transliterationName);
+  formData.append('searchName', searchName);
   formData.append('logo', logo);
   if (!excludes.includes('tier')) formData.append('tier', tier);
   formData.append('location', JSON.stringify(coordinates));

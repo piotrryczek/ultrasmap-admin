@@ -1,7 +1,6 @@
 import React, { useCallback, memo, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import classNames from 'classnames';
 
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -41,6 +40,8 @@ function Suggestion(props) {
     data,
     data: {
       name,
+      transliterationName,
+      searchName,
       logo,
       tier,
       location,
@@ -99,6 +100,8 @@ function Suggestion(props) {
 
     const clubData = {
       name,
+      transliterationName,
+      searchName,
       logo,
       tier,
       coordinates: location.coordinates,
@@ -109,7 +112,7 @@ function Suggestion(props) {
       satelliteOf: finalSatelliteOf,
     };
 
-    const formData = prepareClubFormData(clubData, ['tier']);
+    const formData = prepareClubFormData(clubData);
 
     dispatch(setIsLoading(true));
 
@@ -119,7 +122,6 @@ function Suggestion(props) {
       await Api.put(`/clubs/${original._id}`, formData);
     }
 
-    // Remove suggestion
     await Api.patch(`/suggestions/${suggestionId}/status`, {
       status: 'applied',
     });

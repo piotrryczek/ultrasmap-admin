@@ -29,6 +29,8 @@ const parseClubToOption = (club) => {
 
 const parseClubData = ({
   name,
+  transliterationName,
+  searchName,
   logo,
   tier,
   location,
@@ -39,15 +41,17 @@ const parseClubData = ({
   satelliteOf,
 }) => ({
   newLogo: null,
+  transliterationName,
+  searchName,
   name,
   logo,
   tier,
   coordinates: location.coordinates,
-  friendships: parseClubsToOptions(friendships),
-  agreements: parseClubsToOptions(agreements),
-  positives: parseClubsToOptions(positives),
-  satellites: parseClubsToOptions(satellites),
-  satelliteOf: parseClubToOption(satelliteOf),
+  friendships,
+  agreements,
+  positives,
+  satellites,
+  satelliteOf,
 });
 
 function Club(props) {
@@ -67,6 +71,8 @@ function Club(props) {
   const [fields, setFields] = useState({
     newLogo: null,
     name: '',
+    transliterationName: '',
+    searchName: '',
     logo: '',
     tier: 1,
     coordinates: DEFAULT_COORDINATES,
@@ -96,6 +102,8 @@ function Club(props) {
     const {
       newLogo, // file
       name,
+      transliterationName,
+      searchName,
       logo, // url
       tier,
       coordinates,
@@ -108,15 +116,17 @@ function Club(props) {
 
     const formData = prepareClubFormData({
       name,
+      transliterationName,
+      searchName,
       logo,
       newLogo,
       tier,
       coordinates,
-      friendships: parseOptionsToIds(friendships),
-      agreements: parseOptionsToIds(agreements),
-      positives: parseOptionsToIds(positives),
-      satellites: parseOptionsToIds(satellites),
-      satelliteOf: satelliteOf ? satelliteOf.value : null,
+      friendships: friendships.map(club => club._id),
+      agreements: agreements.map(club => club._id),
+      positives: positives.map(club => club._id),
+      satellites: satellites.map(club => club._id),
+      satelliteOf: satelliteOf ? satelliteOf._id : null,
     });
 
     dispatch(setIsLoading(true));

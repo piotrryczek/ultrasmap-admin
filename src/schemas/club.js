@@ -4,6 +4,10 @@ export default yup.object().shape({
   name: yup
     .string()
     .required('formErrors.required'),
+  transliterationName: yup
+    .string(),
+  searchName: yup
+    .string(),
   logo: yup
     .string(),
   tier: yup

@@ -1,8 +1,7 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import SelectAutocomplete from 'react-select';
-import { useDebouncedCallback } from 'use-debounce';
+import SelectAutocomplete from 'react-select/async';
 
 import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps';
 
@@ -51,12 +50,17 @@ const GoogleMapLocation = withGoogleMap((props) => {
   );
 });
 
+const getOptionValue = ({ _id }) => _id;
+const getOptionLabel = ({ name }) => name;
+
 function ClubForm({
   clubId,
   editType,
   initiallyLoaded,
   values: {
     name,
+    transliterationName,
+    searchName,
     logo,
     tier,
     coordinates,
@@ -77,7 +81,6 @@ function ClubForm({
 }) {
   const isError = (field) => errors[field] && touched[field];
 
-  const [possibleClubRelations, updatePossibleClubRelations] = useState([]);
   const dispatch = useDispatch(); 
   const { t } = useTranslation();
 
@@ -95,16 +98,21 @@ function ClubForm({
       ...satellites,
     ];
 
-    if (satelliteOf) allRelations.push(satelliteOf);
+    if (satelliteOf && !Array.isArray(satelliteOf)) allRelations.push(satelliteOf);
 
-    return allRelations.map(({ value }) => value);
+    return allRelations.reduce((acc, { __isNew__: isNew, _id: clubId }) => {
+      if (!isNew) {
+        acc.push(clubId);
+      }
+
+      return acc;
+    }, []);
   }
 
   const handleSelectChange = (type) => (value) => {
     const newValue = value || [];
 
     setFieldValue(type, newValue);
-    updatePossibleClubRelations([]);
 
     return newValue;
   }
@@ -113,37 +121,26 @@ function ClubForm({
     setFieldValue('newLogo', file);
   }, []);
 
-  const [searchDebounched] = useDebouncedCallback(async (value) => {
-    if (!value.length) {
-      updatePossibleClubRelations([]);
-      return false;
-    }
+  const handleCoordinatesChange = useCallback((coordinates) => {
+    setFieldValue('coordinates', coordinates);
+  }, []);
 
+  const handleGetPossibleRelations = value => new Promise(async (resolve, reject) => {
     const excluded = getCurrentRelations();
-
-    if (editType === 'update') excluded.push(clubId);
+    if (editType === 'edit') excluded.push(clubId);
 
     const { data: clubs } = await Api.get('/clubs/possibleRelations', {
       searchName: value,
       excluded: excluded,
     });
 
-    const clubsOptions = clubs.map(({ _id, name }) => ({
-      label: name,
-      value: _id,
-    }));
-
-    updatePossibleClubRelations(clubsOptions);
-  }, 500);
-
-  const handleCoordinatesChange = useCallback((coordinates) => {
-    setFieldValue('coordinates', coordinates);
-  }, []);
+    resolve(clubs);
+  });
 
   const finalCoordination= parseCoordinates(coordinates || DEFAULT_COORDINATES);
 
-  const labelClasses = useLabelStyles({}); 
-  
+  const labelClasses = useLabelStyles({});
+
   return (
     <form onSubmit={handleSubmit}>
 
@@ -174,6 +171,30 @@ function ClubForm({
               onChange={handleChange}
               onBlur={handleBlur}
               name="name"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={isError('transliterationName')}
+              helperText={isError('transliterationName') ? t(errors.transliterationName) : ''}
+              label={t('club.transliterationName')}
+              value={transliterationName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="transliterationName"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={isError('searchName')}
+              helperText={isError('searchName') ? t(errors.searchName) : ''}
+              label={t('club.searchName')}
+              value={searchName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="searchName"
               fullWidth
             />
           </Grid>
@@ -223,11 +244,12 @@ function ClubForm({
               isMulti
               name="friendships"
               closeMenuOnSelect={false}
-              options={possibleClubRelations}
+              loadOptions={handleGetPossibleRelations}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
               value={friendships}
               onChange={handleSelectChange('friendships')}
               onBlur={handleBlur}
-              onInputChange={searchDebounched}
               placeholder={t('club.friendshipsPlaceholder')}
             />
             {errors.relationsNotUnique && (
@@ -246,11 +268,12 @@ function ClubForm({
               isMulti
               name="agreements"
               closeMenuOnSelect={false}
-              options={possibleClubRelations}
+              loadOptions={handleGetPossibleRelations}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
               value={agreements}
               onChange={handleSelectChange('agreements')}
               onBlur={handleBlur}
-              onInputChange={searchDebounched}
               placeholder={t('club.agreementsPlaceholder')}
             />
             {errors.relationsNotUnique && (
@@ -269,11 +292,12 @@ function ClubForm({
               isMulti
               name="positives"
               closeMenuOnSelect={false}
-              options={possibleClubRelations}
+              loadOptions={handleGetPossibleRelations}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
               value={positives}
               onChange={handleSelectChange('positives')}
               onBlur={handleBlur}
-              onInputChange={searchDebounched}
               placeholder={t('club.positivesPlaceholder')}
             />
             {errors.relationsNotUnique && (
@@ -292,11 +316,12 @@ function ClubForm({
               isMulti
               name="satellites"
               closeMenuOnSelect={false}
-              options={possibleClubRelations}
+              loadOptions={handleGetPossibleRelations}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
               value={satellites}
               onChange={handleSelectChange('satellites')}
               onBlur={handleBlur}
-              onInputChange={searchDebounched}
               placeholder={t('club.satellitesPlaceholder')}
             />
             {errors.relationsNotUnique && (
@@ -314,11 +339,12 @@ function ClubForm({
             <SelectAutocomplete
               isClearable
               name="satelliteOf"
-              options={possibleClubRelations}
+              loadOptions={handleGetPossibleRelations}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
               value={satelliteOf}
               onChange={handleSelectChange('satelliteOf')}
               onBlur={handleBlur}
-              onInputChange={searchDebounched}
               placeholder={t('club.satelliteOfPlaceholder')}
             />
             {errors.relationsNotUnique && (
