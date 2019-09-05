@@ -13,24 +13,10 @@ import Api from 'services/api';
 import { setMessage, setIsLoading } from 'components/app/app.actions';
 import ClubForm from './clubForm.component';
 
-const parseClubsToOptions = clubs  => clubs.map(({ name: clubName, _id }) => ({ label: clubName, value: _id }));
-const parseOptionsToIds = options => options.map(({ value }) => value);
-
-const parseClubToOption = (club) => {
-  if (!club) return null;
-
-  const { name, _id } = club;
-
-  return {
-    label: name,
-    value: _id,
-  }
-}
-
 const parseClubData = ({
   name,
-  transliterationName,
-  searchName,
+  transliterationName = '',
+  searchName = '',
   logo,
   tier,
   location,
@@ -86,7 +72,6 @@ function Club(props) {
   const fetchData = async () => {
     dispatch(setIsLoading(true));
     const { data: clubData } = await Api.get(`/clubs/${clubId}`);
-
     setFields(parseClubData(clubData));
     setInitiallyLoaded(true);
     dispatch(setIsLoading(false));

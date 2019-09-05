@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import SelectAutocomplete from 'react-select/async';
+import _isEmpty from 'lodash/isEmpty';
 
 import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps';
 
@@ -32,7 +33,7 @@ const GoogleMapLocation = withGoogleMap((props) => {
   const handleDragEnd = useCallback((event) => {
     const { latLng: { lat, lng } } = event;
 
-    setFieldValue('coordinates', [lat(), lng()]);
+    setFieldValue('coordinates', [lng(), lat()]);
   }, []);
 
   return (
@@ -78,14 +79,16 @@ function ClubForm({
   setFieldValue,
   isSubmitting,
   isValid,
+  setFieldTouched,
 }) {
   const isError = (field) => errors[field] && touched[field];
 
   const dispatch = useDispatch(); 
   const { t } = useTranslation();
+  const [otherFoundClubs, setOtherFoundClubs] = useState([]);
 
   useEffect(() => {
-    if (isSubmitting && !isValid) {
+    if (isSubmitting && !_isEmpty(errors)) { // isValid is false when form is same as before
       dispatch(setMessage('error', 'FORM_INCORRECT'))
     }
   }, [isSubmitting, isValid]);
@@ -137,6 +140,20 @@ function ClubForm({
     resolve(clubs);
   });
 
+  const handleFieldNameBlur = useCallback(async (event) => {
+    setFieldTouched('name', true);
+
+    const { value: name } = event.target;
+
+    const body = { search: { name: { value: name, type: 'text' } } };
+
+    if (clubId) Object.assign(body, { excluded: [clubId] });
+
+    const { data: clubs } = await Api.get('/clubs', body);
+
+    setOtherFoundClubs(clubs);
+  }, []);
+
   const finalCoordination= parseCoordinates(coordinates || DEFAULT_COORDINATES);
 
   const labelClasses = useLabelStyles({});
@@ -157,7 +174,6 @@ function ClubForm({
 
           <AddressSearch onChange={handleCoordinatesChange} />
         </div>
-        
       )}
 
       <Box p={3}>
@@ -169,10 +185,16 @@ function ClubForm({
               label={t('club.name')}
               value={name}
               onChange={handleChange}
-              onBlur={handleBlur}
+              onBlur={handleFieldNameBlur}
               name="name"
               fullWidth
             />
+            {otherFoundClubs.length > 0 && (
+              <Typography>
+                {t('club.otherFoundByName')}
+                <strong>{otherFoundClubs.map(club => club.name).join(', ')}</strong>
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={12}>
             <TextField

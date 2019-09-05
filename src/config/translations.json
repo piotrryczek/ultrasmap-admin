@@ -111,7 +111,8 @@
         "satellitesPlaceholder": "Zacznij pisać i wybierz satelity...",
         "satelliteOf": "Satelita",
         "satelliteOfPlaceholder": "Zacznij pisać i wybierz jakiego klubu klub jest satelitą...",
-        "comments": "Uwagi"
+        "comments": "Uwagi",
+        "otherFoundByName": "Istniejące kluby o podobnej bądź identycznej nazwie: "
       },
       "user": {
         "email": "Email",
@@ -260,7 +261,8 @@
         "satellitesPlaceholder": "Start typing and select clubs...",
         "satelliteOf": "Satellite",
         "satelliteOfPlaceholder": "Start typing and select club...",
-        "comments": "Comments"
+        "comments": "Comments",
+        "otherFoundByName": "Existing clubs with the similar or the same name: "
       },
       "user": {
         "email": "Email",

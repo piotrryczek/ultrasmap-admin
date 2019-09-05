@@ -40,8 +40,6 @@ function Suggestion(props) {
     data,
     data: {
       name,
-      transliterationName,
-      searchName,
       logo,
       tier,
       location,
@@ -100,8 +98,6 @@ function Suggestion(props) {
 
     const clubData = {
       name,
-      transliterationName,
-      searchName,
       logo,
       tier,
       coordinates: location.coordinates,
@@ -112,7 +108,7 @@ function Suggestion(props) {
       satelliteOf: finalSatelliteOf,
     };
 
-    const formData = prepareClubFormData(clubData);
+    const formData = prepareClubFormData(clubData, ['tier', 'transliterationName', 'searchName']);
 
     dispatch(setIsLoading(true));
 

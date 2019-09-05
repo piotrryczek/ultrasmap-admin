@@ -46,6 +46,12 @@ function TableHeader(props) {
     setIsRemoveDialogOpened(false);
   }, []);
 
+  const handleDeleteAndCloseRemoveDialog = useCallback(() => {
+    setIsRemoveDialogOpened(false);
+
+    handleDelete();
+  }, [handleDelete]);
+
   const buttonClasses = useButtonStyles({});
   const classes = useStyles({});
 
@@ -75,7 +81,7 @@ function TableHeader(props) {
                     {t('global.close')}
                   </Button>
                   <Button
-                    onClick={handleDelete}
+                    onClick={handleDeleteAndCloseRemoveDialog}
                     variant="contained"
                     color="primary"
                     className={buttonClasses.remove}

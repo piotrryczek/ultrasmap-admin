@@ -5,7 +5,7 @@ import _intersection from 'lodash/intersection';
 
 export const parseCoordinates = (coordinates) => {
   return coordinates.reduce((acc, el, index) => {
-    const property = index === 0 ? 'lat' : 'lng';
+    const property = index === 0 ? 'lng' : 'lat';
     acc[property] = el;
 
     return acc;
@@ -104,8 +104,8 @@ export const prepareClubFormData = ({
 }, excludes = []) => {
   const formData = new FormData();
   formData.append('name', name);
-  formData.append('transliterationName', transliterationName);
-  formData.append('searchName', searchName);
+  if (!excludes.includes('transliterationName')) formData.append('transliterationName', transliterationName);
+  if (!excludes.includes('searchName')) formData.append('searchName', searchName);
   formData.append('logo', logo);
   if (!excludes.includes('tier')) formData.append('tier', tier);
   formData.append('location', JSON.stringify(coordinates));
@@ -113,7 +113,7 @@ export const prepareClubFormData = ({
   formData.append('agreements', JSON.stringify(agreements));
   formData.append('positives', JSON.stringify(positives));
   formData.append('satellites', JSON.stringify(satellites));
-
+  
   if (satelliteOf) formData.append('satelliteOf', satelliteOf);
   if (newLogo) formData.append('newLogo', newLogo);
 
