@@ -34,6 +34,7 @@ function TableHeader(props) {
     toggleSelected,
     columns,
     canRemove,
+    canView,
     selected,
     hasEditCredential,
   } = props;
@@ -58,50 +59,52 @@ function TableHeader(props) {
   return (
     <TableHeadMUI>
       <TableRowMUI>
-        <TableCellMUI>
-          <Checkbox
-            checked={isAllChecked}
-            onChange={toggleSelected}
-          />
+        {canRemove && (
+          <TableCellMUI>
+            <Checkbox
+              checked={isAllChecked}
+              onChange={toggleSelected}
+            />
 
-          {canRemove && (
-            <>
-              <Dialog
-                open={isRemoveDialogOpened}
-                onClose={handleCloseRemoveDialog}
-              >
-                <DialogTitle>{t('global.confirmRemove', { nrItems: selected.length })}</DialogTitle>
-                
-                <DialogActions>
-                  <Button
-                    onClick={handleCloseRemoveDialog}
-                    variant="contained"
-                    color="primary"
-                  >
-                    {t('global.close')}
-                  </Button>
-                  <Button
-                    onClick={handleDeleteAndCloseRemoveDialog}
-                    variant="contained"
-                    color="primary"
-                    className={buttonClasses.remove}
-                  >
-                    {t('global.remove')}
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={handleOpenRemoveDialog}
-                className={classNames(buttonClasses.remove, classes.leftMargin)}
-              >
-                {t('global.remove')}
-              </Button>
-            </>
-          )}
-        </TableCellMUI>
+            {hasEditCredential && selected.length > 0 && (
+              <>
+                <Dialog
+                  open={isRemoveDialogOpened}
+                  onClose={handleCloseRemoveDialog}
+                >
+                  <DialogTitle>{t('global.confirmRemove', { nrItems: selected.length })}</DialogTitle>
+                  
+                  <DialogActions>
+                    <Button
+                      onClick={handleCloseRemoveDialog}
+                      variant="contained"
+                      color="primary"
+                    >
+                      {t('global.close')}
+                    </Button>
+                    <Button
+                      onClick={handleDeleteAndCloseRemoveDialog}
+                      variant="contained"
+                      color="primary"
+                      className={buttonClasses.remove}
+                    >
+                      {t('global.remove')}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={handleOpenRemoveDialog}
+                  className={classNames(buttonClasses.remove, classes.leftMargin)}
+                >
+                  {t('global.remove')}
+                </Button>
+              </>
+            )}
+          </TableCellMUI>
+        )}
         {columns.map(({ name, alignment = 'left', headerTooltip }) => (
           <TableCellMUI key={name} align={alignment}>
             <div className={classNames('cell-content', alignment)}>
@@ -114,7 +117,7 @@ function TableHeader(props) {
             </div>
           </TableCellMUI>
         ))}
-        {hasEditCredential && (
+        {(hasEditCredential || canView) && (
           <TableCellMUI>{t('global.actions')}</TableCellMUI>
         )}
       </TableRowMUI>

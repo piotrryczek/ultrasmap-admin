@@ -11,6 +11,7 @@ import { IMAGES_URL } from 'config/config';
 const renderValue = (data, column, t) => {
   const {
     type,
+    displayFunction,
     name,
     field,
     translate,
@@ -28,7 +29,13 @@ const renderValue = (data, column, t) => {
       const imageSrc = data[name];
 
       return (
-        <img src={`${IMAGES_URL}/h180/${imageSrc}`} alt="" className="table-image" />
+        <a 
+          href={`${IMAGES_URL}/${imageSrc}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src={`${IMAGES_URL}/h180/${imageSrc}`} alt="" className="table-image" />
+        </a>
       );
     }
 
@@ -38,6 +45,10 @@ const renderValue = (data, column, t) => {
       }
 
       return (<CloseIcon />);
+    }
+
+    case 'function': {
+      return displayFunction(data);
     }
 
     default:

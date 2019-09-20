@@ -57,7 +57,8 @@ div, img {
 .suggestion-title {
   .suggestion-title-for,
   .suggestion-title-by,
-  .suggestion-title-date {
+  .suggestion-title-date,
+  .suggestion-title-at {
     display: inline-block;
   }
 
@@ -69,7 +70,15 @@ div, img {
     margin: 0px 0.25rem 0px 0.5rem;
   }
 
+  .suggestion-title-at {
+    margin-right: 0.25rem;
+  }
+
   .suggestion-title-date {
     margin-left: 0.5rem;
+  }
+
+  .suggestion-title-date-from {
+    margin-left: 0.25rem;
   }
 }

@@ -28,3 +28,21 @@ a {
   color: inherit;
   background: none
 }
+
+.date-wrapper {
+  .date {
+    display: block;
+  }
+
+  .date-from {
+    display: block;
+    
+    &:before {
+      content: '(';
+    }
+
+    &:after {
+      content: ')';
+    }
+  }
+}

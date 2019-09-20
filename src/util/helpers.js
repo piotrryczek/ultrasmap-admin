@@ -1,7 +1,10 @@
 import moment from 'moment';
+import 'moment/locale/pl';
 import _set from 'lodash/set';
 import _isEqual from 'lodash/isEqual';
 import _intersection from 'lodash/intersection';
+
+moment.locale(localStorage.getItem('language') || 'en');
 
 export const parseCoordinates = (coordinates) => {
   return coordinates.reduce((acc, el, index) => {
@@ -12,7 +15,8 @@ export const parseCoordinates = (coordinates) => {
   }, {})
 };
 
-export const formatDate = date => moment(date).format('YYYY-MM-DD hh:mm');
+export const formatDate = date => moment(date).format('YYYY-MM-DD HH:mm');
+export const formatDateFromNow = date => moment(date).fromNow();
 
 export const getRelationsToEdit = (prevRelations, newRelations) => {
   const relationsSame = _intersection(prevRelations, newRelations);
@@ -23,11 +27,14 @@ export const getRelationsToEdit = (prevRelations, newRelations) => {
   };
 };
 
+// PRzetestuj null
 export const parseClubsToIds = clubs => clubs.map(club => club._id);
 
-export const compareSuggestionBeforeAfter = (original, data) => {
+export const compareSuggestionBeforeAfter = (original, data) => { // (before, after)
   const comparision = {
     isNewName: false,
+    isNewSearchName: false,
+    isNewTransliterationName: false,
     isNewLogo: false,
     isNewLocation: false,
     toAddFriendships: [],
@@ -43,6 +50,8 @@ export const compareSuggestionBeforeAfter = (original, data) => {
   };
 
   if (original.name !== data.name) _set(comparision, 'isNewName', true);
+  if (original.searchName !== data.searchName) _set(comparision, 'isNewSearchName', true);
+  if (original.transliterationName !== data.transliterationName) _set(comparision, 'isNewTransliterationName', true);
   if (original.logo !== data.logo) _set(comparision, 'isNewLogo', true);
   if (!_isEqual(original.location.coordinates, data.location.coordinates)) _set(comparision, 'isNewLocation', true);
 
@@ -68,7 +77,7 @@ export const compareSuggestionBeforeAfter = (original, data) => {
   if (
     original.satelliteOf && (
       data.satelliteOfToCreate || (
-        data.satelliteOf && original.satelliteOf._id !== data.satelliteOf._id
+        (data.satelliteOf && original.satelliteOf._id !== data.satelliteOf._id) || !data.satelliteOf
       )
     )
   ) {
@@ -124,3 +133,5 @@ export const translateChoices = (t, choices, translate) => choices.map(choice =>
   value: choice,
   label: t(`${translate}.${choice}`),
 }))
+
+export const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);

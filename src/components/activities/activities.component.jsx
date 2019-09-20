@@ -1,9 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Api from 'services/api';
-// import Auth from 'services/auth';
 
-import { translateChoices } from 'util/helpers';
+import { translateChoices, formatDate, formatDateFromNow } from 'util/helpers';
 
 import TableList from 'common/tableList/tableList.component';
 
@@ -12,8 +11,26 @@ function Activities(props) {
   const [moderatorsAndAdmins, setModeratorsAndAdmin] = useState([]);
 
   const columns = useMemo(() => ([{
+    name: 'createdAt',
+    type: 'function',
+    // eslint-disable-next-line react/display-name
+    displayFunction: ({ createdAt }) => (
+      <span className="date-wrapper">
+        <span className="date">{formatDate(createdAt)}</span>
+        <span className="date-from">{formatDateFromNow(createdAt)}</span>
+      </span>
+    ),
+  }, {
     name: '_id',
     type: 'text'
+  }, {
+    name: 'originalObject',
+    type: 'function',
+    displayFunction: ({ originalObject, originalObjectName, objectType }) => {
+      if (objectType === 'club') {
+        return (<a target="_blank" rel="noopener noreferrer" href={`/clubs/${originalObject}`}>{originalObjectName}</a>)
+      }
+    }
   }, {
     name: 'objectType',
     type: 'text',
@@ -63,6 +80,7 @@ function Activities(props) {
       {...props}
       apiPath="/activities"
       adminPath="/activities"
+      canView
       columns={columns}
       searchColumns={searchColumns}
     />

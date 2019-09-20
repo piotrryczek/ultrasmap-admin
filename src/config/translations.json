@@ -39,10 +39,13 @@
         "backups": "Backupy",
         "edit": "Edytuj",
         "save": "Zapisz",
+        "view": "Zobacz",
         "remove": "Usuń",
         "close": "Zamknij",
         "for": "Dla",
         "by": "przez",
+        "when": "kiedy",
+        "at": "o",
         "before": "Przed",
         "after": "Po",
         "new": "Nowy",
@@ -59,10 +62,12 @@
         "email": "Email",
         "name": "Nazwa",
         "objectType": "Typ obiektu",
+        "originalObject": "ID / Nazwa obiektu",
         "actionType": "Typ akcji",
         "user": "Użytkownik",
         "tier": "Znaczenie / Siła",
-        "logo": "Logo / herb"
+        "logo": "Logo / herb",
+        "createdAt": "Dokonano"
       },
       "login": {
         "login": "Zaloguj się",
@@ -88,10 +93,10 @@
         "rejectAndMute": "Odrzuć i wycisz",
         "noSuggestions": "Obecnie brak sugestii.",
         "tooltips": {
-          "toRemove": "Do usunięcia",
+          "toRemove": "Do usunięcia / Usunięty",
           "noChange": "Bez zmiany",
           "change": "Wartość zmieniona",
-          "toAdd": "Do dodania",
+          "toAdd": "Do dodania / Dodany",
           "toCreate": "Do utworzenia"
         }
       },
@@ -99,6 +104,8 @@
         "name": "Nazwa oryginalna",
         "transliterationName": "Nazwa transliterowana / używana na arenie międzynarodowej",
         "searchName": "Nazwy po których dodatkowo będzie można wyszukiwac klub",
+        "transliterationNameShort": "Transliteracja",
+        "searchNameShort": "Pod wyszukiwanie",
         "tier": "Znaczenie / Siła",
         "logo": "Logo / herb",
         "friendships": "Zgody",
@@ -142,7 +149,8 @@
         "id": "Identyfikator",
         "objectType": "Typ obiektu",
         "actionType": "Typ akcji",
-        "user": "Użytkownik"
+        "user": "Użytkownik",
+        "onlyForClub": "Na ten moment aktywność wyświetlana jest tylko dla aktualizacji bądź dodania klubu."
       },
       "tableTooltips": {
         "clubLogo": "Zwróć uwagę na narzucone pomocnicze szare tło. Jeśli tło jest białe bądź inne niż szare znaczy to najprawdopodobniej, że obrazek nie posiada przezroczystego tła i mogą występowac problemy z jego estetycznym wyświetlaniem."
@@ -189,10 +197,13 @@
         "backups": "Backups",
         "edit": "Edit",
         "save": "Save",
+        "view": "See",
         "remove": "Remove",
         "close": "Close",
         "for": "For",
         "by": "by",
+        "when": "when",
+        "at": "at",
         "before": "Before",
         "after": "After",
         "new": "New",
@@ -209,10 +220,12 @@
         "email": "Email",
         "name": "Name",
         "objectType": "Object type",
+        "originalObject": "Object ID / Name",
         "actionType": "Action type",
         "user": "User",
         "tier": "Importance / strength",
-        "logo": "Logo"
+        "logo": "Logo",
+        "createdAt": "Performed"
       },
       "login": {
         "login": "Sign in",
@@ -249,6 +262,8 @@
         "name": "Name",
         "transliterationName": "Transilteration name / used internationally",
         "searchName": "Other names by which club can be searched",
+        "transliterationNameShort": "Transliteration",
+        "searchNameShort": "For search",
         "tier": "Tier",
         "logo": "Logo",
         "friendships": "Friendships",
@@ -292,10 +307,169 @@
         "id": "ID",
         "objectType": "Object type",
         "actionType": "Action type",
-        "user": "User"
+        "user": "User",
+        "onlyForClub": "Currently you can view activity only for update and addition of the club."
       },
       "tableTooltips": {
         "clubLogo": "Note the imposed gray background. If the background is white or other than gray, it probably means that the image does not have a transparent background and there may be problems with proper display."
+      }
+    }
+  },
+  "emptyTemplate": {
+    "translation": {
+      "messageCodes": {
+        "NETWORK_ERROR": "",
+        "UNKNOWN_ERROR": "",
+        "LOGIN_FAILED": "",
+        "LOGIN_SUCCESS": "",
+        "LOGOUT_SUCCESS": "",
+        "USER_WITH_EMAIL_EXISTS": "",
+        "NOT_AUTHORIZED": "",
+        "CLUB_WITH_NANE_EXISTS": "",
+        "USER_ADDED_SUCCESS": "",
+        "USER_UPDATED_SUCCESS": "",
+        "REMOVE_SUCCESS": "",
+        "INTERNAL": "",
+        "FORM_INCORRECT": "",
+        "BACKUP_RESTORED": "",
+        "BACKUP_CREATED": "",
+        "SUGGESTION_APPLIED": "",
+        "CLUB_ADDED_SUCCESS": "",
+        "CLUB_UPDATED_SUCCESS": ""
+      },
+      "formErrors": {
+        "email": "",
+        "required": "",
+        "fileSize": "",
+        "fileType": "",
+        "relationsNotUnique": "",
+        "passwordRequired": ""
+      },
+      "global": {
+        "users": "",
+        "addUser": "",
+        "clubs": "",
+        "addClub": "",
+        "suggestions": "",
+        "activities": "",
+        "backups": "",
+        "edit": "",
+        "save": "",
+        "view": "",
+        "remove": "",
+        "close": "",
+        "for": "",
+        "by": "",
+        "when": "",
+        "at": "",
+        "before": "",
+        "after": "",
+        "new": "",
+        "logout": "",
+        "chooseToUpload": "",
+        "confirmRemove": "",
+        "actions": "",
+        "searchPlaces": ""
+      },
+      "columns": {
+        "_id": "",
+        "role": "",
+        "verified": "",
+        "email": "",
+        "name": "",
+        "objectType": "",
+        "originalObject": "",
+        "actionType": "",
+        "user": "",
+        "tier": "",
+        "logo": "",
+        "createdAt": ""
+      },
+      "login": {
+        "login": "",
+        "emailLabel": "",
+        "passwordLabel": ""
+      },
+      "backups": {
+        "createBackup": "",
+        "fileName": "",
+        "restore": "",
+        "createdAt": "",
+        "restoreConfirm": "",
+        "users": "",
+        "clubs": "",
+        "suggestions": "",
+        "roles": ""
+      },
+      "suggestions": {
+        "removeConfirm": "",
+        "removeConfirmSingle": "",
+        "apply": "",
+        "reject": "",
+        "rejectAndMute": "",
+        "noSuggestions": "",
+        "tooltips": {
+          "toRemove": "",
+          "noChange": "",
+          "change": "",
+          "toAdd": "",
+          "toCreate": ""
+        }
+      },
+      "club": {
+        "name": "",
+        "transliterationName": "",
+        "searchName": "",
+        "transliterationNameShort": "",
+        "searchNameShort": "",
+        "tier": "",
+        "logo": "",
+        "friendships": "",
+        "friendshipsPlaceholder": "",
+        "agreements": "",
+        "agreementsPlaceholder": "",
+        "positives": "",
+        "positivesPlaceholder": "",
+        "satellites": "",
+        "satellitesPlaceholder": "",
+        "satelliteOf": "",
+        "satelliteOfPlaceholder": "",
+        "comments": "",
+        "otherFoundByName": ""
+      },
+      "user": {
+        "email": "",
+        "role": "",
+        "password": "",
+        "verified": "",
+        "isNewPassword": ""
+      },
+      "roles": {
+        "admin": "",
+        "moderator": "",
+        "user": "",
+        "userDisabled": ""
+      },
+      "objectTypes": {
+        "club": "",
+        "user": "",
+        "suggestion": ""
+      },
+      "actionTypes": {
+        "add": "",
+        "remove": "",
+        "update": "",
+        "apply": ""
+      },
+      "activity": {
+        "id": "",
+        "objectType": "",
+        "actionType": "",
+        "user": "",
+        "onlyForClub": ""
+      },
+      "tableTooltips": {
+        "clubLogo": ""
       }
     }
   }

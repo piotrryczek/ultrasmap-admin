@@ -6,7 +6,7 @@ function AfterRelations(props) {
     current,
     toRemove,
     toAdd,
-    toCreate,
+    toCreate = [],
   } = props;
 
   return (

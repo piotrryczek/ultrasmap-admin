@@ -3,7 +3,7 @@ import Auth from 'services/auth';
 
 import TableList from 'common/tableList/tableList.component';
 
-function Users() {
+function Users(props) {
   const columns = useMemo(() => ([{
     name: 'email',
     type: 'text'
@@ -26,10 +26,12 @@ function Users() {
 
   return (
     <TableList
+      {...props}
       apiPath="/users"
       adminPath="/users"
       canAdd
       canEdit
+      canRemove
       columns={columns}
       searchColumns={searchColumns}
       hasEditCredential={hasEditCredential}

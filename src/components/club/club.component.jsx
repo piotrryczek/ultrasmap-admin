@@ -1,12 +1,19 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import _uniq from 'lodash/uniq';
 import { Formik } from 'formik';
 
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import { DEFAULT_COORDINATES } from 'config/config';
-import { prepareClubFormData } from 'util/helpers';
+import { prepareClubFormData, formatDate, formatDateFromNow } from 'util/helpers';
 import history from 'config/history';
 import clubSchema from 'schemas/club';
 import Api from 'services/api';
@@ -51,8 +58,10 @@ function Club(props) {
   } = props;
 
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [initiallyLoaded, setInitiallyLoaded] = useState(false);
+  const [activities, setActivities] = useState([]);
 
   const [fields, setFields] = useState({
     newLogo: null,
@@ -77,9 +86,15 @@ function Club(props) {
     dispatch(setIsLoading(false));
   }
 
+  const fetchActivities = async () => {
+    const { data: activities } = await Api.get(`/clubs/${clubId}/activities`);
+    setActivities(activities);
+  }
+
   useEffect(() => {
     if (editType === 'update') {
       fetchData();
+      fetchActivities();
     }
   }, []);
 
@@ -175,23 +190,48 @@ function Club(props) {
   }, []);
 
   return (
-    <Paper>
-      <Formik
-        initialValues={fields}
-        enableReinitialize
-        onSubmit={handleSubmit}
-        validate={handleValidate}
-        render={(props) => (
-          <ClubForm
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...props}
-            clubId={clubId}
-            editType={editType}
-            initiallyLoaded={initiallyLoaded}
+    <>
+      <Box>
+        <Paper>
+          <Formik
+            initialValues={fields}
+            enableReinitialize
+            onSubmit={handleSubmit}
+            validate={handleValidate}
+            render={(props) => (
+              <ClubForm
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...props}
+                clubId={clubId}
+                editType={editType}
+                initiallyLoaded={initiallyLoaded}
+              />
+            )}
           />
-        )}
-      />
-    </Paper>
+        </Paper>
+      </Box>
+      {activities.length > 0 && (
+        <Box mt={3}>
+          <Paper>
+            <Box p={3}>
+              <Typography gutterBottom variant="h5">Ostatnie aktywności</Typography>
+
+              <List>
+                {activities.map(activity => (
+                  <ListItem
+                    button
+                    onClick={() => history.push(`/activities/${activity._id}`)}
+                    key={activity._id}
+                  >
+                    <ListItemText primary={(<><strong>{formatDate(activity.createdAt)}</strong> ({formatDateFromNow(activity.createdAt)}) {t('global.by')} <strong>{activity.user.email}</strong></>)} />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Paper>
+        </Box>
+      )}
+    </>
   );
 }
 

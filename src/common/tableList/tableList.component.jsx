@@ -38,6 +38,8 @@ function TableList(props) {
     apiPath,
     adminPath,
     canEdit,
+    canRemove,
+    canView,
     columns,
     searchColumns = [],
     hasEditCredential,
@@ -137,7 +139,8 @@ function TableList(props) {
                 isAllChecked={isAllChecked}
                 toggleSelected={handleToggleSelected}
                 handleDelete={handleDelete}
-                canRemove={(selected.length > 0 && hasEditCredential)}
+                canRemove={canRemove}
+                canView={canView}
                 selected={selected}
                 hasEditCredential={hasEditCredential}
               />
@@ -148,7 +151,9 @@ function TableList(props) {
                 onSelect={handleSelect}
                 onDeselect={handeDeselect}
                 apiPath={apiPath}
+                canRemove={canRemove}
                 canEdit={canEdit}
+                canView={canView}
                 hasEditCredential={hasEditCredential}
               />
             </TableMUI>

@@ -24,6 +24,8 @@ function ClubSimple(props) {
     comment,
     data: {
       name,
+      searchName,
+      transliterationName,
       logo,
       location: { coordinates },
       friendshipsToCreate = [],
@@ -46,6 +48,10 @@ function ClubSimple(props) {
       <Grid item xs={12}>
         <Paper elevation={1}>
           <Field label={`${t('club.name')}:`} value={name} className={classNames({ 'to-add': type === 'new'})} />
+          <Divider />
+          <Field label={`${t('club.searchNameShort')}:`} value={searchName} className={classNames({ 'to-add': type === 'new'})} />
+          <Divider />
+          <Field label={`${t('club.transliterationNameShort')}:`} value={transliterationName} className={classNames({ 'to-add': type === 'new'})} />
           <Divider />
           <FieldWrapper>
             <Grid item xs={2}>

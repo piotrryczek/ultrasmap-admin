@@ -31,6 +31,7 @@ function Clubs(props) {
       adminPath="/clubs"
       canAdd
       canEdit
+      canRemove
       columns={columns}
       searchColumns={searchColumns}
       editCredential="updateClub"

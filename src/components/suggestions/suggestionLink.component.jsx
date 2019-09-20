@@ -11,7 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import CreateIcon from '@material-ui/icons/Create';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 
-import { formatDate } from 'util/helpers';
+import { formatDate, formatDateFromNow } from 'util/helpers';
 
 const useStyles = makeStyles(theme => ({
   listItemIcon: {
@@ -73,9 +73,15 @@ function SuggestionLink(props) {
         </>
       )}
       <span className="suggestion-title-date">
-        (
-        {formatDate(createdAt)}
-        )
+        <span className="suggestion-title-at">
+          {t('global.at')}
+        </span>
+        <strong>{formatDate(createdAt)}</strong>
+        <span className="suggestion-title-date-from">
+          (
+          {formatDateFromNow(createdAt)}
+          )
+        </span>
       </span>
     </div>
   );

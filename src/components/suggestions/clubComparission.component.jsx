@@ -25,6 +25,8 @@ function ClubComparission(props) {
     comment,
     comparision: {
       isNewName,
+      isNewSearchName,
+      isNewTransliterationName,
       isNewLogo,
       isNewLocation,
       toAddFriendships,
@@ -42,6 +44,8 @@ function ClubComparission(props) {
     comparision,
     data: {
       name,
+      searchName,
+      transliterationName,
       logo,
       location: {
         coordinates,
@@ -68,6 +72,20 @@ function ClubComparission(props) {
             value={name}
             className={classNames({ 'to-change': isNewName })}
             tooltipText={t(`suggestions.tooltips.${isNewName ? 'change' : 'noChange'}`)}
+          />
+          <Divider />
+          <Field
+            label={`${t('club.searchNameShort')}:`}
+            value={searchName}
+            className={classNames({ 'to-change': isNewSearchName })}
+            tooltipText={t(`suggestions.tooltips.${isNewSearchName ? 'change' : 'noChange'}`)}
+          />
+          <Divider />
+          <Field
+            label={`${t('club.transliterationNameShort')}:`}
+            value={transliterationName}
+            className={classNames({ 'to-change': isNewTransliterationName })}
+            tooltipText={t(`suggestions.tooltips.${isNewTransliterationName ? 'change' : 'noChange'}`)}
           />
           <Divider />
           <FieldWrapper>

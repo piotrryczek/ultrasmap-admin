@@ -139,7 +139,6 @@ function Suggestion(props) {
   }, [suggestionId]);
 
   const comparision = type === 'edit' ? compareSuggestionBeforeAfter(original, data) : null;
-
   const initialComment = comments.length ? comments[0] : null;
 
   return (

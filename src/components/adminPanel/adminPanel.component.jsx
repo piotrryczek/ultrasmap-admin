@@ -17,6 +17,7 @@ import Users from 'components/users/users.component';
 import User from 'components/user/user.component';
 import Suggestions from 'components/suggestions/suggestions.component';
 import Activities from 'components/activities/activities.component';
+import Activity from 'components/activity/activity.component';
 import Backups from 'components/backups/backups.component';
 
 const useStyles = makeStyles(() => ({
@@ -46,7 +47,7 @@ function AdminPanel() {
               <RouteAuth path="/clubs/:id" component={(props) => <Club {...props} editType="update" />} credential="updateClub" />
 
               <RouteAuth exact path="/users" component={Users} credential="getUser" />
-              <RouteAuth exact path="/users/page/:page" component={Users} credential="getClub" />
+              <RouteAuth exact path="/users/page/:page" component={Users} credential="getUser" />
               <RouteAuth exact path="/users/new" component={(props) => <User {...props} editType="new" />} credential="updateUser" />
               <RouteAuth path="/users/:id" component={(props) => <User {...props} editType="update" />} credential="updateUser" />
 
@@ -55,6 +56,7 @@ function AdminPanel() {
 
               <RouteAuth exact path="/activities" component={Activities} credential="getActivity" />
               <RouteAuth exact path="/activities/page/:page" component={Activities} credential="getActivity" />
+              <RouteAuth exact path="/activities/:id" component={Activity} credential="getActivity" />
 
               <RouteAuth exact path="/backups" component={Backups} credential="getBackup" />
             </Switch>

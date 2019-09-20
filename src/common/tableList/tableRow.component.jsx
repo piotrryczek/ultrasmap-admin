@@ -1,5 +1,6 @@
 import React, { useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
@@ -10,13 +11,17 @@ import TableCellMUI from '@material-ui/core/TableCell';
 import TableCell from './tableCell.component';
 
 function TableRow(props) {
+  const { t } = useTranslation();
+
   const {
     columns,
     singleData,
     onSelect,
     onDeselect,
     isChecked,
+    canRemove,
     canEdit,
+    canView,
     apiPath,
     hasEditCredential,
   } = props;
@@ -33,12 +38,15 @@ function TableRow(props) {
 
   return (
     <TableRowMUI>
-      <TableCellMUI>
-        <Checkbox
-          checked={isChecked}
-          onChange={handleChange}
-        />
-      </TableCellMUI>
+      {canRemove && hasEditCredential && (
+        <TableCellMUI>
+          <Checkbox
+            checked={isChecked}
+            onChange={handleChange}
+          />
+        </TableCellMUI>
+      )}
+      
 
       {columns.map(column => (
         <TableCell
@@ -48,13 +56,13 @@ function TableRow(props) {
         />
       ))}
 
-      {hasEditCredential && (
+      {((canEdit && hasEditCredential) || canView) && (
         <TableCellMUI>
-          {canEdit && hasEditCredential && (
-            <Link to={`${apiPath}/${singleData._id}`}>
-              <Button variant="contained" color="primary">Edytuj</Button>
-            </Link>
-          )}
+          <Link to={`${apiPath}/${singleData._id}`} target="_blank">
+            <Button variant="contained" color="primary">
+              {canEdit ? t('global.edit') : t('global.view')}
+            </Button>
+          </Link>
         </TableCellMUI>
       )}
       

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import moment from 'moment';
 
 import { LANGUAGES, DEFAULT_LANGUAGE } from 'config/config';
 import i18n from 'config/i18n';
@@ -10,6 +11,7 @@ function Languages({ renderView }) {
     localStorage.setItem('language', languageCode);
     i18n.changeLanguage(languageCode);
     setCurrentLanguageCode(languageCode);
+    moment.locale(languageCode);
   }
 
   return renderView({

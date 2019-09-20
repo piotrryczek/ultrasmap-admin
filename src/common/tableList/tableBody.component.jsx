@@ -12,6 +12,8 @@ function TableBody(props) {
     onSelect,
     onDeselect,
     canEdit,
+    canView,
+    canRemove,
     apiPath,
     hasEditCredential,
   } = props;
@@ -30,6 +32,8 @@ function TableBody(props) {
             onSelect={onSelect}
             onDeselect={onDeselect}
             canEdit={canEdit}
+            canView={canView}
+            canRemove={canRemove}
             apiPath={apiPath}
             hasEditCredential={hasEditCredential}
           />
