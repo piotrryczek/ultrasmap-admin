@@ -12,6 +12,8 @@ export default yup.object().shape({
     .string(),
   tier: yup
     .number()
+    .min(0)
+    .max(5.49)
     .required('formErrors.required'),
   coordinates: yup
     .array().of(yup.string())

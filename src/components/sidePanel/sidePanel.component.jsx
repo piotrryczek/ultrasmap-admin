@@ -15,6 +15,10 @@ import GroupWork from '@material-ui/icons/GroupWork';
 import Feedback from '@material-ui/icons/Feedback';
 import Notifications from '@material-ui/icons/Notifications';
 import Backup from '@material-ui/icons/Backup';
+import CompareArrows from '@material-ui/icons/CompareArrows';
+import Sort from '@material-ui/icons/Sort';
+import ViewList from '@material-ui/icons/ViewList';
+import Whatshot from '@material-ui/icons/Whatshot';
 
 import Auth from 'services/auth';
 import Languages from 'components/languages/languages.component';
@@ -88,6 +92,18 @@ function SidePanel() {
             </NavigationHOC>
           )}
           {Auth.hasCredentialLocal('updateClub') && (
+            <NavigationHOC to="/clubs-by-power">
+              {(pathname, handleClick) => (
+                <ListItem button onClick={handleClick} selected={pathname === '/clubs-by-power'}>
+                  <ListItemIcon className={classes.listItemIcon}>
+                    <Sort />
+                  </ListItemIcon>
+                  <ListItemText primary={t('global.clubsByPower')} />
+                </ListItem>
+              )}
+            </NavigationHOC>
+          )}
+          {Auth.hasCredentialLocal('updateClub') && (
             <NavigationHOC to="/clubs/new">
               {(pathname, handleClick) => (
                 <ListItem button onClick={handleClick} selected={pathname === '/clubs/new'}>
@@ -99,8 +115,78 @@ function SidePanel() {
               )}
             </NavigationHOC>
           )}
+          {Auth.hasCredentialLocal('getClub') && (
+            <NavigationHOC to="/clubs/compare">
+              {(pathname, handleClick) => (
+                <ListItem button onClick={handleClick} selected={pathname === '/clubs/compare'}>
+                  <ListItemIcon className={classes.listItemIcon}>
+                    <CompareArrows />
+                  </ListItemIcon>
+                  <ListItemText primary={t('global.clubsCompare')} />
+                </ListItem>
+              )}
+            </NavigationHOC>
+          )}
         </List>
         <Divider />
+
+        {Auth.hasCredentialLocal('getLeague') && (
+          <>
+            <List>
+              <NavigationHOC to="/leagues">
+                {(pathname, handleClick) => (
+                  <ListItem button onClick={handleClick} selected={pathname === '/leagues' || pathname.includes('/leagues/page')}>
+                    <ListItemIcon className={classes.listItemIcon}>
+                      <ViewList />
+                    </ListItemIcon>
+                    <ListItemText primary={t('global.leagues')} />
+                  </ListItem>
+                )}
+              </NavigationHOC>
+              {Auth.hasCredentialLocal('updateLeague') && (
+                <NavigationHOC to="/leagues/new">
+                  {(pathname, handleClick) => (
+                    <ListItem button onClick={handleClick} selected={pathname === '/leagues/new'}>
+                      <ListItemIcon className={classes.listItemIcon}>
+                        <AddCircle />
+                      </ListItemIcon>
+                      <ListItemText primary={t('global.addLeague')} />
+                    </ListItem>
+                  )}
+                </NavigationHOC>
+              )}
+            </List>
+            <Divider />
+          </>
+        )}
+
+        {Auth.hasCredentialLocal('updateMatch') && (
+          <>
+            <List>
+              <NavigationHOC to="/matches">
+                {(pathname, handleClick) => (
+                  <ListItem button onClick={handleClick} selected={pathname === '/matches' || pathname.includes('/matches/page')}>
+                    <ListItemIcon className={classes.listItemIcon}>
+                      <Whatshot />
+                    </ListItemIcon>
+                    <ListItemText primary={t('global.matches')} />
+                  </ListItem>
+                )}
+              </NavigationHOC>
+              <NavigationHOC to="/matches/new">
+                {(pathname, handleClick) => (
+                  <ListItem button onClick={handleClick} selected={pathname === '/matches/new'}>
+                    <ListItemIcon className={classes.listItemIcon}>
+                      <AddCircle />
+                    </ListItemIcon>
+                    <ListItemText primary={t('global.addMatch')} />
+                  </ListItem>
+                )}
+              </NavigationHOC>
+            </List>
+            <Divider />
+          </>
+        )}
 
         {Auth.hasCredentialLocal('getSuggestion') && (
           <>

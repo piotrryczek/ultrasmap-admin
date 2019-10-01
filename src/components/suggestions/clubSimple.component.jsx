@@ -24,17 +24,22 @@ function ClubSimple(props) {
     comment,
     data: {
       name,
+      tier,
       searchName,
       transliterationName,
       logo,
       location: { coordinates },
       friendshipsToCreate = [],
-      friendships,
+      friendships = [],
       agreementsToCreate = [],
-      agreements,
+      agreements = [],
       positivesToCreate = [],
-      positives,
-      satellites,
+      positives = [],
+      enemiesToCreate = [],
+      enemies = [],
+      derbyRivalriesToCreate = [],
+      derbyRivalries = [],
+      satellites = [],
       satellitesToCreate = [],
       satelliteOf,
       satelliteOfToCreate = null,
@@ -48,6 +53,8 @@ function ClubSimple(props) {
       <Grid item xs={12}>
         <Paper elevation={1}>
           <Field label={`${t('club.name')}:`} value={name} className={classNames({ 'to-add': type === 'new'})} />
+          <Divider />
+          <Field label={`${t('club.tier')}:`} value={tier} className={classNames({ 'to-add': type === 'new'})} />
           <Divider />
           <Field label={`${t('club.searchNameShort')}:`} value={searchName} className={classNames({ 'to-add': type === 'new'})} />
           <Divider />
@@ -103,6 +110,32 @@ function ClubSimple(props) {
             <Grid item xs={10}>
               {positives.map(club => <RelationClub key={club._id} type={relationChangeType}>{club.name}</RelationClub>)}
               {positivesToCreate.map(clubName => <RelationClub key={clubName} type="create">{clubName}</RelationClub>)}
+            </Grid>
+          </FieldWrapper>
+          <Divider />
+          <FieldWrapper>
+            <Grid item xs={2}>
+              <Typography color="textSecondary">
+                {t('club.enemies')}
+                :
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              {enemies.map(club => <RelationClub key={club._id} type={relationChangeType}>{club.name}</RelationClub>)}
+              {enemiesToCreate.map(clubName => <RelationClub key={clubName} type="create">{clubName}</RelationClub>)}
+            </Grid>
+          </FieldWrapper>
+          <Divider />
+          <FieldWrapper>
+            <Grid item xs={2}>
+              <Typography color="textSecondary">
+                {t('club.derbyRivalries')}
+                :
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              {derbyRivalries.map(club => <RelationClub key={club._id} type={relationChangeType}>{club.name}</RelationClub>)}
+              {derbyRivalriesToCreate.map(clubName => <RelationClub key={clubName} type="create">{clubName}</RelationClub>)}
             </Grid>
           </FieldWrapper>
           <Divider />

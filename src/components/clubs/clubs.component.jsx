@@ -34,7 +34,6 @@ function Clubs(props) {
       canRemove
       columns={columns}
       searchColumns={searchColumns}
-      editCredential="updateClub"
       hasEditCredential={hasEditCredential}
     />
   );

@@ -25,6 +25,7 @@ function ClubComparission(props) {
     comment,
     comparision: {
       isNewName,
+      isNewTier,
       isNewSearchName,
       isNewTransliterationName,
       isNewLogo,
@@ -37,6 +38,10 @@ function ClubComparission(props) {
       toRemovePositives,
       toAddSatellites,
       toRemoveSatellites,
+      toAddEnemies,
+      toRemoveEnemies,
+      toAddDerbyRivalries,
+      toRemoveDerbyRivalries,
       toAddSatelliteOf,
       toRemoveSatelliteOf,
     },
@@ -44,20 +49,25 @@ function ClubComparission(props) {
     comparision,
     data: {
       name,
+      tier,
       searchName,
       transliterationName,
       logo,
       location: {
         coordinates,
       },
-      friendships,
+      friendships = [],
       friendshipsToCreate,
-      agreements,
+      agreements = [],
       agreementsToCreate,
-      positives,
+      positives = [],
       positivesToCreate,
-      satellites,
+      satellites = [],
       satellitesToCreate,
+      enemies = [],
+      enemiesToCreate,
+      derbyRivalries = [],
+      derbyRivalriesToCreate,
       satelliteOf,
       satelliteOfToCreate,
     }
@@ -72,6 +82,13 @@ function ClubComparission(props) {
             value={name}
             className={classNames({ 'to-change': isNewName })}
             tooltipText={t(`suggestions.tooltips.${isNewName ? 'change' : 'noChange'}`)}
+          />
+          <Divider />
+          <Field
+            label={`${t('club.tier')}:`}
+            value={tier}
+            className={classNames({ 'to-change': isNewTier })}
+            tooltipText={t(`suggestions.tooltips.${isNewTier ? 'change' : 'noChange'}`)}
           />
           <Divider />
           <Field
@@ -151,6 +168,40 @@ function ClubComparission(props) {
                 toRemove={toRemovePositives}
                 toAdd={toAddPositives}
                 toCreate={positivesToCreate}
+              />
+            </Grid>
+          </FieldWrapper>
+          <Divider />
+          <FieldWrapper>
+            <Grid item xs={2}>
+              <Typography color="textSecondary">
+                {t('club.enemies')}
+                :
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <AfterRelations
+                current={enemies}
+                toRemove={toRemoveEnemies}
+                toAdd={toAddEnemies}
+                toCreate={enemiesToCreate}
+              />
+            </Grid>
+          </FieldWrapper>
+          <Divider />
+          <FieldWrapper>
+            <Grid item xs={2}>
+              <Typography color="textSecondary">
+                {t('club.derbyRivalries')}
+                :
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <AfterRelations
+                current={derbyRivalries}
+                toRemove={toRemoveDerbyRivalries}
+                toAdd={toAddDerbyRivalries}
+                toCreate={derbyRivalriesToCreate}
               />
             </Grid>
           </FieldWrapper>

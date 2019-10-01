@@ -7,6 +7,7 @@ import _intersection from 'lodash/intersection';
 moment.locale(localStorage.getItem('language') || 'en');
 
 export const parseCoordinates = (coordinates) => {
+  if (!coordinates) return null;
   return coordinates.reduce((acc, el, index) => {
     const property = index === 0 ? 'lng' : 'lat';
     acc[property] = el;
@@ -27,12 +28,12 @@ export const getRelationsToEdit = (prevRelations, newRelations) => {
   };
 };
 
-// PRzetestuj null
-export const parseClubsToIds = clubs => clubs.map(club => club._id);
+export const parseClubsToIds = (clubs = []) => clubs.map(club => club._id);
 
 export const compareSuggestionBeforeAfter = (original, data) => { // (before, after)
   const comparision = {
     isNewName: false,
+    isNewTier: false,
     isNewSearchName: false,
     isNewTransliterationName: false,
     isNewLogo: false,
@@ -43,6 +44,10 @@ export const compareSuggestionBeforeAfter = (original, data) => { // (before, af
     toRemoveAgreements: [],
     toAddPositives: [],
     toRemovePositives: [],
+    toAddEnemies: [],
+    toRemoveEnemies: [],
+    toAddDerbyRivalries: [],
+    toRemoveDerbyRivalries: [],
     toAddSatellites: [],
     toRemoveSatellites: [],
     toAddSatelliteOf: false,
@@ -50,12 +55,13 @@ export const compareSuggestionBeforeAfter = (original, data) => { // (before, af
   };
 
   if (original.name !== data.name) _set(comparision, 'isNewName', true);
+  if (original.tier !== data.tier) _set(comparision, 'isNewTier', true);
   if (original.searchName !== data.searchName) _set(comparision, 'isNewSearchName', true);
   if (original.transliterationName !== data.transliterationName) _set(comparision, 'isNewTransliterationName', true);
   if (original.logo !== data.logo) _set(comparision, 'isNewLogo', true);
   if (!_isEqual(original.location.coordinates, data.location.coordinates)) _set(comparision, 'isNewLocation', true);
 
-  const compareRelations = (originalRelations, afterRelations, toAddKey, toRemovekey) => {
+  const compareRelations = (originalRelations = [], afterRelations = [], toAddKey, toRemovekey) => {
     const {
       toAdd: toAddIds,
       toRemove: toRemoveIds,
@@ -72,6 +78,8 @@ export const compareSuggestionBeforeAfter = (original, data) => { // (before, af
   compareRelations(original.friendships, data.friendships, 'toAddFriendships', 'toRemoveFriendships');
   compareRelations(original.agreements, data.agreements, 'toAddAgreements', 'toRemoveAgreements');
   compareRelations(original.positives, data.positives, 'toAddPositives', 'toRemovePositives');
+  compareRelations(original.enemies, data.enemies, 'toAddEnemies', 'toRemoveEnemies');
+  compareRelations(original.derbyRivalries, data.derbyRivalries, 'toAddDerbyRivalries', 'toRemoveDerbyRivalries');
   compareRelations(original.satellites, data.satellites, 'toAddSatellites', 'toRemoveSatellites');
 
   if (
@@ -109,6 +117,8 @@ export const prepareClubFormData = ({
   agreements,
   positives,
   satellites,
+  enemies,
+  derbyRivalries,
   satelliteOf,
 }, excludes = []) => {
   const formData = new FormData();
@@ -121,6 +131,8 @@ export const prepareClubFormData = ({
   formData.append('friendships', JSON.stringify(friendships));
   formData.append('agreements', JSON.stringify(agreements));
   formData.append('positives', JSON.stringify(positives));
+  formData.append('enemies', JSON.stringify(enemies));
+  formData.append('derbyRivalries', JSON.stringify(derbyRivalries));
   formData.append('satellites', JSON.stringify(satellites));
   
   if (satelliteOf) formData.append('satelliteOf', satelliteOf);

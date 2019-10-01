@@ -105,10 +105,10 @@ function TableHeader(props) {
             )}
           </TableCellMUI>
         )}
-        {columns.map(({ name, alignment = 'left', headerTooltip }) => (
+        {columns.map(({ name, headerLabel, alignment = 'left', headerTooltip }) => (
           <TableCellMUI key={name} align={alignment}>
             <div className={classNames('cell-content', alignment)}>
-              {t(`columns.${name}`)}
+              {t(`columns.${headerLabel || name}`)}
               {headerTooltip && (
                 <Tooltip placement="top" title={t(`tableTooltips.${headerTooltip}`)}>
                   <HelpIcon />

@@ -24,12 +24,15 @@ const parseClubData = ({
   name,
   transliterationName = '',
   searchName = '',
+  league,
   logo,
   tier,
   location,
   friendships,
   agreements,
   positives,
+  enemies,
+  derbyRivalries,
   satellites,
   satelliteOf,
 }) => ({
@@ -37,12 +40,15 @@ const parseClubData = ({
   transliterationName,
   searchName,
   name,
+  league: league ? league.name : null,
   logo,
   tier,
   coordinates: location.coordinates,
   friendships,
   agreements,
   positives,
+  enemies,
+  derbyRivalries,
   satellites,
   satelliteOf,
 });
@@ -68,12 +74,15 @@ function Club(props) {
     name: '',
     transliterationName: '',
     searchName: '',
+    league: '',
     logo: '',
     tier: 1,
     coordinates: DEFAULT_COORDINATES,
     friendships: [],
     agreements: [],
     positives: [],
+    enemies: [],
+    derbyRivalries: [],
     satellites: [],
     satelliteOf: null,
   });
@@ -110,6 +119,8 @@ function Club(props) {
       friendships,
       agreements,
       positives,
+      enemies,
+      derbyRivalries,
       satellites,
       satelliteOf,
     } = values;
@@ -125,6 +136,8 @@ function Club(props) {
       friendships: friendships.map(club => club._id),
       agreements: agreements.map(club => club._id),
       positives: positives.map(club => club._id),
+      enemies: enemies.map(club => club._id),
+      derbyRivalries: derbyRivalries.map(club => club._id),
       satellites: satellites.map(club => club._id),
       satelliteOf: satelliteOf ? satelliteOf._id : null,
     });
@@ -152,11 +165,12 @@ function Club(props) {
       friendships,
       agreements,
       positives,
+      enemies,
       satellites,
       satelliteOf,
     } = values;
 
-    const allRelations = [...friendships, ...agreements, ...positives, ...satellites, satelliteOf];
+    const allRelations = [...friendships, ...agreements, ...positives, ...enemies, ...satellites, satelliteOf];
     const uniqueAllRelations = _uniq(allRelations);
 
     if (allRelations.length > 0 && allRelations.length !== uniqueAllRelations.length) {

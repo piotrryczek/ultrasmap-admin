@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import SelectAutocomplete from 'react-select/async';
 import _isEmpty from 'lodash/isEmpty';
+import _uniq from 'lodash/uniq';
 
 import { GoogleMap, Marker, withGoogleMap } from 'react-google-maps';
 
@@ -10,13 +11,9 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 
 import { setMessage } from 'components/app/app.actions';
-import { useLabelStyles } from 'theme/useStyles';
 import { DEFAULT_COORDINATES, IMAGES_URL } from 'config/config';
 import { parseCoordinates } from 'util/helpers';
 import Api from 'services/api';
@@ -62,6 +59,7 @@ function ClubForm({
     name,
     transliterationName,
     searchName,
+    league,
     logo,
     tier,
     coordinates,
@@ -69,6 +67,8 @@ function ClubForm({
     agreements,
     positives,
     satellites,
+    enemies,
+    derbyRivalries,
     satelliteOf,
   },
   errors,
@@ -98,18 +98,20 @@ function ClubForm({
       ...friendships,
       ...agreements,
       ...positives,
+      ...enemies,
+      // ...derbyRivalries,
       ...satellites,
     ];
 
     if (satelliteOf && !Array.isArray(satelliteOf)) allRelations.push(satelliteOf);
 
-    return allRelations.reduce((acc, { __isNew__: isNew, _id: clubId }) => {
+    return _uniq(allRelations.reduce((acc, { __isNew__: isNew, _id: clubId }) => {
       if (!isNew) {
         acc.push(clubId);
       }
 
       return acc;
-    }, []);
+    }, []));
   }
 
   const handleSelectChange = (type) => (value) => {
@@ -128,11 +130,12 @@ function ClubForm({
     setFieldValue('coordinates', coordinates);
   }, []);
 
-  const handleGetPossibleRelations = value => new Promise(async (resolve, reject) => {
-    const excluded = getCurrentRelations();
-    if (editType === 'edit') excluded.push(clubId);
+  const handleGetPossibleRelations = (shouldExclude = true) => value => new Promise(async (resolve, reject) => {
+    const excluded = shouldExclude ? getCurrentRelations() : [];
 
-    const { data: clubs } = await Api.get('/clubs/possibleRelations', {
+    if (editType === 'update') excluded.push(clubId);
+
+    const { data: clubs } = await Api.post('/clubs/possibleRelations', {
       searchName: value,
       excluded: excluded,
     });
@@ -155,8 +158,6 @@ function ClubForm({
   }, []);
 
   const finalCoordination= parseCoordinates(coordinates || DEFAULT_COORDINATES);
-
-  const labelClasses = useLabelStyles({});
 
   return (
     <form onSubmit={handleSubmit}>
@@ -221,22 +222,29 @@ function ClubForm({
             />
           </Grid>
           <Grid item xs={12}>
-            <InputLabel htmlFor="role" className={labelClasses.fontSize}>{t('club.tier')}</InputLabel>
-            <Select
+            <TextField
               error={isError('tier')}
+              helperText={isError('tier') ? t(errors.tier) : ''}
+              label={t('club.tier')}
               value={tier}
               onChange={handleChange}
               onBlur={handleBlur}
               name="tier"
               fullWidth
-            >
-              <MenuItem value={0}>0 (nieaktywny)</MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-            </Select>
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={isError('league')}
+              helperText={isError('league') ? t(errors.league) : ''}
+              label={t('club.league')}
+              value={league}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="league"
+              disabled
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
             <Box pb={1}>
@@ -267,7 +275,7 @@ function ClubForm({
               isMulti
               name="friendships"
               closeMenuOnSelect={false}
-              loadOptions={handleGetPossibleRelations}
+              loadOptions={handleGetPossibleRelations()}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
               value={friendships}
@@ -291,7 +299,7 @@ function ClubForm({
               isMulti
               name="agreements"
               closeMenuOnSelect={false}
-              loadOptions={handleGetPossibleRelations}
+              loadOptions={handleGetPossibleRelations()}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
               value={agreements}
@@ -315,7 +323,7 @@ function ClubForm({
               isMulti
               name="positives"
               closeMenuOnSelect={false}
-              loadOptions={handleGetPossibleRelations}
+              loadOptions={handleGetPossibleRelations()}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
               value={positives}
@@ -330,6 +338,51 @@ function ClubForm({
           <Grid item xs={12}>
             <Box pb={1}>
               <Typography variant="subtitle1">
+                {t('club.enemies')}
+                :
+              </Typography>
+            </Box>
+
+            <SelectAutocomplete
+              isMulti
+              name="enemies"
+              closeMenuOnSelect={false}
+              loadOptions={handleGetPossibleRelations()}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
+              value={enemies}
+              onChange={handleSelectChange('enemies')}
+              onBlur={handleBlur}
+              placeholder={t('club.enemiesPlaceholder')}
+            />
+            {errors.relationsNotUnique && (
+              <p>{t(errors.relationsNotUnique)}</p>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
+                {t('club.derbyRivalries')}
+                :
+              </Typography>
+            </Box>
+
+            <SelectAutocomplete
+              isMulti
+              name="derbyRivalries"
+              closeMenuOnSelect={false}
+              loadOptions={handleGetPossibleRelations(false)}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
+              value={derbyRivalries}
+              onChange={handleSelectChange('derbyRivalries')}
+              onBlur={handleBlur}
+              placeholder={t('club.derbyRivalriesPlaceholder')}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
                 {t('club.satellites')}
                 :
               </Typography>
@@ -339,7 +392,7 @@ function ClubForm({
               isMulti
               name="satellites"
               closeMenuOnSelect={false}
-              loadOptions={handleGetPossibleRelations}
+              loadOptions={handleGetPossibleRelations()}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
               value={satellites}
@@ -362,7 +415,7 @@ function ClubForm({
             <SelectAutocomplete
               isClearable
               name="satelliteOf"
-              loadOptions={handleGetPossibleRelations}
+              loadOptions={handleGetPossibleRelations()}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
               value={satelliteOf}

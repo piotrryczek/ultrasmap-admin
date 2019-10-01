@@ -2,6 +2,7 @@ import React, { useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import { makeStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 
@@ -10,8 +11,15 @@ import TableCellMUI from '@material-ui/core/TableCell';
 
 import TableCell from './tableCell.component';
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    marginLeft: theme.spacing(2),
+  },
+}));
+
 function TableRow(props) {
   const { t } = useTranslation();
+  const classes = useStyles({});
 
   const {
     columns,
@@ -24,6 +32,7 @@ function TableRow(props) {
     canView,
     apiPath,
     hasEditCredential,
+    actions = [],
   } = props;
 
   const { _id: id } = singleData;
@@ -63,6 +72,18 @@ function TableRow(props) {
               {canEdit ? t('global.edit') : t('global.view')}
             </Button>
           </Link>
+
+          {actions.map(({ label, action }) => (
+            <Button
+              variant="contained"
+              color="default"
+              onClick={() => action(id)}
+              key={label}
+              className={classes.button}
+            >
+              {label}
+            </Button>
+          ))}
         </TableCellMUI>
       )}
       

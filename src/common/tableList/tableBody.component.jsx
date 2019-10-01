@@ -16,6 +16,7 @@ function TableBody(props) {
     canRemove,
     apiPath,
     hasEditCredential,
+    actions,
   } = props;
 
   return (
@@ -36,6 +37,7 @@ function TableBody(props) {
             canRemove={canRemove}
             apiPath={apiPath}
             hasEditCredential={hasEditCredential}
+            actions={actions}
           />
         );
       })}

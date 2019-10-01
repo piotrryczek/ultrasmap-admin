@@ -4,7 +4,7 @@ export const SET_MESSAGE = `${namespace}_SET_MESSAGE`;
 export const SET_IS_AUTHENTICATED = `${namespace}_SET_IS_AUTHENTICATED`;
 export const SET_IS_LOADING = `${namespace}_SET_IS_LOADING`;
 
-export const setMessage = (messageType, messageCode) => (dispatch) => {
+export const setMessage = (messageType, messageCode = 'UNKNOWN_ERROR') => (dispatch) => {
   dispatch({
     type: SET_MESSAGE,
     payload: {

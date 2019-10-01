@@ -7,14 +7,17 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ButtonLink from 'common/buttonLink/buttonLink.component';
 import { PER_PAGE } from 'config/config';
 
+const OFFSET = 6;
+
 function Pagination(props) {
   const {
     page: currentPage,
     allCount,
     basePath,
+    perPage = PER_PAGE,
   } = props;
 
-  const nrPages = Math.ceil(allCount / PER_PAGE);
+  const nrPages = Math.ceil(allCount / perPage);
   const pagesArray = Array.from(Array(nrPages).keys());
 
   return (
@@ -32,7 +35,7 @@ function Pagination(props) {
           1
         </ButtonLink>
 
-        {currentPage > 3 && (
+        {currentPage > (2 + OFFSET) && (
           <Button
             disabled
             variant="contained"
@@ -47,7 +50,7 @@ function Pagination(props) {
           if (
             page !== 0 &&
             page !== pagesArray.length - 1 &&
-            (page > currentPage - 4 && page < currentPage + 2)
+            (page > currentPage - (2 + OFFSET) && page < currentPage + OFFSET)
           ) {
             return (
               <ButtonLink
@@ -65,7 +68,7 @@ function Pagination(props) {
           return (null);
         })}
 
-        {currentPage < pagesArray.length - 3 && (
+        {currentPage < pagesArray.length - (1 + OFFSET) && (
           <Button
             disabled
             variant="contained"

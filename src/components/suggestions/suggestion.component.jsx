@@ -46,11 +46,15 @@ function Suggestion(props) {
       friendships,
       agreements,
       positives,
+      enemies,
+      derbyRivalries,
       satellites,
       satelliteOf,
       friendshipsToCreate,
       agreementsToCreate,
       positivesToCreate,
+      enemiesToCreate,
+      derbyRivalriesToCreate,
       satellitesToCreate,
       satelliteOfToCreate,
     },
@@ -83,6 +87,8 @@ function Suggestion(props) {
       ...friendshipsToCreate,
       ...agreementsToCreate,
       ...positivesToCreate,
+      ...enemiesToCreate,
+      // ...derbyRivalriesToCreate, // in future possibly to change as Derby and Enemy can be same
       ...satellitesToCreate,
     ];
 
@@ -104,6 +110,8 @@ function Suggestion(props) {
       friendships: [...friendships.map(club => club._id), ...getCreatedIds(friendshipsToCreate, addedClubs)],
       agreements: [...agreements.map(club => club._id), ...getCreatedIds(agreementsToCreate, addedClubs)],
       positives: [...positives.map(club => club._id), ...getCreatedIds(positivesToCreate, addedClubs)],
+      enemies: [...enemies.map(club => club._id), ...getCreatedIds(enemiesToCreate, addedClubs)],
+      // derbyRivalries: [...derbyRivalries.map(club => club._id), ...getCreatedIds(derbyRivalriesToCreate, addedClubs)],
       satellites: [...satellites.map(club => club._id), ...getCreatedIds(satellitesToCreate, addedClubs)],
       satelliteOf: finalSatelliteOf,
     };

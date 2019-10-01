@@ -43,6 +43,7 @@ function TableList(props) {
     columns,
     searchColumns = [],
     hasEditCredential,
+    actions,
   } = props;
 
   const page = +(_get(props, 'match.params.page', 1));
@@ -155,6 +156,7 @@ function TableList(props) {
                 canEdit={canEdit}
                 canView={canView}
                 hasEditCredential={hasEditCredential}
+                actions={actions}
               />
             </TableMUI>
           </Paper>

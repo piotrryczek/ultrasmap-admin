@@ -33,6 +33,7 @@
         "users": "Użytkownicy",
         "addUser": "Dodaj użytkownika",
         "clubs": "Kluby",
+        "clubsCompare": "Porównaj",
         "addClub": "Dodaj klub",
         "suggestions": "Sugestie",
         "activities": "Aktywność",
@@ -53,7 +54,15 @@
         "chooseToUpload": "Wybierz plik",
         "confirmRemove": "Jesteś pewny, że chcesz usunąć ({{nrItems}} element(ów))?",
         "actions": "Akcje",
-        "searchPlaces": "Wyszukaj miejsca..."
+        "searchPlaces": "Wyszukaj miejsca...",
+        "clubsByPower": "Kluby według siły",
+        "leagues": "Ligi",
+        "addLeague": "Dodaj ligę",
+        "calculate": "Oblicz",
+        "add": "Dodaj",
+        "matches": "Mecze",
+        "addMatch": "Dodaj mecz",
+        "filter": "Filtruj"
       },
       "columns": {
         "_id": "Identyfikator",
@@ -67,7 +76,10 @@
         "user": "Użytkownik",
         "tier": "Znaczenie / Siła",
         "logo": "Logo / herb",
-        "createdAt": "Dokonano"
+        "createdAt": "Dokonano",
+        "importanceModifier": "Modifikator znaczenia",
+        "nrClubs": "Liczba klubów",
+        "leagueTier": "Poziom rozgrykowy"
       },
       "login": {
         "login": "Zaloguj się",
@@ -119,7 +131,12 @@
         "satelliteOf": "Satelita",
         "satelliteOfPlaceholder": "Zacznij pisać i wybierz jakiego klubu klub jest satelitą...",
         "comments": "Uwagi",
-        "otherFoundByName": "Istniejące kluby o podobnej bądź identycznej nazwie: "
+        "otherFoundByName": "Istniejące kluby o podobnej bądź identycznej nazwie: ",
+        "enemies": "Wrogowie",
+        "enemiesPlaceholder": "Zacznij pisać i wynierz wrogów...",
+        "derbyRivalries": "Rywale derbowi",
+        "derbyRivalriesPlaceholder": "Zacznij pisać i wybierz derbowych rywali...",
+        "league": "Liga"
       },
       "user": {
         "email": "Email",
@@ -154,6 +171,56 @@
       },
       "tableTooltips": {
         "clubLogo": "Zwróć uwagę na narzucone pomocnicze szare tło. Jeśli tło jest białe bądź inne niż szare znaczy to najprawdopodobniej, że obrazek nie posiada przezroczystego tła i mogą występowac problemy z jego estetycznym wyświetlaniem."
+      },
+      "clubCompare": {
+        "firstClub": "Pierwszy klub",
+        "secondClub": "Drugi klub",
+        "compare": "Porównaj"
+      },
+      "clubsByPower": {
+        "cannotSave": "Wystąpiły błędy, nie można zapisać.",
+        "saveFor": "Zapisz zmiany dla {{nrItems}} klubów"
+      },
+      "league": {
+        "clubsBeforeNotice": "Po utworzeniu ligi pojawi się możliwość automatycznego pobrania klubów. Pamiętaj aby zweryfikować poprawność danych. Pamiętaj też, że zostaną przypisane tylko te kluby, które już istnieją w bazie danych.",
+        "isAutomaticDownload": "Automatycznie, cyklicznie pobierane mecze",
+        "downloadMethod": "Metoda pobierania",
+        "downloadUrl": "Adres url do pobierania",
+        "importanceModifier": "Modyfikator znaczenia meczy",
+        "sport": "Dyscyplina sportowa",
+        "tier": "Poziom rozgrywkowy"
+      },
+      "addMatch": {
+        "attitude": "Nastawienie",
+        "importance": "Znaczenie",
+        "reserves": "Rezerwy",
+        "homeClub": "Gospodarze",
+        "awayClub": "Goście",
+        "clubNotInDatabase": "Klub nie istnieje w bazie danych, mimo to chcesz go wykorzystać bez uprzedniego dodania?",
+        "league": "Liga"
+      },
+      "match": {
+        "changeLocation": "Zmień",
+        "setLocation": "Ustaw",
+        "recalculate": "Przelicz",
+        "reserves": "Rezerwy"
+      },
+      "matches": {
+        "remove": "Usuń",
+        "homeClub": "Gospodarze",
+        "attitude": "Nastawienie",
+        "awayClub": "Goście",
+        "location": "Lokalizacja",
+        "league": "Liga",
+        "date": "Data",
+        "importance": "Znaczenie",
+        "isVisible": "Widoczny?",
+        "actions": "Akcje"
+      },
+      "matchFilters": {
+        "date": "Po dacie",
+        "isVisible": "Widoczność",
+        "lackOf": "Z brakiem"
       }
     }
   },
@@ -211,7 +278,8 @@
         "chooseToUpload": "Choose a file",
         "confirmRemove": "Are you sure you want to remove ({{nrItems}} item(s))?",
         "actions": "Actions",
-        "searchPlaces": "Search places..."
+        "searchPlaces": "Search places...",
+        "addMatch": "Add match"
       },
       "columns": {
         "_id": "ID",
@@ -225,7 +293,8 @@
         "user": "User",
         "tier": "Importance / strength",
         "logo": "Logo",
-        "createdAt": "Performed"
+        "createdAt": "Performed",
+        "leagueTier": "League level"
       },
       "login": {
         "login": "Sign in",
@@ -277,7 +346,11 @@
         "satelliteOf": "Satellite",
         "satelliteOfPlaceholder": "Start typing and select club...",
         "comments": "Comments",
-        "otherFoundByName": "Existing clubs with the similar or the same name: "
+        "otherFoundByName": "Existing clubs with the similar or the same name: ",
+        "enemies": "Enemies",
+        "enemiesPlaceholder": "Start typing and select club...",
+        "derbyRivalries": "Derby rivalries",
+        "derbyRivalriesPlaceholder": "Start typing and select club..."
       },
       "user": {
         "email": "Email",
@@ -312,6 +385,11 @@
       },
       "tableTooltips": {
         "clubLogo": "Note the imposed gray background. If the background is white or other than gray, it probably means that the image does not have a transparent background and there may be problems with proper display."
+      },
+      "clubCompare": {
+        "firstClub": "First club",
+        "secondClub": "Second club",
+        "compare": "Compare"
       }
     }
   },
