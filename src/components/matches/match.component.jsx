@@ -96,8 +96,10 @@ function Match(props) {
     isChecked,
     match: {
       _id: matchId,
+      retrievedHomeClubName,
       homeClub,
       unimportantHomeClubName,
+      retrievedAwayClubName,
       awayClub,
       unimportantAwayClubName,
       isHomeClubReserve,
@@ -269,6 +271,7 @@ function Match(props) {
   }, [matchId, attitude, date, importance, coordinates, isVisible]);
 
   const finalCoordinates = coordinates;
+  const hasLocation = (finalCoordinates.lat !== 0 || finalCoordinates.lng !== 0);
 
   return (
     <tr className="match">
@@ -288,7 +291,9 @@ function Match(props) {
         />
       </td>
       <td className="match-home-club">
-      
+        {retrievedHomeClubName && !unimportantHomeClubName && (
+          <span className="retrieved-club-name">{retrievedHomeClubName}</span>
+        )}
         <span className={classNames('club-name', { 'unimportant': unimportantHomeClubName })}>
           {homeClubName}
           {isHomeClubReserve ? ' II' : ''}
@@ -312,6 +317,9 @@ function Match(props) {
         </div>
       </td>
       <td className="match-away-club">
+        {retrievedAwayClubName && !unimportantAwayClubName && (
+          <span className="retrieved-club-name">{retrievedAwayClubName}</span>
+        )}
         <span className={classNames('club-name', { 'unimportant': unimportantAwayClubName })}>
           {awayClubName}
           {isAwayClubReserve ? ' II' : ''}
@@ -342,12 +350,12 @@ function Match(props) {
 
         <Button
           variant="contained"
-          color={_isEmpty(coordinates) ? 'secondary' : 'primary'}
+          color={!hasLocation ? 'secondary' : 'primary'}
           type="button"
           size="small"
           onClick={handleOpenMap}
         >
-          {_isEmpty(coordinates) ? t('match.setLocation') : t('match.changeLocation')}
+          {!hasLocation ? t('match.setLocation') : t('match.changeLocation')}
         </Button>
       </td>
       <td className="match-league">

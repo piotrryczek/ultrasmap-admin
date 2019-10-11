@@ -13,7 +13,7 @@ export const LANGUAGES = [{
   flag: 'en.png',
   label: 'English',
 }];
-export const DOWNLOAD_METHODS = ['90minut'];
+export const DOWNLOAD_METHODS = ['90minut', '90minutPucharPolski'];
 export const MATCH_DURATION_MINUTES = 120;
 export const ATTITUDE_COLOR_UNKNOWN = {
   color: 'black',

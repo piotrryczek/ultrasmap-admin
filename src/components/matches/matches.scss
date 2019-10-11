@@ -36,6 +36,14 @@
         padding: 0.5rem 0px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.4);
         font-size: 0.75em;
+
+        .button-table-header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          width: 100%;
+        }
       }
     }
   }
@@ -94,10 +102,27 @@
           margin: 0px auto;
         }
 
+        .retrieved-club-name {
+          text-align: center;
+          font-weight: 400;
+          display: block;
+          font-size: 0.75em;
+          color: $textSecondaryColor;
+
+          &:before {
+            content: '(';
+          }
+
+          &:after {
+            content: ')';
+          }
+        }
+
         .club-name {
           font-weight: bold;
           display: block;
           text-align: center;
+          font-size: 1.125em;
 
           &.unimportant {
             font-weight: 400;

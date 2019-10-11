@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import SelectAutocomplete from 'react-select/async';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,10 +13,12 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
 
 import { DOWNLOAD_METHODS, SPORTS } from 'config/config';
 import Api from 'services/api';
-import { Typography } from '@material-ui/core';
+
+import { setIsLoading } from 'components/app/app.actions';
 
 const getOptionValue = ({ _id }) => _id;
 const getOptionLabel = ({ name }) => name;
@@ -47,6 +50,7 @@ function LeagueForm({
 }) {
   const { t } = useTranslation();
   const classes = useStyles({});
+  const dispatch = useDispatch();
 
   const isError = (field) => errors[field] && touched[field];
 
@@ -70,6 +74,8 @@ function LeagueForm({
   });
 
   const handleDownloadClubs = useCallback(async () => {
+    dispatch(setIsLoading(true));
+
     const { data: clubs } = await Api.get(`/leagues/${leagueId}/downloadClubs`);
 
     const clubsToPut = clubs.reduce((acc, { isReserve, club }) => {
@@ -79,6 +85,7 @@ function LeagueForm({
     }, []);
 
     setFieldValue('clubs', clubsToPut);
+    dispatch(setIsLoading(false));
   }, [leagueId]);
 
 

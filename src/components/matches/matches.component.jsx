@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import _get from 'lodash/get';
+import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -13,7 +14,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-import { PER_PAGE_MATCHES } from 'config/config';
+import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+
+import { PER_PAGE_MATCHES, MATCH_DURATION_MINUTES } from 'config/config';
 import Api from 'services/api';
 import { setIsLoading, setMessage } from 'components/app/app.actions';
 import Pagination from 'common/pagination/pagination.component';
@@ -42,10 +46,11 @@ function Matches(props) {
     selected: [],
     filters: {
       isVisible: true,
-      date: {
-        type: 'before',
-        time: Date.now(),
-      }
+      dateFrom: moment(new Date()).subtract(MATCH_DURATION_MINUTES, 'minutes').format('x'),
+      dateTo: moment(new Date()).add(7, 'days').format('x'),
+    },
+    sort: {
+      date: 'descending',
     },
   });
 
@@ -54,22 +59,26 @@ function Matches(props) {
     allCount,
     selected,
     filters,
+    sort,
   } = state;
 
   useEffect(() => {
     fetchData();
-  }, [page, filters]);
+  }, [page, filters, sort]);
 
   const fetchData = useCallback(async () => {
     dispatch(setIsLoading(true));
 
+    const params = {
+      page,
+      filters,
+      sort,
+    };
+
     const {
       data: matches,
       allCount
-    } = await Api.get('/matches', {
-      page,
-      filters,
-    });
+    } = await Api.get('/matches', params);
 
     setState(prevState => ({
       ...prevState,
@@ -78,7 +87,7 @@ function Matches(props) {
     }));
 
     dispatch(setIsLoading(false));
-  }, [page, selected, filters]);
+  }, [page, selected, filters, sort]);
 
   const handleSelect = useCallback((id) => {
     setState(prevState => ({
@@ -134,6 +143,17 @@ function Matches(props) {
       page: 1,
     }));
   }, []);
+
+  const handleSort = name => () => {
+    const currentSortValue = sort[name];
+    const newSortValue = !currentSortValue ? 'descending' : currentSortValue === 'descending' ? 'ascending' : null;
+    const newSort = newSortValue ? { [name]: newSortValue } : {};
+
+    setState(prevState => ({
+      ...prevState,
+      sort: newSort,
+    }));
+  };
   
   return (
     <Grid container spacing={3}>
@@ -184,13 +204,58 @@ function Matches(props) {
                       </>
                     )}
                   </th>
-                  <th>{t('matches.importance')}</th>
+                  <th>
+                    <button
+                      type="button"
+                      className="clear-button button-table-header"
+                      onClick={handleSort('importance')}
+                    >
+                      {t('matches.importance')}
+
+                      {sort.importance === 'ascending' && (
+                        <ArrowDropUp />
+                      )}
+                      {sort.importance === 'descending' && (
+                        <ArrowDropDown />
+                      )}
+                    </button>
+                  </th>
                   <th className="match-home-club">{t('matches.homeClub')}</th>
-                  <th>{t('matches.attitude')}</th>
+                  <th>
+                    <button
+                      type="button"
+                      className="clear-button button-table-header"
+                      onClick={handleSort('attitude')}
+                    >
+                      {t('matches.attitude')}
+
+                      {sort.attitude === 'ascending' && (
+                        <ArrowDropUp />
+                      )}
+                      {sort.attitude === 'descending' && (
+                        <ArrowDropDown />
+                      )}
+                    </button>
+                  </th>
                   <th>{t('matches.awayClub')}</th>
                   <th>{t('matches.location')}</th>
                   <th>{t('matches.league')}</th>
-                  <th>{t('matches.date')}</th>
+                  <th>
+                    <button
+                      type="button"
+                      className="clear-button button-table-header"
+                      onClick={handleSort('date')}
+                    >
+                      {t('matches.date')}
+
+                      {sort.date === 'ascending' && (
+                        <ArrowDropUp />
+                      )}
+                      {sort.date === 'descending' && (
+                        <ArrowDropDown />
+                      )}
+                    </button>
+                  </th>
                   <th>{t('matches.isVisible')}</th>
                   <th>{t('matches.actions')}</th>
                 </tr>

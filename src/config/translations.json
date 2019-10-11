@@ -19,7 +19,9 @@
         "BACKUP_CREATED": "Backup został utworzony",
         "SUGGESTION_APPLIED": "Zmiany zaproponowane w sugestii zostały zaakceptowane, a sama sugestia zmieniła status na zaakceptowaną",
         "CLUB_ADDED_SUCCESS": "Klub został dodany",
-        "CLUB_UPDATED_SUCCESS": "Klub został zaktualizowany"
+        "CLUB_UPDATED_SUCCESS": "Klub został zaktualizowany",
+        "LEAGUE_MATCHES_DOWNLOADED": "Mecze zostały poprawnie pobrane",
+        "LEAGUE_ADDED_SUCCESS": "Liga została dodana"
       },
       "formErrors": {
         "email": "Niepoprawny adres email",
@@ -62,7 +64,9 @@
         "add": "Dodaj",
         "matches": "Mecze",
         "addMatch": "Dodaj mecz",
-        "filter": "Filtruj"
+        "filter": "Filtruj",
+        "downloadClubs": "Pobierz kluby",
+        "downloadFromAllLeagues": "Pobierz dla wszystkich"
       },
       "columns": {
         "_id": "Identyfikator",
@@ -79,7 +83,8 @@
         "createdAt": "Dokonano",
         "importanceModifier": "Modifikator znaczenia",
         "nrClubs": "Liczba klubów",
-        "leagueTier": "Poziom rozgrykowy"
+        "leagueTier": "Poziom rozgrykowy",
+        "isAutomaticDownload": "Automatyczne cykliczne pobieranie"
       },
       "login": {
         "login": "Zaloguj się",
@@ -95,7 +100,8 @@
         "users": "Użytkownicy",
         "clubs": "Kluby",
         "suggestions": "Sugestie",
-        "roles": "Role"
+        "roles": "Role",
+        "leagues": "Ligi"
       },
       "suggestions": {
         "removeConfirm": "Jesteś pewny, że chcesz usunąć ({{nrItems}}) sugestie(ę)?",
@@ -182,6 +188,8 @@
         "saveFor": "Zapisz zmiany dla {{nrItems}} klubów"
       },
       "league": {
+        "name": "Nazwa",
+        "clubsPlaceholder": "Kluby występujące",
         "clubsBeforeNotice": "Po utworzeniu ligi pojawi się możliwość automatycznego pobrania klubów. Pamiętaj aby zweryfikować poprawność danych. Pamiętaj też, że zostaną przypisane tylko te kluby, które już istnieją w bazie danych.",
         "isAutomaticDownload": "Automatycznie, cyklicznie pobierane mecze",
         "downloadMethod": "Metoda pobierania",
@@ -219,8 +227,21 @@
       },
       "matchFilters": {
         "date": "Po dacie",
+        "dateFrom": "Od",
+        "dateTo": "Do",
         "isVisible": "Widoczność",
-        "lackOf": "Z brakiem"
+        "lackOf": "Z brakiem",
+        "leagueTier": "Poziom rozgrywkowy",
+        "leagueTiers": "Poziomy rozgrykowe",
+        "clubs": "Dla klubów",
+        "ignoreAttitude": "Ignoruj nastawienie",
+        "attitudeFrom": "Nastawienie od",
+        "attitudeTo": "Nastawienie do"
+      },
+      "leagueDownloadMatches": {
+        "title": "Podsumowanie",
+        "added": "Dodano {{added}} mecz(e)",
+        "updated": "Zaktualizowano {{updated}} mecz(e)"
       }
     }
   },

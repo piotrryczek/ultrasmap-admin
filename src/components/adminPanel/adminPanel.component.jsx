@@ -72,7 +72,7 @@ function AdminPanel() {
               <RouteAuth path="/leagues/:id" component={(props) => <League {...props} editType="update" />} credential="updateLeague" />
 
               <RouteAuth exact path="/matches" component={Matches} credential="updateMatch" />
-              <RouteAuth exact path="/matches/page:page" component={Matches} credential="updateMatch" />
+              <RouteAuth exact path="/matches/page/:page" component={Matches} credential="updateMatch" />
               <RouteAuth exact path="/matches/new" component={AddMatch} credential="updateMatch" />
 
               <RouteAuth exact path="/backups" component={Backups} credential="getBackup" />

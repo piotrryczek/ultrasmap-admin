@@ -203,6 +203,19 @@ function Backups() {
                       label={t('backups.roles')}
                     />
                   </ListItem>
+                  <ListItem>
+                    <FormControlLabel
+                      control={(
+                        <Checkbox
+                          checked={collectionsToRestore.includes('leagues')}
+                          onChange={handleChange}
+                          name="collections"
+                          value="leagues"
+                        />
+                      )}
+                      label={t('backups.leagues')}
+                    />
+                  </ListItem>
                 </List>
               </DialogContent>
               <DialogActions>

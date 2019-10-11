@@ -10,6 +10,6 @@ export default yup.object().shape({
     .string(),
   clubs: yup
     .array(),
-    importanceModifier: yup
+  importanceModifier: yup
     .number(),
 });
