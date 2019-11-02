@@ -66,7 +66,9 @@
         "addMatch": "Dodaj mecz",
         "filter": "Filtruj",
         "downloadClubs": "Pobierz kluby",
-        "downloadFromAllLeagues": "Pobierz dla wszystkich"
+        "downloadFromAllLeagues": "Pobierz dla wszystkich",
+        "clubsByRelations": "Kluby według relacji",
+        "recalculateIncomingMatches": "Przelicz nadchodzące mecze"
       },
       "columns": {
         "_id": "Identyfikator",
@@ -142,7 +144,8 @@
         "enemiesPlaceholder": "Zacznij pisać i wynierz wrogów...",
         "derbyRivalries": "Rywale derbowi",
         "derbyRivalriesPlaceholder": "Zacznij pisać i wybierz derbowych rywali...",
-        "league": "Liga"
+        "league": "Liga",
+        "country": "Państwo"
       },
       "user": {
         "email": "Email",
@@ -185,7 +188,8 @@
       },
       "clubsByPower": {
         "cannotSave": "Wystąpiły błędy, nie można zapisać.",
-        "saveFor": "Zapisz zmiany dla {{nrItems}} klubów"
+        "saveFor": "Zapisz zmiany dla {{nrItems}} klubów",
+        "country": "Państwo..."
       },
       "league": {
         "name": "Nazwa",
@@ -236,7 +240,8 @@
         "clubs": "Dla klubów",
         "ignoreAttitude": "Ignoruj nastawienie",
         "attitudeFrom": "Nastawienie od",
-        "attitudeTo": "Nastawienie do"
+        "attitudeTo": "Nastawienie do",
+        "foundClubName": "Dla poszukiwanej nazwy klubu ze źródła (szara mała nazwa)"
       },
       "leagueDownloadMatches": {
         "title": "Podsumowanie",
@@ -371,7 +376,8 @@
         "enemies": "Enemies",
         "enemiesPlaceholder": "Start typing and select club...",
         "derbyRivalries": "Derby rivalries",
-        "derbyRivalriesPlaceholder": "Start typing and select club..."
+        "derbyRivalriesPlaceholder": "Start typing and select club...",
+        "country": "Country"
       },
       "user": {
         "email": "Email",

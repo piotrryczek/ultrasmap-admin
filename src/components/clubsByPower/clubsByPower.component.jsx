@@ -2,6 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
+import SelectAutocomplete from 'react-select';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -13,10 +14,15 @@ import Api from 'services/api';
 import { setIsLoading } from 'components/app/app.actions';
 import ClubByPower from './clubByPower.component';
 
+const getOptionValue = ({ _id }) => _id;
+const getOptionLabel = ({ name }) => name;
+
 function ClubsByPower() {
   const [clubs, setClubs] = useState([]);
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState([]);
+  const [possibleCountries, setPossibleCountries] = useState([]);
+  const [country, setCountry] = useState([]);
 
   const dispatch = useDispatch(); 
   const { t } = useTranslation();
@@ -24,17 +30,31 @@ function ClubsByPower() {
   const fetchData = useCallback(async () => {
     dispatch(setIsLoading(true));
 
+    const queryData = country ? { countries: [country._id] } : {};
+
     const {
       data: clubs,
-    } = await Api.get('/clubs/byTier');
+    } = await Api.get('/clubs/byTier', queryData);
 
     setClubs(clubs);
     dispatch(setIsLoading(false));
+  }, [country]);
+
+  const fetchCountries = useCallback(async () => {
+    const {
+      data: retrievePossibleCountries,
+    } = await Api.get('/countries');
+
+    setPossibleCountries(retrievePossibleCountries);
+  }, []);
+
+  useEffect(() => {
+    fetchCountries();
   }, []);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [country]);
 
   const getValues = (clubId, value) => (prevValues) => {
     const originalValue = clubs.find(({ _id: originalClubId }) => clubId === originalClubId).tier;
@@ -90,6 +110,10 @@ function ClubsByPower() {
     fetchData();
   }, [values]);
 
+  const handleCountryChange = useCallback((value) => {
+    setCountry(value);
+  }, []);
+
   const valuesArr = Object.values(values);
 
   return (
@@ -114,12 +138,29 @@ function ClubsByPower() {
               </Button>
             </Grid>
             <Grid item xs={12}>
+              <SelectAutocomplete
+                isClearable
+                value={country}
+                onChange={handleCountryChange}
+                getOptionValue={getOptionValue}
+                getOptionLabel={getOptionLabel}
+                options={possibleCountries}
+                placeholder={t('clubsByPower.country')}
+                name="country"
+                inputProps={{
+                  id: 'country',
+                }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
               <table className="clubs-by-power">
                 <tbody>
-                  {clubs.map(({ _id: clubId, tier, name, transliterationName }) => {
+                  {clubs.map(({ _id: clubId, tier, name, transliterationName }, index) => {
                     return (
                       <ClubByPower
                         key={clubId}
+                        index={index}
                         clubId={clubId}
                         tier={tier}
                         name={name}

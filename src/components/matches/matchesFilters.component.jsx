@@ -20,17 +20,6 @@ import DateTimePickerWrapper from 'common/dateTimePickerWrapper/dateTimePickerWr
 import { MATCH_DURATION_MINUTES } from 'config/config';
 import Api from 'services/api';
 
-const DATE_CHOICES = [{
-  value: 'all',
-  label: 'Wszystkie'
-}, {
-  value: 'beforeStart',
-  label: 'Przed rozpoczęciem'
-}, {
-  value: 'beforeEnd',
-  label: 'Przed zakończeniem'
-}];
-
 const IS_VISIBLE_CHOICES = [{
   value: 'all',
   label: 'Wszystkie'
@@ -97,6 +86,7 @@ function MatchesFilters(props) {
     ignoreAttitude: true,
     attitudeFrom: 0,
     attitudeTo: 100,
+    foundClubName: '',
   });
 
   const {
@@ -109,6 +99,7 @@ function MatchesFilters(props) {
     ignoreAttitude,
     attitudeFrom,
     attitudeTo,
+    foundClubName,
   } = state;
 
   const handleSelectChange = useCallback((event) => {
@@ -159,6 +150,12 @@ function MatchesFilters(props) {
       });
     }
 
+    if (foundClubName) {
+      Object.assign(filters, {
+        foundClubName,
+      });
+    }
+
     onFilter(filters);
   }, [
     onFilter,
@@ -171,6 +168,7 @@ function MatchesFilters(props) {
     lackOf,
     leagueTiers,
     clubs,
+    foundClubName,
   ]);
 
   const handleGetPossibleRelations = value => new Promise(async (resolve, reject) => {
@@ -233,6 +231,11 @@ function MatchesFilters(props) {
     }));
   }, []);
 
+  const handleChangeDateToAll = () => {
+    handleChangeDate('dateFrom')(new Date(2000, 0));
+    handleChangeDate('dateTo')(new Date(2100, 0));
+  }
+
   return (
     <Grid item xs={12}>
       <Paper>
@@ -250,7 +253,7 @@ function MatchesFilters(props) {
                   color="secondary"
                   type="button"
                   size="small"
-                  onClick={() => handleChangeDate('dateFrom')(new Date(2000, 0))}
+                  onClick={handleChangeDateToAll}
                   className={classes.buttonMargin}
                 >
                   Wszystkie
@@ -318,7 +321,7 @@ function MatchesFilters(props) {
                   color="secondary"
                   type="button"
                   size="small"
-                  onClick={() => handleChangeDate('dateTo')(new Date(2050, 0))}
+                  onClick={handleChangeDateToAll}
                 >
                   Wszystkie
                 </Button>
@@ -411,6 +414,15 @@ function MatchesFilters(props) {
                 label={t('matchFilters.ignoreAttitude')}
               />
             </Grid>
+            <Grid item xs={12}>
+              <Typography gutterBottom>{t('matchFilters.foundClubName')}</Typography>
+              <Textfield
+                value={foundClubName}
+                onChange={handleTextfieldChange}
+                name="foundClubName"
+                fullWidth
+              />
+            </Grid>
             {!ignoreAttitude && (
               <>
                 <Grid item xs={6}>
@@ -433,16 +445,16 @@ function MatchesFilters(props) {
                 </Grid>
               </>
             )}
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              type="button"
-              onClick={handleFilter}
-            >
-              {t('global.filter')}
-            </Button>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="button"
+                onClick={handleFilter}
+              >
+                {t('global.filter')}
+              </Button>
+            </Grid>
           </Grid>
         </Box>
       </Paper>

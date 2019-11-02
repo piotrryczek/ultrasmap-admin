@@ -19,6 +19,7 @@ import CompareArrows from '@material-ui/icons/CompareArrows';
 import Sort from '@material-ui/icons/Sort';
 import ViewList from '@material-ui/icons/ViewList';
 import Whatshot from '@material-ui/icons/Whatshot';
+import People from '@material-ui/icons/People';
 
 import Auth from 'services/auth';
 import Languages from 'components/languages/languages.component';
@@ -99,6 +100,18 @@ function SidePanel() {
                     <Sort />
                   </ListItemIcon>
                   <ListItemText primary={t('global.clubsByPower')} />
+                </ListItem>
+              )}
+            </NavigationHOC>
+          )}
+          {Auth.hasCredentialLocal('getClub') && (
+            <NavigationHOC to="/clubs-by-relations">
+              {(pathname, handleClick) => (
+                <ListItem button onClick={handleClick} selected={(pathname === '/clubs-by-relations')}>
+                  <ListItemIcon className={classes.listItemIcon}>
+                    <People />
+                  </ListItemIcon>
+                  <ListItemText primary={t('global.clubsByRelations')} />
                 </ListItem>
               )}
             </NavigationHOC>

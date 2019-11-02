@@ -120,6 +120,7 @@ export const prepareClubFormData = ({
   enemies,
   derbyRivalries,
   satelliteOf,
+  country,
 }, excludes = []) => {
   const formData = new FormData();
   formData.append('name', name);
@@ -137,6 +138,7 @@ export const prepareClubFormData = ({
   
   if (satelliteOf) formData.append('satelliteOf', satelliteOf);
   if (newLogo) formData.append('newLogo', newLogo);
+  if (country) formData.append('country', country);
 
   return formData;
 };

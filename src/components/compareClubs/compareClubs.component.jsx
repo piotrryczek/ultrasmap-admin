@@ -92,6 +92,7 @@ function CompareClubs() {
               <Grid item xs={12}>
                 <Typography gutterBottom>Panel poglądowy przeznaczony do testowania.</Typography>
                 <SelectAutocomplete
+                  isClearable
                   name="firstClub"
                   closeMenuOnSelect
                   loadOptions={handleGetOptions}
@@ -114,6 +115,7 @@ function CompareClubs() {
               </Grid>
               <Grid item xs={12}>
                 <SelectAutocomplete
+                  isClearable
                   name="secondCLub"
                   closeMenuOnSelect
                   loadOptions={handleGetOptions}

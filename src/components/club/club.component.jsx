@@ -35,6 +35,7 @@ const parseClubData = ({
   derbyRivalries,
   satellites,
   satelliteOf,
+  country,
 }) => ({
   newLogo: null,
   transliterationName,
@@ -51,6 +52,7 @@ const parseClubData = ({
   derbyRivalries,
   satellites,
   satelliteOf,
+  country,
 });
 
 function Club(props) {
@@ -68,6 +70,7 @@ function Club(props) {
 
   const [initiallyLoaded, setInitiallyLoaded] = useState(false);
   const [activities, setActivities] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   const [fields, setFields] = useState({
     newLogo: null,
@@ -85,6 +88,7 @@ function Club(props) {
     derbyRivalries: [],
     satellites: [],
     satelliteOf: null,
+    country: null,
   });
 
   const fetchData = async () => {
@@ -100,7 +104,17 @@ function Club(props) {
     setActivities(activities);
   }
 
+  const fetchCountries = async () => {
+    const {
+      data: retrievePossibleCountries,
+    } = await Api.get('/countries');
+
+    setCountries(retrievePossibleCountries);
+  }
+
   useEffect(() => {
+    fetchCountries();
+
     if (editType === 'update') {
       fetchData();
       fetchActivities();
@@ -123,6 +137,7 @@ function Club(props) {
       derbyRivalries,
       satellites,
       satelliteOf,
+      country,
     } = values;
 
     const formData = prepareClubFormData({
@@ -140,6 +155,7 @@ function Club(props) {
       derbyRivalries: derbyRivalries.map(club => club._id),
       satellites: satellites.map(club => club._id),
       satelliteOf: satelliteOf ? satelliteOf._id : null,
+      country: country ? country._id : null,
     });
 
     dispatch(setIsLoading(true));
@@ -219,6 +235,7 @@ function Club(props) {
                 clubId={clubId}
                 editType={editType}
                 initiallyLoaded={initiallyLoaded}
+                possibleCountries={countries}
               />
             )}
           />

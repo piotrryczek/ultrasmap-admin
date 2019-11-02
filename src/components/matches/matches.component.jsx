@@ -154,9 +154,31 @@ function Matches(props) {
       sort: newSort,
     }));
   };
+
+  const handleRecalculate = async () => {
+    dispatch(setIsLoading(true));
+
+    await Api.patch('/matches/recalculate');
+
+    window.location.reload();
+  }
   
   return (
     <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Paper>
+          <Box p={3}>
+            <Button
+              onClick={handleRecalculate}
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              {t('global.recalculateIncomingMatches')}
+            </Button>
+          </Box>
+        </Paper>
+      </Grid>
       <MatchesFilters onFilter={handleFilter} />
       <Grid item xs={12}>
         <Paper>

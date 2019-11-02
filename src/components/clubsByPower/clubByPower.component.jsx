@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 
 function ClubByPower(props) {
   const {
+    index,
     tier,
     name,
     transliterationName,
@@ -24,6 +25,7 @@ function ClubByPower(props) {
   return (
     <tr>
       <td className="club-name">
+        {`${index + 1}. `}
         {name}
         {transliterationName && (
           <span className="club-transliteration-name">{`(${transliterationName})`}</span>

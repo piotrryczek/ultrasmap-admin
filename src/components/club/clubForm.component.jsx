@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import SelectAutocomplete from 'react-select/async';
+import AsyncSelectAutocomplete from 'react-select/async';
+import SelectAutocomplete from 'react-select';
 import _isEmpty from 'lodash/isEmpty';
 import _uniq from 'lodash/uniq';
 
@@ -55,6 +56,7 @@ function ClubForm({
   clubId,
   editType,
   initiallyLoaded,
+  possibleCountries,
   values: {
     name,
     transliterationName,
@@ -70,6 +72,7 @@ function ClubForm({
     enemies,
     derbyRivalries,
     satelliteOf,
+    country,
   },
   errors,
   touched,
@@ -155,6 +158,10 @@ function ClubForm({
     const { data: clubs } = await Api.get('/clubs', body);
 
     setOtherFoundClubs(clubs);
+  }, []);
+
+  const handleCountryChange = useCallback((value) => {
+    setFieldValue('country', value);
   }, []);
 
   const finalCoordination= parseCoordinates(coordinates || DEFAULT_COORDINATES);
@@ -266,12 +273,35 @@ function ClubForm({
           <Grid item xs={12}>
             <Box pb={1}>
               <Typography variant="subtitle1">
+                {t('club.country')}
+                :
+              </Typography>
+            </Box>
+            <SelectAutocomplete
+              isClearable
+              value={country}
+              onChange={handleCountryChange}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
+              options={possibleCountries}
+              onBlur={handleBlur}
+              placeholder={t('club.country')}
+              name="country"
+              inputProps={{
+                id: 'country',
+              }}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Box pb={1}>
+              <Typography variant="subtitle1">
                 {t('club.friendships')}
                 :
               </Typography>
             </Box>
 
-            <SelectAutocomplete
+            <AsyncSelectAutocomplete
               isMulti
               name="friendships"
               closeMenuOnSelect={false}
@@ -295,7 +325,7 @@ function ClubForm({
               </Typography>
             </Box>
 
-            <SelectAutocomplete
+            <AsyncSelectAutocomplete
               isMulti
               name="agreements"
               closeMenuOnSelect={false}
@@ -319,7 +349,7 @@ function ClubForm({
               </Typography>
             </Box>
 
-            <SelectAutocomplete
+            <AsyncSelectAutocomplete
               isMulti
               name="positives"
               closeMenuOnSelect={false}
@@ -343,7 +373,7 @@ function ClubForm({
               </Typography>
             </Box>
 
-            <SelectAutocomplete
+            <AsyncSelectAutocomplete
               isMulti
               name="enemies"
               closeMenuOnSelect={false}
@@ -367,7 +397,7 @@ function ClubForm({
               </Typography>
             </Box>
 
-            <SelectAutocomplete
+            <AsyncSelectAutocomplete
               isMulti
               name="derbyRivalries"
               closeMenuOnSelect={false}
@@ -388,7 +418,7 @@ function ClubForm({
               </Typography>
             </Box>
 
-            <SelectAutocomplete
+            <AsyncSelectAutocomplete
               isMulti
               name="satellites"
               closeMenuOnSelect={false}
@@ -412,7 +442,7 @@ function ClubForm({
               </Typography>
             </Box>
 
-            <SelectAutocomplete
+            <AsyncSelectAutocomplete
               isClearable
               name="satelliteOf"
               loadOptions={handleGetPossibleRelations()}

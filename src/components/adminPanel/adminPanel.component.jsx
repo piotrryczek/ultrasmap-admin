@@ -13,6 +13,7 @@ import SidePanel from 'components/sidePanel/sidePanel.component';
 import LoadingOverlay from 'components/loadingOverlay/loadingOverlay.component';
 import Clubs from 'components/clubs/clubs.component';
 import ClubsByPower from 'components/clubsByPower/clubsByPower.component';
+import ClubsByRelations from 'components/clubsByRelations/clubsByRelations.component';
 import CompareClubs from 'components/compareClubs/compareClubs.component';
 import Club from 'components/club/club.component';
 import Users from 'components/users/users.component';
@@ -49,6 +50,7 @@ function AdminPanel() {
               <Route exact path="/" render={() => <Redirect to="/clubs" />} />
               <RouteAuth exact path="/clubs" component={Clubs} credential="getClub" />
               <RouteAuth exact path="/clubs-by-power" component={ClubsByPower} credential="updateClub" />
+              <RouteAuth exact path="/clubs-by-relations" component={ClubsByRelations} credential="getClub" />
               <RouteAuth exact path="/clubs/page/:page" component={Clubs} credential="getClub" />
               <RouteAuth exact path="/clubs/new" component={(props) => <Club {...props} editType="new" />} credential="updateClub" />
               <RouteAuth exact path="/clubs/compare" component={CompareClubs} credential="getClub" />
